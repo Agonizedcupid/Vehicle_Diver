@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Aariyan.Fragment.HomeFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/deliverDateCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/selectDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/selectDateIcon"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="@id/selectDateIcon" />
+
+
+            <ImageView
+                android:id="@+id/selectDateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:foregroundTint="@color/colorPrimary"
+                android:src="@drawable/select_date_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="20-05-2022"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/selectDateText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/orderTypeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/deliverDateCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/orderTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Type"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/orderTypeIcon"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="@id/orderTypeIcon" />
+
+
+            <ImageView
+                android:id="@+id/orderTypeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:foregroundTint="@color/colorPrimary"
+                android:src="@drawable/order_type_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorPrimary" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/orderTypeIcon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/routeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/orderTypeCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/routeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Route"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/routeIcon"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="@id/routeIcon" />
+
+
+            <ImageView
+                android:id="@+id/routeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:foregroundTint="@color/colorPrimary"
+                android:src="@drawable/route_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorPrimary" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/routeIcon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/routeCard"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toLeftOf="@id/routeCard"
+        android:text="Get"
+        android:layout_marginEnd="15dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_ripple"
+        android:id="@+id/getBtn"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:layout_height="40dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

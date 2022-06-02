@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Drivers APP</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="trip_id">Trip Id</string>
+    <string name="number_zero">0</string>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="btn_clear">Done</string>
+    <string name="number_dot">.</string>
+    <string name="btn_backspace">DEL</string>
+    <string name="btn_submit_pin">SUBMIT</string>
+    <string name="Text">Text</string>
+    <string name="PDF_Image">PDF/Image</string>
+    <string name="Barcode">Barcode</string>
+    <string name="PageMode">Page Mode</string>
+    <string name="DirectIO">Direct I/O</string>
+    <string name="MSR">MSR</string>
+    <string name="SCR">SCR</string>
+    <string name="CashDrawer">Cash Drawer</string>
+    <string name="ETC">Etc.</string>
+    <string name="title_activity_my_map">Map</string>
+    <string name="fragment_map__search">Search...</string>
+    <string name="title_activity_test_map">Map</string>
+    <string name="NEXMO_API_KEY">70c0329f</string>
+    <string name="NEXMO_API_SECRET">GsCTushIdbfXJ9eQ</string>
+    <string name="home">Home</string>
+    <string name="credit_request">Credit Request</string>
+    <string name="set_up">"Setup "</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

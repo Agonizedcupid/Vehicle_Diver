@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home_menu"
+        android:enabled="true"
+        android:icon="@drawable/home_icon"
+        android:title="@string/home"
+        app:cnb_iconColor="@color/colorAccent" />
+
+
+    <item
+        android:id="@+id/credit_request_menu"
+        android:enabled="true"
+        android:icon="@drawable/credit_req"
+        android:title="@string/credit_request"
+        app:cnb_iconColor="#00574B" />
+
+    <item
+        android:id="@+id/set_up_menu"
+        android:enabled="true"
+        android:icon="@drawable/setup_icon"
+        android:title="@string/set_up"
+        app:cnb_iconColor="#2196F3" />
+</menu>

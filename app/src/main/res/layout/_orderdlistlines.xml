@@ -1,0 +1,296 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#bdbdbd"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/closelines"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/invoice_no"
+        android:layout_alignParentEnd="true"
+        android:background="#0096cc"
+        android:fontFamily="@font/lato"
+        android:text="Close" />
+
+    <LinearLayout
+        android:id="@+id/maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@android:color/background_dark"
+        android:layout_above="@id/tickall"
+        android:layout_below="@id/textView">
+
+        <LinearLayout
+            android:id="@+id/pane1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@android:color/background_light"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TO-CHECK"
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/productcats_nochecked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <ListView
+                android:id="@+id/_orderdlistlines"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pane2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@android:color/background_light"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CHECKED"
+                android:textColor="@android:color/holo_red_dark"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/productcats_checked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <ListView
+                android:id="@+id/_orderdlistlinescheckd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#bfbfbf" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/acceptthesummary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_green_dark"
+        android:fontFamily="@font/lato"
+        android:text="Verify and Save" />
+
+    <CheckBox
+        android:id="@+id/accept"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btndocnote"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/closelines"
+        android:layout_alignParentStart="true"
+        android:text="Items"
+        android:textColor="@android:color/background_dark"
+        android:textSize="8sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/invoice_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/cash"
+        android:layout_width="268dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/accept"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="95dp"
+        android:layout_marginBottom="31dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:hint="Press here..."
+        android:inputType="number|numberDecimal" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="47dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/cash"
+        android:layout_alignParentStart="true"
+        android:text="Cash"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btndocnote"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/acceptthesummary"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="6dp"
+        android:text="Note"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/tickall"
+        android:layout_width="44dp"
+        android:layout_height="33dp"
+        android:layout_above="@+id/cash"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="1dp"
+        android:background="@android:color/background_dark"
+        android:text="Tick All"
+        android:textColor="@android:color/background_light"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="281dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/maincontainer"
+        android:layout_toEndOf="@+id/textView14"
+        android:text="TextView"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/maincontainer"
+        android:text="Total :"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/currentlocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/closelines"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="147dp"
+        android:textSize="8sp"
+        android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/zoom"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/closelines"
+        android:layout_toStartOf="@+id/closelines"
+        android:background="@android:color/holo_red_dark"
+        android:text="ZOOM"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold|italic"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/checkunattitems"
+        android:layout_width="24dp"
+        android:layout_height="33dp"
+        android:layout_below="@+id/_orderdlistlines"
+        android:layout_marginStart="89dp"
+        android:layout_toEndOf="@+id/textView"
+        android:background="@android:color/background_dark"
+        android:text="Untick"
+        android:textColor="@android:color/background_light"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/truckorder"
+        android:layout_width="75dp"
+        android:layout_height="26dp"
+
+        android:layout_alignTop="@+id/closelines"
+        android:layout_marginStart="145dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/accept"
+        android:background="@android:color/holo_blue_dark"
+        android:text="TRUCK" />
+
+    <Spinner
+        android:id="@+id/products_warehouseses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/_orderdlistlines"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/zoom"
+        android:layout_marginBottom="-32dp"
+        android:background="@android:color/holo_red_dark"
+        android:dropDownSelector="@android:color/background_dark"
+        android:gravity="center"
+        android:popupBackground="@android:color/darker_gray"
+        android:spinnerMode="dialog" />
+
+    <Button
+        android:id="@+id/cancel_order"
+        android:layout_width="74dp"
+        android:layout_height="37dp"
+        android:layout_below="@+id/maincontainer"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="1dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="Cancel Order"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/paymenttype"
+        android:layout_width="286dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/cash"
+        android:layout_alignEnd="@id/cash"
+        android:layout_marginEnd="-14dp"
+        android:text="TextView"
+        android:textColor="#FA0E0E0E"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

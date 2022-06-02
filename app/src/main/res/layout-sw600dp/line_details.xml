@@ -1,0 +1,162 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1c7c2c2"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Item Name" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="31dp"
+        android:text="Item Code" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="127dp"
+        android:text="Quantity" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="62dp"
+        android:text="Price" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="94dp"
+        android:text="Special Requirement" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="202dp"
+        android:text="Comments" />
+
+    <EditText
+        android:id="@+id/notecomment"
+        android:layout_width="260dp"
+        android:layout_height="67dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView7"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/signature_pad_lines"
+        android:layout_width="fill_parent"
+        android:layout_height="149dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="46dp"
+        android:background="@android:color/background_light"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/close_line_info"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="308dp"
+        android:text="Exit Without Change" />
+
+    <Button
+        android:id="@+id/donelineinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="78dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="368dp"
+        android:text="Save Changes" />
+
+    <TextView
+        android:id="@+id/product_name"
+        android:layout_width="171dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/pastelcode"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/pastelcode"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView3"
+        android:text="TextView" />
+
+    <EditText
+        android:id="@+id/qtyordered"
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/notecomment"
+        android:layout_alignTop="@+id/textView4"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:inputType="number|numberDecimal" />
+
+    <TextView
+        android:id="@+id/priceline"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView5"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/commentline"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView6"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="166dp"
+        android:text="Reason" />
+
+    <Spinner
+        android:id="@+id/reason"
+        android:layout_width="260dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView12"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:spinnerMode="dialog"
+        android:text="Name" />
+
+</RelativeLayout>

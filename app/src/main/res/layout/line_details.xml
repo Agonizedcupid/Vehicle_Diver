@@ -1,0 +1,191 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1c7c2c2"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Item Name"
+        android:textColor="#FC0A0A0A" />
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/signature_pad_lines"
+        android:layout_width="fill_parent"
+        android:layout_height="149dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="46dp"
+        android:background="@android:color/background_light"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/close_line_info"
+        android:layout_width="123dp"
+        android:layout_height="87dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp"
+        android:text="Exit Without Change" />
+
+    <Button
+        android:id="@+id/donelineinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="78dp"
+        android:layout_above="@+id/signature_pad_lines"
+        android:layout_centerHorizontal="true"
+        android:text="Save Changes" />
+
+    <TextView
+        android:id="@+id/product_name"
+        android:layout_width="216dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pastelcode"
+        android:layout_alignParentTop="true"
+        android:text="TextView"
+        android:textColor="#0F0F0F"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/qtyordered"
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/notecomment"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:inputType="number|numberDecimal" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="155dp"
+        android:text="Item Code"
+        android:textColor="#0C0C0C" />
+
+    <EditText
+        android:id="@+id/notecomment"
+        android:layout_width="260dp"
+        android:layout_height="67dp"
+        android:layout_alignTop="@+id/textView7"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-3dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="326dp"
+        android:text="Comments"
+        android:textColor="#FC0A0A0A" />
+
+    <Spinner
+        android:id="@+id/reason"
+        android:layout_width="260dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/textView12"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-3dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:spinnerMode="dialog"
+        android:text="Name" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="290dp"
+        android:text="Reason"
+        android:textColor="#FC0A0A0A" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="218dp"
+        android:text="Special Requirement"
+        android:textColor="#FC0A0A0A" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="251dp"
+        android:text="Return Quantity"
+        android:textColor="#FC0A0A0A" />
+
+    <TextView
+        android:id="@+id/commentline"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView6"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-3dp"
+        android:text="TextView"
+        android:textColor="#FC0A0A0A" />
+
+    <TextView
+        android:id="@+id/pastelcode"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-3dp"
+        android:text="TextView"
+        android:textColor="#0C0C0C" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="186dp"
+        android:text="Price"
+        android:textColor="#FC0A0A0A" />
+
+    <TextView
+        android:id="@+id/priceline"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-3dp"
+        android:text="TextView"
+        android:textColor="#FC0A0A0A" />
+
+</RelativeLayout>

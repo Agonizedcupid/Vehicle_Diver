@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    android:layout_width="10dp"
+    android:layout_height="64dp"
+    android:gravity="center"
+    android:padding="3dip">
+
+    <TextView
+        android:id="@+id/storename"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato"
+        android:padding="3dip"
+        android:text="test"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/orderid"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/storename"
+        android:fontFamily="@font/lato"
+        android:gravity="left"
+        android:padding="1dip"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="38dp"
+        android:layout_height="27dp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/offload"
+        android:fontFamily="@font/lato"
+        android:gravity="left"
+        android:padding="1dip"
+        android:textColor="@android:color/background_dark"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/offload"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="0dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="@android:color/background_light" />
+
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/storename"
+        android:layout_alignParentStart="true"
+        android:fontFamily="@font/lato"
+        android:gravity="left"
+        android:textColor="@android:color/background_dark"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+
+    <TextView
+        android:id="@+id/del"
+        android:layout_width="43dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/storename"
+        android:layout_toEndOf="@+id/orderid"
+        android:fontFamily="@font/lato"
+        android:padding="1dip"
+        android:textColor="@android:color/background_dark"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

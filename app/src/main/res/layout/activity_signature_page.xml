@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignaturePage"
+    tools:layout_editor_absoluteY="25dp">
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/signature_pad"
+        android:layout_width="match_parent"
+        android:layout_height="546dp"
+        android:layout_above="@+id/finish_signature"
+
+        android:layout_below="@+id/txtlabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:background="#efecec"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <EditText
+        android:id="@+id/enterusername"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="-2dp"
+        android:ems="10"
+        android:hint="Your Name"
+
+        />
+
+    <Button
+        android:id="@+id/finish_signature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/holo_green_dark"
+        android:text="FINISH"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+       />
+
+    <EditText
+        android:id="@+id/email_cust"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/enterusername"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/txtlabel"
+        android:layout_width="281dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_cust"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="4dp"
+        android:text="Please, sign to acknowledge the delivery."
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+</RelativeLayout>

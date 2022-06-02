@@ -1,0 +1,145 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+
+        <com.regin.reginald.vehicleanddrivers.CustomListView
+            android:id="@+id/_orderdlistlines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/acknowledge_stock"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/deliverdate"
+            android:layout_marginTop="4dp"
+            android:background="#faf6f6" />
+
+        <Button
+            android:id="@+id/start_trip"
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/demail"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="-1dp"
+            android:layout_marginBottom="0dp"
+            android:background="@android:color/background_dark"
+            android:text="TRIP INFO"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/sort_order"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="@android:color/darker_gray"
+            android:text="Back" />
+
+        <TextView
+            android:id="@+id/deliverdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/ordertype"
+            android:text="TextView"
+            android:textColor="@android:color/background_dark"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ordertype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/routename"
+            android:layout_marginStart="99dp"
+            android:text="TextView"
+            android:textColor="@android:color/background_dark"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/routename"
+            android:layout_width="297dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView"
+            android:textColor="@android:color/background_dark"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/endtrip"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/darker_gray"
+            android:text="END TRIP"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/calcr_plan"
+            android:layout_width="206dp"
+            android:layout_height="18dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="56dp"
+            android:text="Please Wait busy calculating your route plan..." />
+
+        <Button
+            android:id="@+id/acknowledge_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/calcr_plan"
+            android:layout_alignParentStart="true"
+            android:text="acknowledge" />
+
+        <TextView
+            android:id="@+id/coord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/_orderdlistlines"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/acknowledge_stock"
+            android:layout_marginEnd="37dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/passwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/acknowledge_stock"
+            android:layout_marginEnd="150dp"
+            android:text="p"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/demail"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/acknowledge_stock"
+            android:layout_toStartOf="@+id/coord"
+            android:text="de"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/not_uploade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView"
+            android:textColor="@android:color/holo_red_dark"
+            android:textStyle="bold" />
+
+
+</RelativeLayout>

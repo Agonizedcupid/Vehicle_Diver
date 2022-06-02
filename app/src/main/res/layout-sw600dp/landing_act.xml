@@ -1,0 +1,177 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".LandingPage">
+
+
+    <Button
+        android:id="@+id/closelines"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="262dp"
+        android:text="GET"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/routeid"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:layout_alignStart="@+id/ordertypes"
+
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="197dp"
+        android:spinnerMode="dialog" />
+
+    <Spinner
+        android:id="@+id/ordertypes"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/datetime"
+        android:layout_alignParentTop="true"
+
+        android:layout_marginTop="102dp"
+        android:spinnerMode="dialog" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/ordertypes"
+        android:background="#FC070707" />
+
+    <EditText
+        android:id="@+id/datetime"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="27dp"
+
+        android:background="#FDF0ECEC"
+        android:ems="10"
+        android:inputType="date"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/lato"
+        android:layout_marginStart="8dp"
+        android:text="Delivery Date"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ordertypes"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-21dp"
+        android:fontFamily="@font/lato"
+        android:text="Order Type"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/routeid"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-29dp"
+        android:background="#00FAF7F7"
+        android:fontFamily="@font/lato"
+        android:text="Route"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Refresh" />
+
+    <Button
+        android:id="@+id/printers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="SETUP" />
+
+    <Button
+        android:id="@+id/saveddata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="148dp"
+        android:layout_marginStart="0dp"
+        android:background="#0096cc"
+        android:text="Continue with saved Filters"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/endtrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/refresh"
+
+        android:layout_marginTop="52dp"
+        android:layout_marginBottom="6dp"
+        android:background="#0C0C0C"
+        android:text="END TRIP"
+        android:textColor="#FDF3F1F1" />
+
+    <Button
+        android:id="@+id/btncreditrequest"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/closelines"
+        android:layout_marginTop="23dp"
+        android:background="#0096cc"
+        android:fontFamily="@font/lato"
+        android:text="CREDIT REQUEST FOR OLD INVOICE"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btndeliverynotes"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/btncreditrequest"
+        android:layout_marginTop="22dp"
+        android:background="#0096cc"
+        android:text="DELIVERY NOTES"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/routeid"
+        android:background="#050505" />
+
+
+</RelativeLayout>

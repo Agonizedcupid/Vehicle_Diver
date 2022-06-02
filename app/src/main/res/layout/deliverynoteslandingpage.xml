@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/createdeliverynote"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#0096cc"
+        android:text="CREATE A DELIVERY NOTE"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/viewdeliverynotes"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="@+id/createdeliverynote"
+        android:background="#0096cc"
+        android:layout_marginTop="10dp"
+        android:text="VIEW EXISTING DELIVERY  NOTES" />
+</LinearLayout>

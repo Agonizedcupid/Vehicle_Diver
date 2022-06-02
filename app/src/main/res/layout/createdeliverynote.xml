@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    >
+
+    <TextView
+        android:id="@+id/notes"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="Notes"
+        android:textColor="#090808"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtqty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/tblproduct"
+        android:layout_marginEnd="-79dp"
+        android:text="Quantity"
+        android:textColor="#FC070707"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/wts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/txtqty"
+        android:layout_marginEnd="-84dp"
+        android:text="Weights"
+        android:textColor="#030303" />
+
+    <TextView
+        android:id="@+id/tblproduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/notes"
+        android:layout_marginEnd="-134dp"
+        android:text="Product Name"
+        android:textColor="#0A0A0A"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etcustname"
+        android:layout_width="125dp"
+        android:layout_height="158dp"
+        android:layout_below="@id/notes"
+
+        android:layout_marginTop="2dp"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/edproducts"
+        android:layout_width="103dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/tblproduct"
+        android:layout_alignEnd="@id/etcustname"
+
+        android:layout_marginEnd="-102dp"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/edtqty"
+        android:layout_width="89dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/txtqty"
+        android:layout_alignEnd="@id/edproducts"
+
+        android:layout_marginEnd="-86dp"
+        android:ems="10"
+        android:inputType="number|textPersonName"
+        android:text="1" />
+
+    <EditText
+        android:id="@+id/etdWghts"
+        android:layout_width="82dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/wts"
+        android:layout_alignEnd="@id/edtqty"
+
+        android:layout_marginEnd="-80dp"
+        android:ems="10"
+        android:inputType="number|textPersonName"
+        android:text="0" />
+
+    <Button
+        android:id="@+id/btnadddeliv"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_below="@id/etcustname"
+        android:layout_marginTop="84dp"
+        android:background="#9BA39B"
+        android:text="ADD"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/lvaddedlines"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/btnadddeliv"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/vrfdelnote"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_below="@id/username"
+        android:background="#4CAF50"
+        android:text="VERIFY DELIVERY NOTE" />
+
+    <TextView
+        android:id="@+id/reference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vrfdelnote"
+        android:text="TextView" />
+
+    <EditText
+        android:id="@+id/storename"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/etcustname"
+        android:ems="10"
+        android:hint="Enter Customer Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@id/lvaddedlines"
+        android:ems="10"
+        android:hint="Enter The  Name Of Person Requesting The Credit"
+        android:inputType="textPersonName" />
+</RelativeLayout>

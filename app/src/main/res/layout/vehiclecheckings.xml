@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/kmtext"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/kmtxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/textView28"
+        android:layout_marginBottom="-56dp"
+        android:text="KM START"
+        android:textColor="#F80E0D0D"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edtkm_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/kmtxt"
+
+        android:layout_marginTop="58dp"
+        android:hint="Type here..."
+        android:inputType="numberDecimal"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/kmtxtend"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_below="@id/edtkm_start"
+
+        android:text="KM END"
+        android:textColor="#0E0D0D"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edt_km_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/kmtxtend"
+
+        android:ems="10"
+        android:hint="Type here..."
+        android:inputType="numberDecimal"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_km_end"
+        android:text="Check List"
+        android:textColor="#111111"
+        android:textSize="16sp"
+
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/lstchecklists"
+        android:layout_width="match_parent"
+        android:layout_height="222dp"
+        android:layout_below="@id/textView27"
+
+        android:background="#166F6969">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/btnstarttrip"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/textView32"
+        android:layout_marginTop="14dp"
+        android:background="#4CAF50"
+        android:text="START TRIP"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:text="START TRIP" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="20dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        tools:text="deliverydate" />
+
+    <TextView
+        android:id="@+id/routename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/textView28"
+        android:layout_marginEnd="-85dp"
+        android:text="TextView"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lstchecklists"
+        android:layout_marginTop="0dp"
+        android:text="By pressing the START button you agree with everything on this form."
+        android:textColor="#FA111111"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/ordertype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/routename"
+        android:layout_marginEnd="-106dp"
+        android:text="ordertype" />
+
+
+
+</RelativeLayout>

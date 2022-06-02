@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="339dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="247dp"
+        android:text="Please tab  the loyalty card. Place it near the device NFC point."
+        android:textColor="#040404"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/uid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/uid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="83dp"
+        android:layout_marginTop="247dp"
+        android:layout_marginEnd="102dp"
+        android:text="NO CARD YET"
+        android:textColor="#F44336"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+    <Button
+        android:id="@+id/savecard"
+        android:layout_width="412dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="177dp"
+        android:background="#4CAF50"
+        android:text="SAVE TABBED LOYALTY CARD"
+        android:textColor="@android:color/background_dark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/uid" />
+
+    <Button
+        android:id="@+id/closedialog"
+        android:layout_width="99dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="303dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="9dp"
+        android:background="#F44336"
+        android:text="Close"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savecard" />
+
+    <TextView
+        android:id="@+id/textView35"
+        android:layout_width="380dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="72dp"
+        android:text="Earn Points Now"
+        android:textColor="#4CAF50"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+</androidx.constraintlayout.widget.ConstraintLayout>
