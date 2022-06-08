@@ -1,191 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/snackBarLayout"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Aariyan.Fragment.SetupFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topConLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomCard"
-        app:layout_constraintTop_creator="1"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/portTypeTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/portTypeTitle"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_creator="1"
-            app:layout_constraintTop_toTopOf="parent"
-
-            />
-
-        <RadioGroup
-            android:id="@+id/portTypeRadioGroup"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topConLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/portTypeTitle">
+            android:layout_alignParentTop="true"
+            android:padding="20dp"
+            app:layout_constraintBottom_toTopOf="@id/bottomCard"
+            android:layout_alignParentStart="true"
+            app:layout_constraintTop_creator="1"
+            android:layout_above="@id/bottomCard"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RadioButton
-                android:id="@+id/bluetoothRadioBtn"
+
+            <TextView
+                android:id="@+id/portTypeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bluetoothString"
+                android:text="@string/portTypeTitle"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
 
-            <RadioButton
-                android:id="@+id/bluetoothLowEnergyRadioBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bluetoothLogEnergyString"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                />
 
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/printerModelTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/printerModelTitle"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_creator="1"
-            app:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_creator="1"
-            app:layout_constraintTop_toBottomOf="@id/portTypeRadioGroup" />
-
-        <Spinner
-            android:id="@+id/printerModelSpinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            app:layout_constraintLeft_toRightOf="@id/printerModelTitle"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/printerModelTitle" />
-
-        <TextView
-            android:id="@+id/bluetoothListTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/bluetoothListTitle"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_creator="1"
-            app:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_creator="1"
-            app:layout_constraintTop_toBottomOf="@id/printerModelSpinner" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bluetoothListRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/bluetoothListTitle" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/bottomCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="7dp"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintTop_toBottomOf="@id/topConLayout"
-        app:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/portTypeRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/setUpIpCard"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/portTypeTitle">
+
+                <RadioButton
+                    android:id="@+id/bluetoothRadioBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintTop_creator="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintLeft_creator="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/syncGroupCard"
-                    app:cardElevation="7dp"
-                    app:cardCornerRadius="5dp"
+                    android:text="@string/bluetoothString"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/bluetoothLowEnergyRadioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bluetoothLogEnergyString"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/printerModelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/printerModelTitle"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/portTypeRadioGroup" />
+
+            <Spinner
+                android:id="@+id/printerModelSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintLeft_toRightOf="@id/printerModelTitle"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/printerModelTitle" />
+
+            <TextView
+                android:id="@+id/bluetoothListTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/bluetoothListTitle"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/printerModelSpinner" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bluetoothListRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/bluetoothListTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bottomCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="7dp"
+            app:cardElevation="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_creator="1"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/setUpIpCard"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    >
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="7dp"
+                    app:layout_constraintBottom_toTopOf="@id/syncGroupCard"
+                    app:layout_constraintLeft_creator="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_creator="1"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="30dp"
-                        >
+                        android:paddingStart="30dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="10dp">
 
                         <ImageView
                             android:id="@+id/setUpIcon"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:src="@drawable/setup"
-                            />
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
                             android:text="@string/setUpIp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintLeft_creator="1"
-                            app:layout_constraintTop_toBottomOf="@id/setUpIcon"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_creator="1"
-                            android:layout_marginTop="10dp"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
                             android:textColor="@color/colorPrimary"
-                            />
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toRightOf="@id/setUpIcon"
+                            app:layout_constraintRight_creator="1"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -194,112 +193,118 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/syncGroupCard"
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintTop_creator="1"
-                    app:layout_constraintLeft_toRightOf="@id/setUpIpCard"
-                    app:layout_constraintLeft_creator="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:cardElevation="7dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
-                    android:layout_margin="10dp"
-                    >
+                    app:cardElevation="7dp"
+                    app:layout_constraintBottom_creator="1"
+                    app:layout_constraintBottom_toTopOf="@id/printerOpenCard"
+                    app:layout_constraintRight_creator="1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_creator="1"
+                    app:layout_constraintTop_toBottomOf="@id/setUpIpCard">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="30dp"
-                        >
+                        android:paddingStart="30dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="10dp">
 
                         <ImageView
-                            android:id="@+id/groupIcon"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
+                            android:id="@+id/syncGroupIcon"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:src="@drawable/sync_group_icon"
-                            />
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
                             android:text="@string/syncGroupPolicies"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintLeft_creator="1"
-                            app:layout_constraintTop_toBottomOf="@id/groupIcon"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_creator="1"
-                            android:layout_marginTop="10dp"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
                             android:textColor="@color/colorPrimary"
-                            />
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toRightOf="@id/syncGroupIcon"
+                            app:layout_constraintRight_creator="1"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
                 <androidx.cardview.widget.CardView
                     android:id="@+id/printerOpenCard"
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintTop_creator="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintLeft_creator="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/syncGroupCard"
-                    app:cardElevation="7dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
-                    android:layout_margin="10dp"
-                    >
+                    app:cardElevation="7dp"
+                    app:layout_constraintBottom_creator="1"
+                    app:layout_constraintBottom_toTopOf="@id/registerDeviceCard"
+                    app:layout_constraintLeft_creator="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_creator="1"
+                    app:layout_constraintTop_toBottomOf="@id/syncGroupCard">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="30dp"
-                        >
+                        android:paddingStart="30dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="10dp">
 
                         <ImageView
                             android:id="@+id/printerOpenIcon"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:src="@drawable/open_printer"
-                            />
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
                             android:text="@string/printerOpenTitle"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintLeft_creator="1"
-                            app:layout_constraintTop_toBottomOf="@id/printerOpenIcon"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_creator="1"
-                            android:layout_marginTop="10dp"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
                             android:textColor="@color/colorPrimary"
-                            />
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toRightOf="@id/printerOpenIcon"
+                            app:layout_constraintRight_creator="1"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -308,114 +313,356 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/registerDeviceCard"
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintTop_creator="1"
-                    app:layout_constraintLeft_toRightOf="@id/setUpIpCard"
-                    app:layout_constraintLeft_creator="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:cardElevation="7dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
-                    android:layout_margin="10dp"
-                    >
+                    app:cardElevation="7dp"
+                    app:layout_constraintBottom_creator="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_creator="1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_creator="1"
+                    app:layout_constraintTop_toBottomOf="@id/printerOpenCard">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="30dp"
-                        >
+                        android:paddingStart="30dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="10dp">
 
                         <ImageView
-                            android:id="@+id/registerIcon"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
+                            android:id="@+id/registerDeviceIcon"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:src="@drawable/register_device"
-                            />
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
                             android:text="@string/registerDeviceTitle"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintLeft_creator="1"
-                            app:layout_constraintTop_toBottomOf="@id/registerIcon"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintRight_creator="1"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_creator="1"
-                            android:layout_marginTop="10dp"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
                             android:textColor="@color/colorPrimary"
-                            />
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toRightOf="@id/registerDeviceIcon"
+                            app:layout_constraintRight_creator="1"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/setUpIpCaaard"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/setUpIpCard"
-                app:layout_constraintTop_creator="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintLeft_creator="1"
-                app:cardElevation="7dp"
-                app:cardCornerRadius="5dp"
-                android:layout_margin="10dp"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="30dp"
-                    >
-
-                    <ImageView
-                        android:id="@+id/setUpIcson"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintRight_creator="1"
-                        android:src="@drawable/setup"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/setUpIp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintLeft_creator="1"
-                        app:layout_constraintTop_toBottomOf="@id/setUpIcson"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintRight_creator="1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_creator="1"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorPrimary"
-                        />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            </androidx.cardview.widget.CardView>
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:orientation="vertical"-->
+            <!--            >-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                >-->
+            <!--                <androidx.cardview.widget.CardView-->
+            <!--                    android:id="@+id/setUpIpCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:layout_constraintTop_creator="1"-->
+            <!--                    app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                    app:layout_constraintLeft_creator="1"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintRight_toLeftOf="@id/syncGroupCard"-->
+            <!--                    app:cardElevation="7dp"-->
+            <!--                    app:cardCornerRadius="5dp"-->
+            <!--                    android:layout_margin="10dp"-->
+            <!--                    >-->
+
+            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:padding="30dp"-->
+            <!--                        >-->
+
+            <!--                        <ImageView-->
+            <!--                            android:id="@+id/setUpIcon"-->
+            <!--                            android:layout_width="60dp"-->
+            <!--                            android:layout_height="60dp"-->
+            <!--                            app:layout_constraintTop_toTopOf="parent"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            android:src="@drawable/setup"-->
+            <!--                            />-->
+
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:text="@string/setUpIp"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintLeft_creator="1"-->
+            <!--                            app:layout_constraintTop_toBottomOf="@id/setUpIcon"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                            app:layout_constraintTop_creator="1"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:textStyle="bold"-->
+            <!--                            android:textSize="18sp"-->
+            <!--                            android:textColor="@color/colorPrimary"-->
+            <!--                            />-->
+
+            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-        </LinearLayout>
+            <!--                </androidx.cardview.widget.CardView>-->
 
-    </androidx.cardview.widget.CardView>
+            <!--                <androidx.cardview.widget.CardView-->
+            <!--                    android:id="@+id/syncGroupCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:layout_constraintTop_creator="1"-->
+            <!--                    app:layout_constraintLeft_toRightOf="@id/setUpIpCard"-->
+            <!--                    app:layout_constraintLeft_creator="1"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintRight_toRightOf="parent"-->
+            <!--                    app:cardElevation="7dp"-->
+            <!--                    app:cardCornerRadius="5dp"-->
+            <!--                    android:layout_margin="10dp"-->
+            <!--                    >-->
 
-</RelativeLayout>
+            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:padding="30dp"-->
+            <!--                        >-->
+
+            <!--                        <ImageView-->
+            <!--                            android:id="@+id/groupIcon"-->
+            <!--                            android:layout_width="60dp"-->
+            <!--                            android:layout_height="60dp"-->
+            <!--                            app:layout_constraintTop_toTopOf="parent"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            android:src="@drawable/sync_group_icon"-->
+            <!--                            />-->
+
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:text="@string/syncGroupPolicies"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintLeft_creator="1"-->
+            <!--                            app:layout_constraintTop_toBottomOf="@id/groupIcon"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                            app:layout_constraintTop_creator="1"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:textStyle="bold"-->
+            <!--                            android:textSize="18sp"-->
+            <!--                            android:textColor="@color/colorPrimary"-->
+            <!--                            />-->
+
+            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+            <!--                </androidx.cardview.widget.CardView>-->
+            <!--            </LinearLayout>-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                >-->
+            <!--                <androidx.cardview.widget.CardView-->
+            <!--                    android:id="@+id/printerOpenCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:layout_constraintTop_creator="1"-->
+            <!--                    app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                    app:layout_constraintLeft_creator="1"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintRight_toLeftOf="@id/syncGroupCard"-->
+            <!--                    app:cardElevation="7dp"-->
+            <!--                    app:cardCornerRadius="5dp"-->
+            <!--                    android:layout_margin="10dp"-->
+            <!--                    >-->
+
+            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:padding="30dp"-->
+            <!--                        >-->
+
+            <!--                        <ImageView-->
+            <!--                            android:id="@+id/printerOpenIcon"-->
+            <!--                            android:layout_width="60dp"-->
+            <!--                            android:layout_height="60dp"-->
+            <!--                            app:layout_constraintTop_toTopOf="parent"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            android:src="@drawable/open_printer"-->
+            <!--                            />-->
+
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:text="@string/printerOpenTitle"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintLeft_creator="1"-->
+            <!--                            app:layout_constraintTop_toBottomOf="@id/printerOpenIcon"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                            app:layout_constraintTop_creator="1"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:textStyle="bold"-->
+            <!--                            android:textSize="18sp"-->
+            <!--                            android:textColor="@color/colorPrimary"-->
+            <!--                            />-->
+
+            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+            <!--                </androidx.cardview.widget.CardView>-->
+
+            <!--                <androidx.cardview.widget.CardView-->
+            <!--                    android:id="@+id/registerDeviceCard"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:layout_constraintTop_creator="1"-->
+            <!--                    app:layout_constraintLeft_toRightOf="@id/setUpIpCard"-->
+            <!--                    app:layout_constraintLeft_creator="1"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintRight_toRightOf="parent"-->
+            <!--                    app:cardElevation="7dp"-->
+            <!--                    app:cardCornerRadius="5dp"-->
+            <!--                    android:layout_margin="10dp"-->
+            <!--                    >-->
+
+            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:padding="30dp"-->
+            <!--                        >-->
+
+            <!--                        <ImageView-->
+            <!--                            android:id="@+id/registerIcon"-->
+            <!--                            android:layout_width="60dp"-->
+            <!--                            android:layout_height="60dp"-->
+            <!--                            app:layout_constraintTop_toTopOf="parent"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            android:src="@drawable/register_device"-->
+            <!--                            />-->
+
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:text="@string/registerDeviceTitle"-->
+            <!--                            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                            app:layout_constraintLeft_creator="1"-->
+            <!--                            app:layout_constraintTop_toBottomOf="@id/registerIcon"-->
+            <!--                            app:layout_constraintRight_toRightOf="parent"-->
+            <!--                            app:layout_constraintRight_creator="1"-->
+            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                            app:layout_constraintTop_creator="1"-->
+            <!--                            android:layout_marginTop="10dp"-->
+            <!--                            android:textStyle="bold"-->
+            <!--                            android:textSize="18sp"-->
+            <!--                            android:textColor="@color/colorPrimary"-->
+            <!--                            />-->
+
+            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+            <!--                </androidx.cardview.widget.CardView>-->
+            <!--            </LinearLayout>-->
+
+            <!--            <androidx.cardview.widget.CardView-->
+            <!--                android:id="@+id/setUpIpCaaard"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/setUpIpCard"-->
+            <!--                app:layout_constraintTop_creator="1"-->
+            <!--                app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                app:layout_constraintLeft_creator="1"-->
+            <!--                app:cardElevation="7dp"-->
+            <!--                app:cardCornerRadius="5dp"-->
+            <!--                android:layout_margin="10dp"-->
+            <!--                >-->
+
+            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:padding="30dp"-->
+            <!--                    >-->
+
+            <!--                    <ImageView-->
+            <!--                        android:id="@+id/setUpIcson"-->
+            <!--                        android:layout_width="60dp"-->
+            <!--                        android:layout_height="60dp"-->
+            <!--                        app:layout_constraintTop_toTopOf="parent"-->
+            <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                        app:layout_constraintRight_toRightOf="parent"-->
+            <!--                        app:layout_constraintRight_creator="1"-->
+            <!--                        android:src="@drawable/setup"-->
+            <!--                        />-->
+
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="@string/setUpIp"-->
+            <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--                        app:layout_constraintLeft_creator="1"-->
+            <!--                        app:layout_constraintTop_toBottomOf="@id/setUpIcson"-->
+            <!--                        app:layout_constraintRight_toRightOf="parent"-->
+            <!--                        app:layout_constraintRight_creator="1"-->
+            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                        app:layout_constraintTop_creator="1"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:textStyle="bold"-->
+            <!--                        android:textSize="18sp"-->
+            <!--                        android:textColor="@color/colorPrimary"-->
+            <!--                        />-->
+
+            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+            <!--            </androidx.cardview.widget.CardView>-->
+
+
+            <!--        </LinearLayout>-->
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

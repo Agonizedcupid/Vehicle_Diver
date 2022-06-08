@@ -17,7 +17,6 @@ import com.regin.reginald.vehicleanddrivers.R;
 public class SetupFragment extends Fragment {
 
     private View root;
-    private ConstraintLayout snackBarLayout;
 
     public SetupFragment() {
         // Required empty public constructor
@@ -41,24 +40,8 @@ public class SetupFragment extends Fragment {
     }
 
     private void initUI() {
-        snackBarLayout = root.findViewById(R.id.snackBarLayout);
-        LandingActivity.resetDatabaseIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(snackBarLayout, getResources().getString(R.string.resetDatabaseTitle), Snackbar.LENGTH_SHORT)
-                        .setAction(getResources().getString(R.string.yes), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                resetDatabase();
-                            }
-                        }).show();
-            }
-        });
 
     }
 
-    //Reset the database
-    private void resetDatabase() {
-        Toast.makeText(requireContext(), "Database Reset", Toast.LENGTH_SHORT).show();
-    }
+
 }
