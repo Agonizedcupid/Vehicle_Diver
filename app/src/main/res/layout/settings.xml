@@ -34,8 +34,8 @@
                 android:id="@+id/serverIps"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/cust_address_textView"
+                android:layout_alignParentStart="true"
                 android:background="#080808"
                 android:textColor="#fbf9f9" />
         </RelativeLayout>
@@ -105,8 +105,8 @@
         android:id="@+id/device_id"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="217dp"
         android:background="@android:color/background_dark"
         android:ems="10"

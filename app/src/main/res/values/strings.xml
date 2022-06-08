@@ -35,4 +35,21 @@
     <string name="set_up">"Setup "</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ipTitle">Please put the server IP address</string>
+    <string name="emailTitle">Enter email address</string>
+    <string name="companyNameTitle">Enter company Name</string>
+    <string name="deviceIdTitle">Your Device ID</string>
+    <string name="registrationKeyTitle">Registration Key</string>
+    <string name="submitBtnText">Submit</string>
+    <string name="resetDatabaseTitle">Do you want to reset Database?</string>
+    <string name="yes">YES</string>
+    <string name="portTypeTitle">Port Type</string>
+    <string name="bluetoothString">Bluetooth</string>
+    <string name="bluetoothLogEnergyString">Bluetooth Low Energy</string>
+    <string name="printerModelTitle">Printer Model</string>
+    <string name="bluetoothListTitle">Bluetooth List</string>
+    <string name="setUpIp">Setup IP</string>
+    <string name="syncGroupPolicies">Sync Group Policies</string>
+    <string name="printerOpenTitle">Printer Open</string>
+    <string name="registerDeviceTitle">Register Device</string>
 </resources>
