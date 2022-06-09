@@ -53,11 +53,12 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void setTitles(int position) {
-        if (position == 2) {
-            resetDatabaseIcon.setVisibility(View.VISIBLE);
-        } else {
-            resetDatabaseIcon.setVisibility(View.GONE);
-        }
+//        if (position == 2) {
+//            resetDatabaseIcon.setVisibility(View.VISIBLE);
+//        } else {
+//            resetDatabaseIcon.setVisibility(View.GONE);
+//        }
+        resetDatabaseIcon.setVisibility(View.GONE);
         toolbarTitle.setText(Constant.title[position]);
     }
 
