@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Fragment.CreditRequestFragment;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Fragment.HomeFragment;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Fragment.SetupFragment;
+import com.regin.reginald.vehicleanddrivers.MainActivity;
 import com.regin.reginald.vehicleanddrivers.R;
 
 public class LandingActivity extends AppCompatActivity {
@@ -23,13 +26,36 @@ public class LandingActivity extends AppCompatActivity {
     private TextView toolbarTitle;
     public static ImageView resetDatabaseIcon;
 
+    private DatabaseAdapter databaseAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
+        databaseAdapter = new DatabaseAdapter(LandingActivity.this);
+
+
         initUI();
+    }
+
+    @Override
+    protected void onResume() {
+        if (databaseAdapter.getServerIpModel().size() > 0) {
+            //setting the default Fragment:
+            //set default fragment:
+            Toast.makeText(this, "Setup completed!", Toast.LENGTH_SHORT).show();
+            replaceFragment(new HomeFragment(), 0);
+            Constant.isSetUpCompleted = true;
+        } else {
+            Toast.makeText(this, "Setup not completed!", Toast.LENGTH_SHORT).show();
+            replaceFragment(new SetupFragment(),2);
+            Constant.isSetUpCompleted = false;
+        }
+
+        triggerNavigationBar();
+        super.onResume();
     }
 
     private void initUI() {
@@ -40,11 +66,6 @@ public class LandingActivity extends AppCompatActivity {
         navigationBar = findViewById(R.id.menu);
         navigationBar.setItemSelected(R.id.home_menu, true);
 
-        //setting the default Fragment:
-        //set default fragment:
-        replaceFragment(new HomeFragment(), 0);
-
-        triggerNavigationBar();
     }
 
     private void replaceFragment(Fragment fragment, int position) {
@@ -68,10 +89,19 @@ public class LandingActivity extends AppCompatActivity {
             public void onItemSelected(int i) {
                 switch (i) {
                     case R.id.home_menu:
-                        replaceFragment(new HomeFragment(), 0);
+                        if (Constant.isSetUpCompleted){
+                            replaceFragment(new HomeFragment(), 0);
+                        } else {
+                            replaceFragment(new SetupFragment(),2);
+                        }
+
                         break;
                     case R.id.credit_request_menu:
-                        replaceFragment(new CreditRequestFragment(), 1);
+                        if (Constant.isSetUpCompleted){
+                            replaceFragment(new CreditRequestFragment(), 1);
+                        } else {
+                            replaceFragment(new SetupFragment(),2);
+                        }
                         break;
                     case R.id.set_up_menu:
                         replaceFragment(new SetupFragment(), 2);

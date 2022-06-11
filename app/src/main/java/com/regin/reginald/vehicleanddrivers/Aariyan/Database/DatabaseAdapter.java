@@ -198,7 +198,7 @@ public class DatabaseAdapter {
         private Context context;
 
         private static final String DATABASE_NAME = "drivers_app.db";
-        private static final int VERSION_NUMBER = 3;
+        private static final int VERSION_NUMBER = 12;
 
         private static final String UID = "_id";
 

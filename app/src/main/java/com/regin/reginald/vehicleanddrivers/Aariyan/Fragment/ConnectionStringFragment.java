@@ -2,6 +2,7 @@ package com.regin.reginald.vehicleanddrivers.Aariyan.Fragment;
 
 import static com.regin.reginald.vehicleanddrivers.Aariyan.Activity.LandingActivity.resetDatabaseIcon;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -20,8 +21,10 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Activity.LandingActivity;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.MainActivity;
 import com.regin.reginald.vehicleanddrivers.R;
 
 import java.util.List;
@@ -170,12 +173,20 @@ public class ConnectionStringFragment extends Fragment implements View.OnClickLi
                 deviceUniqueId, "" + regKey.getText().toString());
 
         if (id > 0) {
+            Constant.isSetUpCompleted = true;
             Snackbar.make(snackBarLayout, getResources().getString(R.string.ipSaved), Snackbar.LENGTH_SHORT).show();
+            restratTheAPp();
         } else {
+            Constant.isSetUpCompleted = false;
             Snackbar.make(snackBarLayout, getResources().getString(R.string.unableToSave), Snackbar.LENGTH_SHORT).show();
         }
         progressBar.setVisibility(View.GONE);
 
+    }
+
+    private void restratTheAPp() {
+//        requireActivity().finish();
+//        startActivity(requireActivity().getIntent());
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
