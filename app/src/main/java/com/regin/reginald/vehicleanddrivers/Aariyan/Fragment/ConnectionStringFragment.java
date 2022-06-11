@@ -104,12 +104,15 @@ public class ConnectionStringFragment extends Fragment implements View.OnClickLi
 
     private void loadIp() {
         List<IpModel> list = databaseAdapter.getServerIpModel();
-        IpModel model = list.get(0);
-        ipEditText.setText(model.getServerIp(), TextView.BufferType.EDITABLE);
-        emailAddress.setText(model.getEmailAddress(), TextView.BufferType.EDITABLE);
-        companyName.setText(model.getCompanyName(), TextView.BufferType.EDITABLE);
-        deviceId.setText(model.getDeviceId());
-        regKey.setText(model.getRegKey());
+        if (list.size() > 0) {
+            IpModel model = list.get(0);
+            ipEditText.setText(model.getServerIp(), TextView.BufferType.EDITABLE);
+            emailAddress.setText(model.getEmailAddress(), TextView.BufferType.EDITABLE);
+            companyName.setText(model.getCompanyName(), TextView.BufferType.EDITABLE);
+            deviceId.setText(model.getDeviceId());
+            regKey.setText(model.getRegKey());
+        }
+
         progressBar.setVisibility(View.GONE);
     }
 
