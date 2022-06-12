@@ -1,6 +1,7 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
 import com.regin.reginald.vehicleanddrivers.LandingPage;
+import com.regin.reginald.vehicleanddrivers.MainActivity;
 import com.regin.reginald.vehicleanddrivers.R;
 
 import org.json.JSONArray;
@@ -225,13 +227,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         int id = view.getId();
         switch (id) {
             case R.id.getBtn:
-                Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show();
+                getTheOrders();
                 break;
 
             case R.id.deliverDateCard:
                 openDatePicker();
                 break;
         }
+    }
+
+    private void getTheOrders() {
+        Intent i = new Intent(requireContext(), MainActivity.class);
+        i.putExtra("deldate", date);
+        i.putExtra("routes", route.getSelectedItem().toString());
+        i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
+        startActivity(i);
     }
 
     private void openDatePicker() {

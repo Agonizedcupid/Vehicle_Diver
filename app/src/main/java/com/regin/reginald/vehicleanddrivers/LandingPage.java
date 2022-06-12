@@ -400,7 +400,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                             .show();
                 } else {
                     dbH.updateDeals("delete from OrderLines");
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //Intent i = new Intent(LandingPage.this, MainActivity.class);
                     Intent i = new Intent(LandingPage.this, MainActivity.class);
                     i.putExtra("deldate", dte_from.getText().toString());
@@ -857,6 +857,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS: {
                 // If request is cancelled, the result arrays are empty.
