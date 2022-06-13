@@ -12,4 +12,7 @@ public interface RestApi {
 
     @GET("OrderTypesTest.php?")
     Observable<ResponseBody> getOrderTypes(@Query("key") String key);
+
+    @GET("OrderHeaders.php?")
+    Observable<ResponseBody> getOrderList(@Query("OrderType") int orderTypeId, @Query("Route") int routeId, @Query("DeliveryDate") String deliveryDate);
 }

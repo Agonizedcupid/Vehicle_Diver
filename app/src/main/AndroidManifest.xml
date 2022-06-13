@@ -37,6 +37,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
         <activity
+            android:name=".Aariyan.Activity.OrdersActivity"
+            android:exported="false" />
+        <activity
             android:name=".LandingPage"
             android:exported="false" />
         <activity

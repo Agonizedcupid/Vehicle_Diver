@@ -2,18 +2,22 @@ package com.regin.reginald.vehicleanddrivers.Aariyan.Networking;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.ApiClient;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.GetOrderTypeInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.GetRouteInterface;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.OrderListInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.RestApi;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -28,18 +32,19 @@ import okhttp3.ResponseBody;
 
 public class NetworkingFeedback {
 
-    private CompositeDisposable routeDisposable;
+    private CompositeDisposable routeDisposable, orderDisposable;
     private DatabaseAdapter databaseAdapter;
     private RestApi apiService;
 
     public NetworkingFeedback(DatabaseAdapter databaseAdapter) {
         routeDisposable = new CompositeDisposable();
+        orderDisposable = new CompositeDisposable();
         this.databaseAdapter = databaseAdapter;
     }
 
 
     /**
-     *  GET Route
+     * GET Route
      */
 
 
@@ -95,7 +100,7 @@ public class NetworkingFeedback {
         Observer observer = new Observer() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                if(d.isDisposed()) {
+                if (d.isDisposed()) {
                     routeDisposable.clear();
                 }
             }
@@ -103,12 +108,12 @@ public class NetworkingFeedback {
             @Override
             public void onNext(Object o) {
                 RouteModel routeModel = (RouteModel) o;
-                databaseAdapter.insertRoutes(routeModel.getRouteId(),routeModel.getRouteName());
+                databaseAdapter.insertRoutes(routeModel.getRouteId(), routeModel.getRouteName());
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Log.d("INSERT_ROUTE", "onError: "+e.getMessage());
+                Log.d("INSERT_ROUTE", "onError: " + e.getMessage());
             }
 
             @Override
@@ -121,7 +126,7 @@ public class NetworkingFeedback {
     }
 
     /**
-     *  GET Order types
+     * GET Order types
      */
 
     public void getAvailableOrder(GetOrderTypeInterface orderInterface, String subscriberId) {
@@ -176,7 +181,7 @@ public class NetworkingFeedback {
         Observer observer = new Observer() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                if(d.isDisposed()) {
+                if (d.isDisposed()) {
                     routeDisposable.clear();
                 }
             }
@@ -184,12 +189,12 @@ public class NetworkingFeedback {
             @Override
             public void onNext(Object o) {
                 OrderTypeModel orderModel = (OrderTypeModel) o;
-                databaseAdapter.insertOrderTypes(orderModel.getOrderTypeId(),orderModel.getOrderType());
+                databaseAdapter.insertOrderTypes(orderModel.getOrderTypeId(), orderModel.getOrderType());
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Log.d("INSERT_ORDER", "onError: "+e.getMessage());
+                Log.d("INSERT_ORDER", "onError: " + e.getMessage());
             }
 
             @Override
@@ -199,5 +204,51 @@ public class NetworkingFeedback {
         };
 
         observable.subscribe(observer);
+    }
+
+    /**
+     * GET Available Orders:
+     */
+
+    public void getOrdersList(OrderListInterface orderListInterface, String serverIp, String orderDate, int routeId, int orderId) {
+        List<OrderModel> listOfOrders = new ArrayList<>();
+
+        apiService = ApiClient.getClient(serverIp).create(RestApi.class);
+        //orderListInterface.onError("No order is available!");
+        orderDisposable.add(apiService.getOrderList(orderId, routeId, orderDate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ResponseBody>() {
+                    @Override
+                    public void accept(ResponseBody responseBody) throws Throwable {
+                        JSONArray rootArray = new JSONArray(responseBody.string());
+                        Log.d("RESPONSE_TESTING", "accept: server: "+serverIp+
+                                "\n date: "+orderDate+"\n route: "+routeId+"\n order: "+orderId +
+                                "\n Length: "+ rootArray.length());
+                        listOfOrders.clear();
+                        if (rootArray.length() > 0) {//If data found
+                            Gson gson = new Gson();
+                            OrderModel model = gson.fromJson(responseBody.string(), OrderModel.class);
+                            listOfOrders.add(model);
+                            insertOrderListIntoLocalStorage(listOfOrders);
+                            orderListInterface.gotOrders(listOfOrders);
+
+                            Log.d("RESPONSE_TESTING", "Inner: "+rootArray);
+
+                        } else {
+                            orderListInterface.onError("No Order Found!");
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        orderListInterface.onError(throwable.getMessage());
+                        Log.d("RESPONSE_TESTING", "exception: "+throwable.getMessage());
+                    }
+                }));
+
+    }
+
+    private void insertOrderListIntoLocalStorage(List<OrderModel> listOfOrders) {
     }
 }

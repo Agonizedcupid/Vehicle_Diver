@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.regin.reginald.model.Routes;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Activity.OrdersActivity;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.GetOrderTypeInterface;
@@ -75,7 +76,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     //Member Variable:
     private String subscriberId = "";
     private String serverIp = "";
-    private int selectedRoute;
+    private int selectedRoute, selectedOrder;
 
     private boolean isRoutesAvailable;
 
@@ -139,7 +140,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             //Snackbar.make(getActivity().findViewById(R.id.snackBarLayouts), "Please complete the setup!", Snackbar.LENGTH_SHORT).show();
         }
 
-        dateTextView.setText(Constant.getTodayDate());
+        date = "2020 - 6 - 23";
+        //dateTextView.setText(Constant.getTodayDate());
 
     }
 
@@ -195,7 +197,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 //selectedRoute = Integer.parseInt(adapterView.getItemAtPosition(position).toString());
-                selectedRoute = listOfOrders.get(position).getOrderTypeId();
+                selectedOrder = listOfOrders.get(position).getOrderTypeId();
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -237,10 +239,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getTheOrders() {
-        Intent i = new Intent(requireContext(), MainActivity.class);
+        Intent i = new Intent(requireContext(), OrdersActivity.class);
         i.putExtra("deldate", date);
-        i.putExtra("routes", route.getSelectedItem().toString());
-        i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
+        i.putExtra("routes", selectedRoute);
+        i.putExtra("ordertype", selectedOrder);
         startActivity(i);
     }
 
