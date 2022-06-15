@@ -222,18 +222,243 @@ public class NetworkingFeedback {
                     @Override
                     public void accept(ResponseBody responseBody) throws Throwable {
                         JSONArray rootArray = new JSONArray(responseBody.string());
-                        Log.d("RESPONSE_TESTING", "accept: server: "+serverIp+
-                                "\n date: "+orderDate+"\n route: "+routeId+"\n order: "+orderId +
-                                "\n Length: "+ rootArray.length());
+                        Log.d("RESPONSE_TESTING", "accept: server: " + serverIp +
+                                "\n date: " + orderDate + "\n route: " + routeId + "\n order: " + orderId +
+                                "\n Length: " + rootArray.length());
                         listOfOrders.clear();
                         if (rootArray.length() > 0) {//If data found
-                            Gson gson = new Gson();
-                            OrderModel model = gson.fromJson(responseBody.string(), OrderModel.class);
-                            listOfOrders.add(model);
-                            insertOrderListIntoLocalStorage(listOfOrders);
+//                            Gson gson = new Gson();
+//                            OrderModel model = gson.fromJson(responseBody.string(), OrderModel.class);
+//                            listOfOrders.add(model);
+//                            insertOrderListIntoLocalStorage(listOfOrders);
+                            for (int i = 0; i < rootArray.length(); i++) {
+                                JSONObject single = rootArray.getJSONObject(i);
+
+                                int OrderId;
+                                if (single.has("OrderId")) {
+                                    OrderId = single.getInt("OrderId");
+                                } else {
+                                    OrderId = -1;
+                                }
+
+                                String InvoiceNo;
+                                if (single.has("InvoiceNo")) {
+                                    InvoiceNo = single.getString("InvoiceNo");
+                                } else {
+                                    InvoiceNo = "No Invoice Found";
+                                }
+
+                                String CustomerPastelCode;
+                                if (single.has("CustomerPastelCode")) {
+                                    CustomerPastelCode = single.getString("CustomerPastelCode");
+                                } else {
+                                    CustomerPastelCode = "Customer Pastel Code Missing";
+                                }
+
+                                String StoreName;
+                                if (single.has("StoreName")) {
+                                    StoreName = single.getString("StoreName");
+                                } else {
+                                    StoreName = "Store Name Missing";
+                                }
+
+                                String DeliveryDate;
+                                if (single.has("DeliveryDate")) {
+                                    DeliveryDate = single.getString("DeliveryDate");
+                                } else {
+                                    DeliveryDate = "Date Missing";
+                                }
+
+                                double Latitude;
+                                if (single.has("Latitude")) {
+                                    Latitude = single.getDouble("Latitude");
+                                } else {
+                                    Latitude = -777;
+                                }
+
+                                double Longitude;
+                                if (single.has("Longitude")) {
+                                    Longitude = single.getDouble("Longitude");
+                                } else {
+                                    Longitude = -777;
+                                }
+
+                                String OrderValueExc;
+                                if (single.has("OrderValueExc")) {
+                                    OrderValueExc = single.getString("OrderValueExc");
+                                } else {
+                                    OrderValueExc = "Value Missing";
+                                }
+
+                                String OrderValueInc;
+                                if (single.has("OrderValueInc")) {
+                                    OrderValueInc = single.getString("OrderValueInc");
+                                } else {
+                                    OrderValueInc = "Value Missing";
+                                }
+
+                                String DeliveryAddress;
+                                if (single.has("DeliveryAddress")) {
+                                    DeliveryAddress = single.getString("DeliveryAddress");
+                                } else {
+                                    DeliveryAddress = "Value Missing";
+                                }
+
+                                String User;
+                                if (single.has("User")) {
+                                    User = single.getString("User");
+                                } else {
+                                    User = "Value Missing";
+                                }
+
+                                String OrderMass;
+                                if (single.has("OrderMass")) {
+                                    OrderMass = single.getString("OrderMass");
+                                } else {
+                                    OrderMass = "Value Missing";
+                                }
+
+                                int Uploaded;
+                                if (single.has("Uploaded")) {
+                                    Uploaded = single.getInt("Uploaded");
+                                } else {
+                                    Uploaded = -777;
+                                }
+
+                                String CashPaid;
+                                if (single.has("CashPaid")) {
+                                    CashPaid = single.getString("CashPaid");
+                                } else {
+                                    CashPaid = "Value Missing";
+                                }
+
+                                int offloaded;
+                                if (single.has("offloaded")) {
+                                    offloaded = single.getInt("offloaded");
+                                } else {
+                                    offloaded = -777;
+                                }
+
+                                String strEmailCustomer;
+                                if (single.has("strEmailCustomer")) {
+                                    strEmailCustomer = single.getString("strEmailCustomer");
+                                } else {
+                                    strEmailCustomer = "Value Missing";
+                                }
+
+                                String strCashsignature;
+                                if (single.has("strCashsignature")) {
+                                    strCashsignature = single.getString("strCashsignature");
+                                } else {
+                                    strCashsignature = "Value Missing";
+                                }
+
+                                String InvTotIncl;
+                                if (single.has("InvTotIncl")) {
+                                    InvTotIncl = single.getString("InvTotIncl");
+                                } else {
+                                    InvTotIncl = "Value Missing";
+                                }
+
+                                String StartTripTime;
+                                if (single.has("StartTripTime")) {
+                                    StartTripTime = single.getString("StartTripTime");
+                                } else {
+                                    StartTripTime = "Value Missing";
+                                }
+
+                                String EndTripTime;
+                                if (single.has("EndTripTime")) {
+                                    EndTripTime = single.getString("EndTripTime");
+                                } else {
+                                    EndTripTime = "Value Missing";
+                                }
+
+                                int DeliverySeq;
+                                if (single.has("DeliverySeq")) {
+                                    DeliverySeq = single.getInt("DeliverySeq");
+                                } else {
+                                    DeliverySeq = -777;
+                                }
+
+                                String strCoordinateStart;
+                                if (single.has("strCoordinateStart")) {
+                                    strCoordinateStart = single.getString("strCoordinateStart");
+                                } else {
+                                    strCoordinateStart = "Value Missing";
+                                }
+
+                                String DriverName;
+                                if (single.has("DriverName")) {
+                                    DriverName = single.getString("DriverName");
+                                } else {
+                                    DriverName = "Value Missing";
+                                }
+
+                                String DriverEmail;
+                                if (single.has("DriverEmail")) {
+                                    DriverEmail = single.getString("DriverEmail");
+                                } else {
+                                    DriverEmail = "Value Missing";
+                                }
+
+                                String DriverPassword;
+                                if (single.has("DriverPassword")) {
+                                    DriverPassword = single.getString("DriverPassword");
+                                } else {
+                                    DriverPassword = "Value Missing";
+                                }
+
+                                String strCustomerSignedBy;
+                                if (single.has("strCustomerSignedBy")) {
+                                    strCustomerSignedBy = single.getString("strCustomerSignedBy");
+                                } else {
+                                    strCustomerSignedBy = "Value Missing";
+                                }
+
+                                String Threshold;
+                                if (single.has("Threshold")) {
+                                    Threshold = single.getString("Threshold");
+                                } else {
+                                    Threshold = "Value Missing";
+                                }
+
+                                listOfOrders.add(new OrderModel(
+                                        OrderId,
+                                        InvoiceNo,
+                                        CustomerPastelCode,
+                                        StoreName,
+                                        DeliveryDate,
+                                        Latitude,
+                                        Longitude,
+                                        OrderValueExc,
+                                        OrderValueInc,
+                                        DeliveryAddress,
+                                        User,
+                                        OrderMass,
+                                        Uploaded,
+                                        CashPaid,
+                                        offloaded,
+                                        strEmailCustomer,
+                                        strCashsignature,
+                                        InvTotIncl,
+                                        StartTripTime,
+                                        EndTripTime,
+                                        DeliverySeq,
+                                        strCoordinateStart,
+                                        DriverName,
+                                        DriverEmail,
+                                        DriverPassword,
+                                        strCustomerSignedBy,
+                                        Threshold
+                                ));
+
+
+                                Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
+                            }
                             orderListInterface.gotOrders(listOfOrders);
 
-                            Log.d("RESPONSE_TESTING", "Inner: "+rootArray);
+                            Log.d("RESPONSE_TESTING", "Inner: " + rootArray);
 
                         } else {
                             orderListInterface.onError("No Order Found!");
@@ -243,7 +468,7 @@ public class NetworkingFeedback {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
                         orderListInterface.onError(throwable.getMessage());
-                        Log.d("RESPONSE_TESTING", "exception: "+throwable.getMessage());
+                        Log.d("RESPONSE_TESTING", "exception: " + throwable.getMessage());
                     }
                 }));
 

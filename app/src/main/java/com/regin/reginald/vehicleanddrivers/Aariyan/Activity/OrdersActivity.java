@@ -4,11 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.regin.reginald.vehicleanddrivers.Aariyan.Abstraction.BaseActivity;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Adapter.OrdersAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
@@ -26,6 +32,11 @@ public class OrdersActivity extends BaseActivity {
     private int routeId, orderId;
     private DatabaseAdapter databaseAdapter;
     private OrdersViewModel orderViewModel;
+    private RecyclerView recyclerView;
+
+    private TextView routeNames, orderTypes,dDate;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +44,19 @@ public class OrdersActivity extends BaseActivity {
         setContentView(R.layout.activity_orders);
 
         databaseAdapter = new DatabaseAdapter(this);
+
+        initUi();
+    }
+
+    private void initUi() {
+        recyclerView = findViewById(R.id.orderRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        routeNames = findViewById(R.id.routeName);
+        orderTypes = findViewById(R.id.orderType);
+        dDate = findViewById(R.id.deliverDate);
+
+        progressBar = findViewById(R.id.progressbar);
     }
 
     @Override
@@ -45,10 +69,16 @@ public class OrdersActivity extends BaseActivity {
 
         //getting the intent value:
         if (getIntent() != null) {
+            progressBar.setVisibility(View.VISIBLE);
             deliveryDate = getIntent().getStringExtra("deldate");
             routeId = getIntent().getIntExtra("routes", 0);
             orderId = getIntent().getIntExtra("ordertype", 0);
+            String delivery = getIntent().getStringExtra("delivery");
+            String routeName = getIntent().getStringExtra("routeName");
 
+            dDate.setText(deliveryDate);
+            routeNames.setText(routeName);
+            orderTypes.setText(delivery);
             loadOrders(serverModel, deliveryDate, routeId, orderId);
         }
 
@@ -63,13 +93,19 @@ public class OrdersActivity extends BaseActivity {
             public void onChanged(Resource<List<OrderModel>> listResource) {
                 switch (listResource.status) {
                     case ERROR:
-                        Toast.makeText(OrdersActivity.this, "Error: "+listResource.errorMessage, Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(OrdersActivity.this, "Error: " + listResource.errorMessage, Toast.LENGTH_SHORT).show();
                         break;
                     case SUCCESS:
-                        Toast.makeText(OrdersActivity.this, "Size: "+listResource.response.size(), Toast.LENGTH_SHORT).show();
+                        OrdersAdapter adapter = new OrdersAdapter(OrdersActivity.this, listResource.response);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(OrdersActivity.this, "Size: " + listResource.response.size(), Toast.LENGTH_SHORT).show();
                         break;
                     case LOADING:
-                        Toast.makeText(OrdersActivity.this, "Loading: "+listResource.status, Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(OrdersActivity.this, "Loading: " + listResource.status, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

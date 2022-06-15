@@ -78,6 +78,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String serverIp = "";
     private int selectedRoute, selectedOrder;
 
+    private String delivery = "", routeName = "";
+
     private boolean isRoutesAvailable;
 
     public HomeFragment() {
@@ -177,6 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 //selectedRoute = Integer.parseInt(adapterView.getItemAtPosition(position).toString());
                 selectedRoute = routeList.get(position).getRouteId();
+                routeName = routeList.get(position).getRouteName();
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -198,6 +201,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 //selectedRoute = Integer.parseInt(adapterView.getItemAtPosition(position).toString());
                 selectedOrder = listOfOrders.get(position).getOrderTypeId();
+                delivery = listOfOrders.get(position).getOrderType();
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -243,6 +247,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         i.putExtra("deldate", date);
         i.putExtra("routes", selectedRoute);
         i.putExtra("ordertype", selectedOrder);
+        i.putExtra("delivery", delivery);
+        i.putExtra("routeName", routeName);
         startActivity(i);
     }
 
