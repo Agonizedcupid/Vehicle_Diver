@@ -1,6 +1,8 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
+import com.regin.reginald.vehicleanddrivers.MyMapActivity;
 import com.regin.reginald.vehicleanddrivers.R;
 
 import java.util.List;
@@ -20,6 +23,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
     private Context context;
     private List<OrderModel> list;
+    double lat =-33.966145;
+    double lon =22.466218;
+
     public OrdersAdapter(Context context, List<OrderModel> list) {
         this.context = context;
         this.list = list;
@@ -46,6 +52,22 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         }
 
         holder.offloadStatus.setText(""+model.getOffloaded());
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d("CHECKING_LOCATION", ""+model.getLatitude()+" - "+model.getLongitude());
+                Intent intent = new Intent(context, MyMapActivity.class);
+                intent.putExtra("Lat",""+model.getLatitude());
+                intent.putExtra("Lon", ""+model.getLongitude());
+                intent.putExtra("seq", "");
+//                intent.putExtra("currentLat", lat);
+//                intent.putExtra("currentLon", lon);
+                intent.putExtra("custName", ""+model.getCustomerPastelCode());
+                context.startActivity(intent);
+                return false;
+            }
+        });
     }
 
     @Override

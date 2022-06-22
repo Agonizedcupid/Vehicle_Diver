@@ -663,8 +663,8 @@ try{
                     i.putExtra("Lat", selectedItem.ItemString9);
                     i.putExtra("Lon", selectedItem.ItemString10);
                     i.putExtra("seq", selectedItem.ItemString11);
-                    i.putExtra("currentLat", lat);
-                    i.putExtra("currentLon", lon);
+//                    i.putExtra("currentLat", lat);
+//                    i.putExtra("currentLon", lon);
                     i.putExtra("custName", selectedItem.ItemString);
                     startActivity(i);
 

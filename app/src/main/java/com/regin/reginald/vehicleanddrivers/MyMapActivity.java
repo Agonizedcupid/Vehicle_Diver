@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
@@ -49,13 +50,13 @@ import org.joda.time.DateTime;
 import java.io.IOException;
 import java.util.List;
 
-public class MyMapActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class MyMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private GoogleMap mMap;
     private static final int overview = 0;
-    String latIntend,intentlon,seq,currentLat,currentLon,custName;
-    double lat =-33.966145;
-    double lon =22.466218,custlat, custlon;
+    String latIntend, intentlon, seq, currentLat, currentLon, custName;
+    double lat = -33.966145;
+    double lon = 22.466218, custlat, custlon;
     double prevlat = -33.966145;
     double prevlon = 22.466218;
     static double PI_RAD = Math.PI / 180.0;
@@ -65,7 +66,7 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
             .apiKey("AIzaSyC5vAgb-nawregIa5gRRG34wnabasN3blk")
             .build();
     //NEXMO_API_KEY  //NEXMO_API_SECRET
-    NexmoClient client = NexmoClient.builder().apiKey("70c0329f").apiSecret( "GsCTushIdbfXJ9eQ").build();
+    NexmoClient client = NexmoClient.builder().apiKey("70c0329f").apiSecret("GsCTushIdbfXJ9eQ").build();
     private android.location.Location mLocation;
     private LocationManager mLocationManager;
 
@@ -73,7 +74,7 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
     private com.google.android.gms.location.LocationListener listener;
     private long UPDATE_INTERVAL = 2 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
-    Button next,notify;
+    FloatingActionButton next, notify;
     private LocationManager locationManager;
     private boolean isFirstTime = true;
 
@@ -104,19 +105,19 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_map);
         Intent intent = getIntent();
-        latIntend=intent.getStringExtra("Lat");
-        intentlon=intent.getStringExtra("Lon");
-        custName=intent.getStringExtra("custName");
-        seq=intent.getStringExtra("seq");
-       // currentLat=intent.getStringExtra("currentLat");
-      //  currentLon=intent.getStringExtra("currentLon");
+        latIntend = intent.getStringExtra("Lat");
+        intentlon = intent.getStringExtra("Lon");
+        custName = intent.getStringExtra("custName");
+        seq = intent.getStringExtra("seq");
+        // currentLat=intent.getStringExtra("currentLat");
+        //  currentLon=intent.getStringExtra("currentLon");
 ////        lat =Double.parseDouble(currentLat) ;
-    //    lon =Double.parseDouble(currentLon) ;
-        Log.e("Lat *******",intent.getStringExtra("Lat"));
+        //    lon =Double.parseDouble(currentLon) ;
+        Log.e("CHECKING_LOCATION", "" + latIntend + " <-> " + intentlon);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-         next= (Button) findViewById(R.id.next);
+        next =  findViewById(R.id.next);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,8 +131,6 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-
-
 
 
     }
@@ -157,13 +156,13 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
         googleMap.clear();
         setupGoogleMapScreenSettings(googleMap);
-        mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         checkLocation();
         //orderAttributes.getLatitude()+","+orderAttributes.getLongitude()
-        Log.e("current","**************************************************"+lat+","+lon);
+        Log.e("current", "**************************************************" + lat + "," + lon);
 
-       DirectionsResult results = getDirectionsDetails(lat+","+lon,latIntend+","+intentlon,TravelMode.DRIVING);
+        DirectionsResult results = getDirectionsDetails(lat + "," + lon, latIntend + "," + intentlon, TravelMode.DRIVING);
         if (results != null) {
             addPolyline(results, googleMap);
             positionCamera(results.routes[overview], googleMap);
@@ -190,8 +189,8 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
                 = BitmapDescriptorFactory.defaultMarker(
                 BitmapDescriptorFactory.HUE_AZURE);
 
-        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[overview].legs[overview].startLocation.lat,results.routes[overview].legs[overview].startLocation.lng)).title(results.routes[overview].legs[overview].startAddress).icon(bitmapDescriptor));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[overview].legs[overview].endLocation.lat,results.routes[overview].legs[overview].endLocation.lng)).title(custName).snippet(getEndLocationTitle(results)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[overview].legs[overview].startLocation.lat, results.routes[overview].legs[overview].startLocation.lng)).title(results.routes[overview].legs[overview].startAddress).icon(bitmapDescriptor));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[overview].legs[overview].endLocation.lat, results.routes[overview].legs[overview].endLocation.lng)).title(custName).snippet(getEndLocationTitle(results)));
     }
 
     private void positionCamera(DirectionsRoute route, GoogleMap mMap) {
@@ -203,9 +202,10 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
         mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
     }
 
-    private String getEndLocationTitle(DirectionsResult results){
-        return  "Time :"+ results.routes[overview].legs[overview].duration.humanReadable + " Distance :" + results.routes[overview].legs[overview].distance.humanReadable;
+    private String getEndLocationTitle(DirectionsResult results) {
+        return "Time :" + results.routes[overview].legs[overview].duration.humanReadable + " Distance :" + results.routes[overview].legs[overview].distance.humanReadable;
     }
+
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -223,7 +223,7 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
 
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if(mLocation == null){
+        if (mLocation == null) {
             startLocationUpdates();
         }
         if (mLocation != null) {
@@ -296,10 +296,10 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
         //  mLongitudeTextView.setText(String.valueOf(location.getLongitude() ));
         //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         // You can now create a LatLng Object for use with maps
-       // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
 
-        if(isFirstTime) {
+        if (isFirstTime) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
@@ -308,13 +308,13 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private boolean checkLocation() {
-        if(!isLocationEnabled())
+        if (!isLocationEnabled())
             showAlert();
         return isLocationEnabled();
     }
 
     private void showAlert() {
-        final  AlertDialog.Builder dialog = new  AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Enable Location")
                 .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
                         "use this app")
@@ -341,8 +341,7 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    private  void sendNotificationToTheCustomer()
-    {
+    private void sendNotificationToTheCustomer() {
 
         String TO_NUMBER = "0813683532";
         String NEXMO_BRAND_NAME = "Reginald how are you";
