@@ -133,7 +133,7 @@ public class NetworkingFeedback {
         //check the table is exist or not:
         List<OrderTypeModel> orderList = databaseAdapter.getOrderTypes();
         List<IpModel> serverIpModel = databaseAdapter.getServerIpModel();
-        if (orderList.size() > 0) { //Get it from Local storage if available:
+        if (orderList.size() > 2) { //Get it from Local storage if available:
             orderInterface.gotOrderType(orderList);
             return;
         } else { //else run the Network Call:

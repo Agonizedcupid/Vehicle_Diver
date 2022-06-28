@@ -68,19 +68,37 @@
         app:layout_constraintTop_toBottomOf="@+id/textView35"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/savecrates"
-        android:layout_width="0dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="8dp"
+<!--    <Button-->
+<!--        android:id="@+id/savecrates"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="84dp"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginTop="37dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:text="SAVE"-->
+<!--        android:textSize="34sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/referenceno" />-->
+
+    <TextView
+        android:layout_width="match_parent"
         android:text="SAVE"
-        android:textSize="34sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_ripple"
+        android:id="@+id/savecrates"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/referenceno" />
+        app:layout_constraintTop_toBottomOf="@+id/referenceno"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="8dp"
+        android:layout_height="60dp"/>
 
     <TextView
         android:id="@+id/textView34"

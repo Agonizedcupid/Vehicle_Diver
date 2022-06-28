@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class CratesActivity extends AppCompatActivity {
 
-    Button savecrates;
+    TextView savecrates;
     EditText cratedelivered,cratespickedup,cratesclaimed,referenceno;
     String deldate,routes,ordertype,SERVERIP,threshold,invoiceno,subscriberID,storename;
     TextView txtstorename,txtcount;

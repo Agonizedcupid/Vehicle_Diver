@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.regin.reginald.vehicleanddrivers.Aariyan.Abstraction.BaseActivity;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Adapter.OrdersAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
@@ -71,10 +72,13 @@ public class OrdersActivity extends BaseActivity {
         if (getIntent() != null) {
             progressBar.setVisibility(View.VISIBLE);
             deliveryDate = getIntent().getStringExtra("deldate");
+            Constant.DELIVERY_DATE = deliveryDate;
             routeId = getIntent().getIntExtra("routes", 0);
             orderId = getIntent().getIntExtra("ordertype", 0);
+            Constant.ORDER_TYPE = orderId;
             String delivery = getIntent().getStringExtra("delivery");
             String routeName = getIntent().getStringExtra("routeName");
+            Constant.ROUTES_NAME = routeName;
 
             dDate.setText(deliveryDate);
             routeNames.setText(routeName);

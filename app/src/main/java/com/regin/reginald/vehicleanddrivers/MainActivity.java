@@ -126,7 +126,7 @@ import static java.lang.Math.sin;
 //import com.google.firebase.firestore.DocumentReference;
 //import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     public class Item {
         String ItemString;
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         String ItemString9;
 
 
-        Item(String t, String t2,String t3,String t4,String t5,String t6,String t7,String t8,String t9) {
+        Item(String t, String t2, String t3, String t4, String t5, String t6, String t7, String t8, String t9) {
             ItemString = t;
             ItemString2 = t2;
             ItemString3 = t3;
@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             ItemString9 = t9;
         }
     }
+
     static class ViewHolder {
         //ImageView icon;
         TextView text;
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         public float lastTouchedY;
 
     }
+
     public class ItemsListAdapter extends BaseAdapter {
 
         private Context context;
@@ -179,10 +181,12 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         public int getCount() {
             return list.size();
         }
+
         @Override
         public Object getItem(int position) {
             return list.get(position);
         }
+
         @Override
         public long getItemId(int position) {
             return position;
@@ -217,29 +221,23 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             holder.text4.setText(list.get(position).ItemString4);
 
 
-
-            if((list.get(position).ItemString4).equals("1"))
-            {
+            if ((list.get(position).ItemString4).equals("1")) {
                 holder.text6.setChecked(true);
                 holder.text4.setBackgroundColor(Color.WHITE);
 
-               // holder.text6.setBackgroundColor(Color.rgb(74, 144, 224));
-            }
-            else
-            {
+                // holder.text6.setBackgroundColor(Color.rgb(74, 144, 224));
+            } else {
                 holder.text6.setChecked(false);
                 holder.text4.setText("");
             }
 
-            holder.text6.setOnClickListener( new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
+            holder.text6.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
                     // States _state = (States) cb.getTag();
                     Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
                             Toast.LENGTH_LONG).show();
-                    checkAndUncheck(list.get(position).ItemString6, cb.isChecked(),list.get(position).ItemString8);
+                    checkAndUncheck(list.get(position).ItemString6, cb.isChecked(), list.get(position).ItemString8);
                     //_state.setSelected(cb.isChecked());
                 }
             });
@@ -260,19 +258,20 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             return false;
         }*/
     }
-    List<Item> items1,lineinfo;
+
+    List<Item> items1, lineinfo;
     List<Data> listdata;
     ItemsListAdapter myItemsListAdapter;
 
-    Button get,start_trip,closelines,btndoneoffloading,donelineinfo,close_line_info,sort_order,endtrip,acknowledge_stock,btn_submit_ackn, continue_without,starttrip_dialog;
+    Button get, start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info, sort_order, endtrip, acknowledge_stock, btn_submit_ackn, continue_without, starttrip_dialog;
     Spinner route, ordertypes;
-    EditText dte_from,qtyordered,notecomment, kmstart_dilog,timestart;
+    EditText dte_from, qtyordered, notecomment, kmstart_dilog, timestart;
     CustomListView _orderdlist;
-            ListView _orderdlistlines;
-    CheckBox accept,offload;
+    ListView _orderdlistlines;
+    CheckBox accept, offload;
     private SignaturePad mSignaturePad;
     private static BixolonPrinter bxlPrinter = null;
-    TextView product_name,pastelcode,priceline,commentline,deliverdate,ordertype,routename,calcr_plan,coord,passwd,demail,not_uploade;
+    TextView product_name, pastelcode, priceline, commentline, deliverdate, ordertype, routename, calcr_plan, coord, passwd, demail, not_uploade;
     private SignaturePad ack_sign;
 
     private int year;
@@ -280,14 +279,14 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
     private int day;
     private String currentDate;
     private static final int DATE_DIALOG_ID = 1;
-    String tomorrowDate,updatedCoordinates;
+    String tomorrowDate, updatedCoordinates;
     //FirebaseFirestore db;
     //DocumentReference docRef;
     //So-ca = http://169.255.77.160:8181/DriverGas/
     int len = 0;
     //String customerOrders, SERVERIP = "http://linxsystems3.dedicated.co.za:8881/driver/",ordertypeidreturned,routeidreturned;= "http://192.168.0.18:8181/driver/"
-   // http://so-ca.ddns.net:8179/driver/      169.255.77.160:8181
-    String customerOrders, SERVERIP ,ordertypeidreturned,routeidreturned,DriverEmail,DriverPassword,kmstart,kmend;
+    // http://so-ca.ddns.net:8179/driver/      169.255.77.160:8181
+    String customerOrders, SERVERIP, ordertypeidreturned, routeidreturned, DriverEmail, DriverPassword, kmstart, kmend;
     final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
     final OrderNotUploadedActivity postHeaders = new OrderNotUploadedActivity();
     ProgressDialog progressDoalog;
@@ -296,8 +295,8 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     double mass;
-    double lat =-33.966145;
-    double lon =22.466218,custlat, custlon;
+    double lat = -33.966145;
+    double lon = 22.466218, custlat, custlon;
     double prevlat = -33.966145;
     double prevlon = 22.466218;
     static double PI_RAD = Math.PI / 180.0;
@@ -318,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private LocationManager locationManager;
-     Dialog dialog;
+    Dialog dialog;
     private FirebaseAuth mAuth;
 
     Handler handler = new Handler();
@@ -339,11 +338,11 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
        /* Intent intent = new Intent(MainActivity.this, OrderService.class);
         startService(intent);*/
         //mDatabaseHelper = DatabaseHelper.getHelper(this);
-     //   final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
+        //   final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
         //db = this.openOrCreateDatabase("LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-        ArrayList<SettingsModel> settIP= dbH.getSettings();
+        ArrayList<SettingsModel> settIP = dbH.getSettings();
 
-        for (SettingsModel orderAttributes: settIP){
+        for (SettingsModel orderAttributes : settIP) {
             SERVERIP = orderAttributes.getstrServerIp();
         }
         start_trip = (Button) findViewById(R.id.start_trip);
@@ -362,10 +361,9 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         acknowledge_stock = (Button) findViewById(R.id.acknowledge_stock);
 
 
-        if(dbH.checkiflinesuploaded()>0)
-        {
+        if (dbH.checkiflinesuploaded() > 0) {
             //
-            if(isInternetAvailable()) {
+            if (isInternetAvailable()) {
                 Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
                 OrderHeaderPost();
             }
@@ -381,7 +379,6 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         kmend = returndata.getStringExtra("edt_km_end");
 
 
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -391,15 +388,15 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         mAuth = FirebaseAuth.getInstance();
 
 
-        mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         Runnable runnable = new Runnable() {
             public void run() {
                 try {
-                         checkLocation();
+                    checkLocation();
 
                 } catch (Exception var3) {
-                    Log.e("**********","Crashed " +  var3);
+                    Log.e("**********", "Crashed " + var3);
 
 
                 }
@@ -412,29 +409,29 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             @Override
             public void onClick(View v) {
                 UpdateDeliverySeq();
-                Intent i = new Intent(MainActivity.this,LandingPage.class);
+                Intent i = new Intent(MainActivity.this, LandingPage.class);
                 startActivity(i);
             }
         });
-        Log.e("hasdata","***********************"+dbH.hasData());
-        if(dbH.hasData()){
-            ArrayList<Orders> oH= dbH.returnOrderHeaders();
+        Log.e("hasdata", "***********************" + dbH.hasData());
+        if (dbH.hasData()) {
+            ArrayList<Orders> oH = dbH.returnOrderHeaders();
             items1 = new ArrayList<Item>();
             listdata = new ArrayList<Data>();
 
-            for (Orders orderAttributes: oH){
+            for (Orders orderAttributes : oH) {
                /* Log.e("itemsval","***"+orderAttributes.getStoreName()+"****"+orderAttributes.getDeliveryAddress()+"*******"+orderAttributes.getInvoiceNo()+"-------"+orderAttributes.getOrderMass());
                 Item item = new Item(orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(),orderAttributes.getInvoiceNo(),
                         orderAttributes.getoffloaded(),"1","Header",orderAttributes.getCashPaid(),orderAttributes.getoffloaded());
                 items1.add(item);*/
 
 
-                Data listItem = new Data((orderAttributes.getStoreName()).trim(), (orderAttributes.getDeliveryAddress()).trim(),(orderAttributes.getInvoiceNo()).trim(),
-                        orderAttributes.getoffloaded(),"1","Header",orderAttributes.getCashPaid(),orderAttributes.getoffloaded(),orderAttributes.getLatitude(),orderAttributes.getLongitude(),Integer.toString(orderAttributes.getDeliverySeq()),
+                Data listItem = new Data((orderAttributes.getStoreName()).trim(), (orderAttributes.getDeliveryAddress()).trim(), (orderAttributes.getInvoiceNo()).trim(),
+                        orderAttributes.getoffloaded(), "1", "Header", orderAttributes.getCashPaid(), orderAttributes.getoffloaded(), orderAttributes.getLatitude(), orderAttributes.getLongitude(), Integer.toString(orderAttributes.getDeliverySeq()),
                         orderAttributes.getThreshold());
                 listdata.add(listItem);
-                mass = mass + Double.parseDouble( orderAttributes.getOrderMass());
-                acknowledge_stock.setText(orderAttributes.getDriverName() +" Please acknowledge the stock");
+                mass = mass + Double.parseDouble(orderAttributes.getOrderMass());
+                acknowledge_stock.setText(orderAttributes.getDriverName() + " Please acknowledge the stock");
                 DriverEmail = orderAttributes.getDriverEmail();
                 DriverPassword = orderAttributes.getDriverPassword();
 
@@ -457,13 +454,13 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                                     DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
                                     DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
 
-                                    myRef.setValue( Double.toString(lat));
-                                    myRef2.setValue( Double.toString(lon));
-                                    myRefEmail.setValue( email);
-                                    myRefstops.setValue( dbH.countSigned());
-                                    myRefroute.setValue( routename.getText());
-                                    myRefdeldate.setValue( deliverdate.getText());
-                                    myRefordertype.setValue( ordertype.getText());
+                                    myRef.setValue(Double.toString(lat));
+                                    myRef2.setValue(Double.toString(lon));
+                                    myRefEmail.setValue(email);
+                                    myRefstops.setValue(dbH.countSigned());
+                                    myRefroute.setValue(routename.getText());
+                                    myRefdeldate.setValue(deliverdate.getText());
+                                    myRefordertype.setValue(ordertype.getText());
                                     //LatLng latLng = new LatLng(lat, lon);
                                     //updateUI(user);
                                 } else {
@@ -479,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                 //orderAttributes.getPrice()
             }
             //myItemsListAdapter = new ItemsListAdapter(MainActivity.this, items1);
-           // _orderdlist.setAdapter(myItemsListAdapter);
+            // _orderdlist.setAdapter(myItemsListAdapter);
 
             Adapter adapter = new Adapter(this, listdata, new Adapter.Listener() {
                 @Override
@@ -487,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
 //                    _orderdlist.onGrab(position, row);
                 }
             });
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             _orderdlist.setAdapter(adapter);
             _orderdlist.setListener(new CustomListView.Listener() {
                 @Override
@@ -497,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                     listdata.set(indexTwo, temp);
                 }
             });
-        }else {
+        } else {
             not_uploade.setText("");
             startProgress("Syncing");
             ArrayList<Routes> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
@@ -509,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             for (Routes orderAttributes4 : ordertyp) {
                 ordertypeidreturned = orderAttributes4.getRouteName();
             }
-           Log.e("try","******"+SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+            Log.e("try", "******" + SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
             new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
 
         }
@@ -520,15 +517,16 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             public void onClick(View v) {
 
                 start_trip.setBackgroundColor(Color.BLUE);
-               UpdateDeliverySeq();
-                   String[] finaldistanceAndTime = distanceAndTime();
+                UpdateDeliverySeq();
+                String[] finaldistanceAndTime = distanceAndTime();
 
-                double t = DriversHours(mass,0,1,Double.parseDouble(finaldistanceAndTime[0]));
+                double t = DriversHours(mass, 0, 1, Double.parseDouble(finaldistanceAndTime[0]));
                 BigDecimal result;
-                result = round((float)t,3);
+                result = round((float) t, 3);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                View view;    view = LayoutInflater.from(MainActivity.this).inflate(R.layout.trip_info_dialog, null);
+                View view;
+                view = LayoutInflater.from(MainActivity.this).inflate(R.layout.trip_info_dialog, null);
                 TextView title = (TextView) view.findViewById(R.id.title);
                 TextView delv_time = (TextView) view.findViewById(R.id.delv_time);
                 TextView massll = (TextView) view.findViewById(R.id.mass);
@@ -536,29 +534,32 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                 //progressDoalog.dismiss();
 
                 double x = result.doubleValue() - Math.floor(result.doubleValue());
-                Log.e("x****","****************************************************************"+ x);
-                int tdh = result.intValue()/1;
+                Log.e("x****", "****************************************************************" + x);
+                int tdh = result.intValue() / 1;
                 double minutes = x * 60;
                 title.setText("Trip info");
-                delv_time.setText(""+tdh+":" +(int)minutes+"" );
-                massll.setText(""+mass);
-                distancetocover.setText(""+finaldistanceAndTime[0] + "km And "+finaldistanceAndTime[1]+" minutes");
+                delv_time.setText("" + tdh + ":" + (int) minutes + "");
+                massll.setText("" + mass);
+                distancetocover.setText("" + finaldistanceAndTime[0] + "km And " + finaldistanceAndTime[1] + " minutes");
 
                 builder.setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
-                    @Override        public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(MainActivity.this, "Thank you", Toast.LENGTH_SHORT).show();        }
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "Thank you", Toast.LENGTH_SHORT).show();
+                    }
                 });
                 builder.setNegativeButton("START TRIP", new DialogInterface.OnClickListener() {
-                    @Override        public void onClick(DialogInterface dialogInterface, int i) {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         checkLocation();
 
-                        String coordinates = lat+","+lon;
+                        String coordinates = lat + "," + lon;
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.DAY_OF_YEAR, 0);
                         Date tomorrow = calendar.getTime();
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String tomorrowDate = dateFormat.format(tomorrow);
-                        dbH.updateDeals("UPDATE OrderHeaders set StartTripTime='"+tomorrowDate+"', strCoordinateStart='"+coordinates+"'");
+                        dbH.updateDeals("UPDATE OrderHeaders set StartTripTime='" + tomorrowDate + "', strCoordinateStart='" + coordinates + "'");
                     }
                 });
                 builder.setView(view);
@@ -570,14 +571,14 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             @Override
             public void onClick(View v) {
                 UpdateDeliverySeq();
-                 AlertDialog.Builder builder = new  AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder
                         .setTitle("FINISH TRIP ")
                         .setMessage(" Are you sure? NB This will discard the saved filters.")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                               dbH.updateDeals("delete from Filters");
+                                dbH.updateDeals("delete from Filters");
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.add(Calendar.DAY_OF_YEAR, 0);
                                 Date tomorrow = calendar.getTime();
@@ -585,8 +586,8 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String tomorrowDate = dateFormat.format(tomorrow);
                                 //dbH.updateDeals("UPDATE OrderHeaders set Uploaded=0 , EndTripTime='"+tomorrowDate+"'");
-                               Intent b = new Intent(MainActivity.this,LandingPage.class);
-                               startActivity(b);
+                                Intent b = new Intent(MainActivity.this, LandingPage.class);
+                                startActivity(b);
                             }
                         })
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -598,11 +599,15 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             }
         });
 
-try{
-        _orderdlist.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Data selectedItem = (Data) (parent.getItemAtPosition(position));
+        /*
+        On Click here:
+         */
+////////////////////////////////////////////////////////////////////////////////////////////
+        try {
+            _orderdlist.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    final Data selectedItem = (Data) (parent.getItemAtPosition(position));
 
                /* AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder
@@ -625,39 +630,38 @@ try{
 
                                 dialog.dismiss();
                             }})  .show();*/
-                String threshold = selectedItem.ItemString12;
-                Log.e("threshold","++++++"+threshold);
+                    String threshold = selectedItem.ItemString12;
+                    Log.e("threshold", "++++++" + threshold);
 
-                if (threshold.equals("0")) {
-                    Intent b = new Intent(MainActivity.this, InvoiceDetails.class);
-                    UpdateDeliverySeq();
-                    b.putExtra("deldate", deliverdate.getText().toString());
-                    b.putExtra("routes", routename.getText().toString());
-                    b.putExtra("ordertype", ordertype.getText().toString());
-                    b.putExtra("invoiceno", selectedItem.ItemString3);
-                    b.putExtra("cash", selectedItem.ItemString7);
-                    startActivity(b);
-                }else
-                {
-                    Intent b = new Intent(MainActivity.this, CratesActivity.class);
-                    b.putExtra("invoiceno", selectedItem.ItemString3);
-                    b.putExtra("threshold", selectedItem.ItemString12);
-                    b.putExtra("storename", selectedItem.ItemString);
-                    b.putExtra("deldate", deliverdate.getText().toString());
-                    b.putExtra("routes", routename.getText().toString());
-                    b.putExtra("ordertype", ordertype.getText().toString());
-                    startActivity(b);
-                }
-
-
+                    if (threshold.equals("0")) {
+                        Intent b = new Intent(MainActivity.this, InvoiceDetails.class);
+                        UpdateDeliverySeq();
+                        b.putExtra("deldate", deliverdate.getText().toString());
+                        b.putExtra("routes", routename.getText().toString());
+                        b.putExtra("ordertype", ordertype.getText().toString());
+                        b.putExtra("invoiceno", selectedItem.ItemString3);
+                        b.putExtra("cash", selectedItem.ItemString7);
+                        startActivity(b);
+                    } else {
+                        Intent b = new Intent(MainActivity.this, CratesActivity.class);
+                        b.putExtra("invoiceno", selectedItem.ItemString3);
+                        b.putExtra("threshold", selectedItem.ItemString12);
+                        b.putExtra("storename", selectedItem.ItemString);
+                        b.putExtra("deldate", deliverdate.getText().toString());
+                        b.putExtra("routes", routename.getText().toString());
+                        b.putExtra("ordertype", ordertype.getText().toString());
+                        startActivity(b);
                     }
-                });
-        _orderdlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Data selectedItem = (Data) (parent.getItemAtPosition(position));
-                //String lat = selectedItem.ItemString9;
-                //String lon = selectedItem.ItemString10;
+
+
+                }
+            });
+            _orderdlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    final Data selectedItem = (Data) (parent.getItemAtPosition(position));
+                    //String lat = selectedItem.ItemString9;
+                    //String lon = selectedItem.ItemString10;
 
                     Intent i = new Intent(MainActivity.this, MyMapActivity.class);
                     i.putExtra("Lat", selectedItem.ItemString9);
@@ -668,17 +672,17 @@ try{
                     i.putExtra("custName", selectedItem.ItemString);
                     startActivity(i);
 
-                return true;
-            }
-        });
-}catch (Exception e){
+                    return true;
+                }
+            });
+        } catch (Exception e) {
 
-}
+        }
 
         acknowledge_stock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 dialog= new Dialog(MainActivity.this,android.R.style.Theme_Light_NoTitleBar);
+                dialog = new Dialog(MainActivity.this, android.R.style.Theme_Light_NoTitleBar);
                 dialog.setContentView(R.layout.stock_acknowledge);
 
       /*  TextView textView = new TextView(context);
@@ -718,11 +722,11 @@ try{
 
     }
 
-    public boolean addSignatureJpg(Bitmap signature,String invoiceNo) {
+    public boolean addSignatureJpg(Bitmap signature, String invoiceNo) {
         boolean result = false;
         try {
             File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
-            saveBitmapToJPG(signature, photo,invoiceNo);
+            saveBitmapToJPG(signature, photo, invoiceNo);
             scanMediaFile(photo);
             result = true;
         } catch (IOException e) {
@@ -730,14 +734,14 @@ try{
         }
         return result;
     }
+
     public static BigDecimal round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd;
     }
 
-    public void UpdateDeliverySeq()
-    {
+    public void UpdateDeliverySeq() {
 
         for (int i = 0; i < _orderdlist.getCount(); i++) {
 
@@ -746,8 +750,8 @@ try{
 
             TextView et = (TextView) v.findViewById(R.id.orderid);
 
-            int newSeq = i+1;
-            dbH.updateDeals("Update OrderHeaders set DeliverySeq="+newSeq +" Where InvoiceNo='"+et.getText().toString()+"'");
+            int newSeq = i + 1;
+            dbH.updateDeals("Update OrderHeaders set DeliverySeq=" + newSeq + " Where InvoiceNo='" + et.getText().toString() + "'");
         }
 
 
@@ -756,11 +760,11 @@ try{
     /**
      * The Distance is in KM
      * Time is in Minutes
+     *
      * @return
      */
 
-    public String[] distanceAndTime()
-    {
+    public String[] distanceAndTime() {
         ArrayList<Orders> orderheader = dbH.returnOrderHeaders();
         //order headers
         String[] results = new String[2];
@@ -768,96 +772,92 @@ try{
         double totduration = 0;
         ArrayList<String> stringArrayList = new ArrayList<String>();
 
-        stringArrayList.add(lat+","+lon);
-        for (Orders orderAttributes: orderheader) {
+        stringArrayList.add(lat + "," + lon);
+        for (Orders orderAttributes : orderheader) {
 
-            stringArrayList.add(orderAttributes.getLatitude()+","+orderAttributes.getLongitude());
+            stringArrayList.add(orderAttributes.getLatitude() + "," + orderAttributes.getLongitude());
         }
-        String [] stringArray = stringArrayList.toArray(new String[stringArrayList.size()]);
+        String[] stringArray = stringArrayList.toArray(new String[stringArrayList.size()]);
         start_trip.setBackgroundColor(Color.BLUE);
-            String coordinate1 = "";
-            String coordinate2 = "";
-            int k = 0;
+        String coordinate1 = "";
+        String coordinate2 = "";
+        int k = 0;
 
-            for (int i = 0; i <stringArray.length;i++)
-            {
+        for (int i = 0; i < stringArray.length; i++) {
 
 
-                if (i !=(stringArray.length - 1) ){
-                    coordinate1 = stringArray[k];
-                    coordinate2 = stringArray[i+1];
-                    Log.e("*****","******************************** location"+coordinate1+"***"+coordinate2);
-                    String[] res = reurndistancetime(coordinate1,coordinate2);
+            if (i != (stringArray.length - 1)) {
+                coordinate1 = stringArray[k];
+                coordinate2 = stringArray[i + 1];
+                Log.e("*****", "******************************** location" + coordinate1 + "***" + coordinate2);
+                String[] res = reurndistancetime(coordinate1, coordinate2);
 
-                    if (res[0] ==null || res[0].equals("NULL"))
-                    {
-                       // Log.e("*****","******************************** cooooooooooooooooooooord"+res[0]);
+                if (res[0] == null || res[0].equals("NULL")) {
+                    // Log.e("*****","******************************** cooooooooooooooooooooord"+res[0]);
 
-                        totdistance =totdistance + Double.parseDouble("0");
-                        totduration =totduration + Double.parseDouble("0");
-                    }else
-                    {
-                        totdistance =totdistance + Double.parseDouble(res[0]);
-                        totduration =totduration + Double.parseDouble(res[1]);
-                    }
-
-                    //Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
-                    k = i+1;
-                   Log.e("*****","******************************** cooooooooooooooooooooord"+totdistance);
-
+                    totdistance = totdistance + Double.parseDouble("0");
+                    totduration = totduration + Double.parseDouble("0");
+                } else {
+                    totdistance = totdistance + Double.parseDouble(res[0]);
+                    totduration = totduration + Double.parseDouble(res[1]);
                 }
 
+                //Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+                k = i + 1;
+                Log.e("*****", "******************************** cooooooooooooooooooooord" + totdistance);
+
             }
-        results[0]=String.format("%.0f", totdistance);
-        results[1]=String.format("%.0f", totduration);
-            //Do something with result here
+
+        }
+        results[0] = String.format("%.0f", totdistance);
+        results[1] = String.format("%.0f", totduration);
+        //Do something with result here
 
 
         return results;
     }
 
-    public String[] reurndistancetime(String coordinate1,String coordinate2)
-    {
+    public String[] reurndistancetime(String coordinate1, String coordinate2) {
 
         String[] ret = new String[2];
         try {
 
 
-                DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
+            DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
 
-                DistanceMatrix trix = req.origins(coordinate1)
-                        .destinations(coordinate2)
-                        .mode(TravelMode.DRIVING)
-                        .units(Unit.METRIC)
-                        .await();
+            DistanceMatrix trix = req.origins(coordinate1)
+                    .destinations(coordinate2)
+                    .mode(TravelMode.DRIVING)
+                    .units(Unit.METRIC)
+                    .await();
 
 
-                String inMeters = (trix.rows[0].elements[0].distance.inMeters) + "";
-                ret[0] = Double.toString(Double.parseDouble(inMeters)/1000);
+            String inMeters = (trix.rows[0].elements[0].distance.inMeters) + "";
+            ret[0] = Double.toString(Double.parseDouble(inMeters) / 1000);
 
-            String inSec = trix.rows[0].elements[0].duration.inSeconds +"";
+            String inSec = trix.rows[0].elements[0].duration.inSeconds + "";
             //ret[0] = ((trix.rows[0].elements[0].distance).toString()).replace("km","") ;
-            ret[1] = Double.toString(Double.parseDouble(inSec)/60);
+            ret[1] = Double.toString(Double.parseDouble(inSec) / 60);
 
             //Log.e("tttttt","*********************************"+(trix.rows[0].elements[0].distance).toString());
             //Do something with result here
 
-            Log.e("minutes","*********************************"+ ret[1] );
-            Log.e("kmeters","*********************************"+ ret[0]);
+            Log.e("minutes", "*********************************" + ret[1]);
+            Log.e("kmeters", "*********************************" + ret[0]);
             // ....
-        } catch(ApiException e){
+        } catch (ApiException e) {
             // output += this.printError(e);
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         return ret;
     }
-    public void startProgress(String msg)
-    {
+
+    public void startProgress(String msg) {
         progressDoalog = new ProgressDialog(MainActivity.this);
         progressDoalog.setMax(100);
-        progressDoalog.setMessage("Please Wait...."+msg);
+        progressDoalog.setMessage("Please Wait...." + msg);
         progressDoalog.setTitle("Caution");
         progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDoalog.setCanceledOnTouchOutside(false);
@@ -895,19 +895,19 @@ try{
         Log.i("DATE", currentDate);
     }
 
-    public double DriversHours(double tonnage,double travelTimeInMinutes,int numberOfStops,double sumdistance)
-    {
+    public double DriversHours(double tonnage, double travelTimeInMinutes, int numberOfStops, double sumdistance) {
         //100 is hardcoded for testing purpose
 
-       // return sumdistance +(numberOfStops * 5 )+((tonnage/2)/5);
+        // return sumdistance +(numberOfStops * 5 )+((tonnage/2)/5);
         int speedIs1KmMinute = 80;
         double estimatedDriveTimeInMinutes = sumdistance / speedIs1KmMinute;
 
 
         //return ((tonnage*0.15) + estimatedDriveTimeInMinutes)/60.00;
 
-        return  ((tonnage/6)+sumdistance)/60;
+        return ((tonnage / 6) + sumdistance) / 60;
     }
+
     public static String GET(String urlp) {
 
         String movieJsonStr = "";
@@ -917,7 +917,7 @@ try{
         InputStream inputStream = null;
         URL url;
 
-        try{
+        try {
             url = new URL(urlp);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -928,14 +928,14 @@ try{
             // Initialize a new string buffer object
             StringBuffer stringBuffer = new StringBuffer();
 
-            String line ="";
+            String line = "";
             // Loop through the lines
-            while((line= bufferedReader.readLine())!=null){
+            while ((line = bufferedReader.readLine()) != null) {
                 // Append the current line to string buffer
                 stringBuffer.append(line);
             }
 
-            movieJsonStr =  stringBuffer.toString();
+            movieJsonStr = stringBuffer.toString();
 
         } catch (Throwable e) {
             Log.e("backgroundtask", "EXCEPTION", e);
@@ -944,9 +944,9 @@ try{
             try {
 
 
-                if(bufferedReader != null)
+                if (bufferedReader != null)
                     bufferedReader.close();
-                if(inputStream != null)
+                if (inputStream != null)
                     inputStream.close();
             } catch (IOException e) {
                 Log.e("READER.CLOSE()", e.toString());
@@ -1024,7 +1024,7 @@ try{
                     ArrayList<OrderTypes> ordertype = dbH.getOrderType();
 
                     List<String> labels = new ArrayList<String>();
-                    for (OrderTypes orderAttributes4: ordertype){
+                    for (OrderTypes orderAttributes4 : ordertype) {
                         labels.add(orderAttributes4.getOrderType());
                     }
                     ArrayAdapter<String> ordertypeA =
@@ -1085,7 +1085,7 @@ try{
                     ArrayList<Routes> routesdata = dbH.getRoutes();
 
                     List<String> labels = new ArrayList<String>();
-                    for (Routes orderAttributes4: routesdata){
+                    for (Routes orderAttributes4 : routesdata) {
                         labels.add(orderAttributes4.getRouteName());
                     }
 
@@ -1101,7 +1101,8 @@ try{
             }
         }
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private class getOrderHeaders extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -1149,66 +1150,64 @@ try{
                             .setPositiveButton("Get Details", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     startProgress("Syncing Items");
-                                    ArrayList<Orders> oH= dbH.returnOrderHeaders();
+                                    ArrayList<Orders> oH = dbH.returnOrderHeaders();
 
                                     listdata = new ArrayList<Data>();
 
-                                    for (Orders orderAttributes: oH){
-                                        Data listItem = new Data(orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(),orderAttributes.getInvoiceNo(),
-                                                orderAttributes.getoffloaded(),"1","Header",orderAttributes.getCashPaid(),orderAttributes.getoffloaded(),orderAttributes.getLatitude(),orderAttributes.getLongitude(),Integer.toString(orderAttributes.getDeliverySeq())
-                                        ,orderAttributes.getThreshold());
+                                    for (Orders orderAttributes : oH) {
+                                        Data listItem = new Data(orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(), orderAttributes.getInvoiceNo(),
+                                                orderAttributes.getoffloaded(), "1", "Header", orderAttributes.getCashPaid(), orderAttributes.getoffloaded(), orderAttributes.getLatitude(), orderAttributes.getLongitude(), Integer.toString(orderAttributes.getDeliverySeq())
+                                                , orderAttributes.getThreshold());
                                         listdata.add(listItem);
-                                        mass = mass + Double.parseDouble( orderAttributes.getOrderMass());
-                                        acknowledge_stock.setText(orderAttributes.getDriverName() +" Please acknowledge the stock");
+                                        mass = mass + Double.parseDouble(orderAttributes.getOrderMass());
+                                        acknowledge_stock.setText(orderAttributes.getDriverName() + " Please acknowledge the stock");
                                         DriverEmail = orderAttributes.getDriverEmail();
                                         DriverPassword = orderAttributes.getDriverPassword();
-                                        try{
+                                        try {
 
 
+                                            mAuth.createUserWithEmailAndPassword(DriverEmail, DriverPassword)
+                                                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                                            if (task.isSuccessful()) {
+                                                                // Sign in success, update UI with the signed-in user's information
+                                                                Log.d(TAG, "createUserWithEmail:success");
+                                                                try {
+                                                                    String user = mAuth.getCurrentUser().getUid();
+                                                                    String email = mAuth.getCurrentUser().getEmail();
+                                                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+                                                                    DatabaseReference myRef = database.getReference().child("Driver").child("users").child(user).child("lat");
+                                                                    DatabaseReference myRef2 = database.getReference().child("Driver").child("users").child(user).child("lon");
+                                                                    DatabaseReference myRefEmail = database.getReference().child("Driver").child("users").child(user).child("email");
+                                                                    DatabaseReference myRefstops = database.getReference().child("Driver").child("users").child(user).child("stops");
+                                                                    DatabaseReference myRefroute = database.getReference().child("Driver").child("users").child(user).child("route");
+                                                                    DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
+                                                                    DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
 
-                                        mAuth.createUserWithEmailAndPassword(DriverEmail, DriverPassword)
-                                                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                                        if (task.isSuccessful()) {
-                                                            // Sign in success, update UI with the signed-in user's information
-                                                            Log.d(TAG, "createUserWithEmail:success");
-                                                            try{
-                                                            String user = mAuth.getCurrentUser().getUid();
-                                                            String email = mAuth.getCurrentUser().getEmail();
-                                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                                    myRef.setValue(Double.toString(lat));
+                                                                    myRef2.setValue(Double.toString(lon));
+                                                                    myRefEmail.setValue(email);
+                                                                    myRefstops.setValue(dbH.countSigned());
+                                                                    myRefroute.setValue(routename.getText());
+                                                                    myRefdeldate.setValue(deliverdate.getText());
+                                                                    myRefordertype.setValue(ordertype.getText());
+                                                                } catch (Exception e) {
+                                                                }
+                                                                //LatLng latLng = new LatLng(lat, lon);
+                                                                //updateUI(user);
+                                                            } else {
+                                                                // If sign in fails, display a message to the user.
+                                                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
 
-                                                            DatabaseReference myRef = database.getReference().child("Driver").child("users").child(user).child("lat");
-                                                            DatabaseReference myRef2 = database.getReference().child("Driver").child("users").child(user).child("lon");
-                                                            DatabaseReference myRefEmail = database.getReference().child("Driver").child("users").child(user).child("email");
-                                                            DatabaseReference myRefstops = database.getReference().child("Driver").child("users").child(user).child("stops");
-                                                            DatabaseReference myRefroute = database.getReference().child("Driver").child("users").child(user).child("route");
-                                                            DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
-                                                            DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
+                                                            }
 
-                                                            myRef.setValue( Double.toString(lat));
-                                                            myRef2.setValue( Double.toString(lon));
-                                                            myRefEmail.setValue( email);
-                                                            myRefstops.setValue( dbH.countSigned());
-                                                            myRefroute.setValue( routename.getText());
-                                                            myRefdeldate.setValue( deliverdate.getText());
-                                                            myRefordertype.setValue( ordertype.getText());
-                                                            }catch(Exception e){}
-                                                            //LatLng latLng = new LatLng(lat, lon);
-                                                            //updateUI(user);
-                                                        } else {
-                                                            // If sign in fails, display a message to the user.
-                                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-
+                                                            // ...
                                                         }
+                                                    });
 
-                                                        // ...
-                                                    }
-                                                });
-
-                                        }catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
 
                                         }
                                         //orderAttributes.getPrice()
@@ -1230,7 +1229,7 @@ try{
                                         }
                                     });
 
-                                    new getOrderLines().execute(SERVERIP + "OrderLines.php?OrderType=" +ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+                                    new getOrderLines().execute(SERVERIP + "OrderLines.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
                                     //dbH.updateDeals("Update TimeSync set lastTimeSync='"+timeSync()+"' where TableName='PriceLists')");
 
 
@@ -1289,43 +1288,43 @@ try{
 
                     progressDoalog.dismiss();
 
-                  //  final AlertDialog dialogBuilder = new AlertDialog.Builder(MainActivity.this).create();
-                    final Dialog dialogBuilder = new Dialog(MainActivity.this,android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+                    //  final AlertDialog dialogBuilder = new AlertDialog.Builder(MainActivity.this).create();
+                    final Dialog dialogBuilder = new Dialog(MainActivity.this, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
                     dialogBuilder.setContentView(R.layout.startdialog);
                     dialogBuilder.setTitle("Order History");
-                    dialogBuilder.setCanceledOnTouchOutside (false);
+                    dialogBuilder.setCanceledOnTouchOutside(false);
                     dialogBuilder.setCancelable(false);
                     kmstart_dilog = (EditText) dialogBuilder.findViewById(R.id.kmstart);
                     timestart = (EditText) dialogBuilder.findViewById(R.id.timestart);
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
-                    String tm =  sdf.format(c.getTime());
+                    String tm = sdf.format(c.getTime());
                     timestart.setText(tm);
 
-                    starttrip_dialog= (Button) dialogBuilder.findViewById(R.id.starttrip_dialog);
-                    continue_without= (Button) dialogBuilder.findViewById(R.id.continue_without);
+                    starttrip_dialog = (Button) dialogBuilder.findViewById(R.id.starttrip_dialog);
+                    continue_without = (Button) dialogBuilder.findViewById(R.id.continue_without);
 
                     starttrip_dialog.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             String kmout = kmstart_dilog.getText().toString();
-                            if (kmout.length() < 1)
-                            {
-                                Toast.makeText(getApplicationContext(),"KM Out is empty",Toast.LENGTH_LONG).show();
-                            }else{
-                            new getWareHouses().execute(SERVERIP + "WareHousesNew.php");
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
-                            String tm =  sdf.format(c.getTime());
+                            if (kmout.length() < 1) {
+                                Toast.makeText(getApplicationContext(), "KM Out is empty", Toast.LENGTH_LONG).show();
+                            } else {
+                                new getWareHouses().execute(SERVERIP + "WareHousesNew.php");
+                                Calendar c = Calendar.getInstance();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
+                                String tm = sdf.format(c.getTime());
 
-                            timestart.setText(tm);
+                                timestart.setText(tm);
 
-                            dbH.updateDeals("DROP TABLE IF EXISTS Filters");
-                            dbH.updateDeals("CREATE TABLE IF NOT EXISTS Filters (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,RouteName TEXT, OrderType TEXT ,DelDate TEXT)");
-                            dbH.updateDeals("Insert into Filters(RouteName,OrderType,DelDate) values ('"+routename.getText().toString()+"','"+ordertype.getText().toString()+"','"+deliverdate.getText().toString()+"')" );
-                            dbH.updateDeals("Insert into TripHeader(RouteName,OrderType,DelDate,dtmCreated,KmStart) values ('"+routename.getText().toString()+"','"+ordertype.getText().toString()+"','"+deliverdate.getText().toString()+"','"+tm+"','"+kmout+"')" );
+                                dbH.updateDeals("DROP TABLE IF EXISTS Filters");
+                                dbH.updateDeals("CREATE TABLE IF NOT EXISTS Filters (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,RouteName TEXT, OrderType TEXT ,DelDate TEXT)");
+                                dbH.updateDeals("Insert into Filters(RouteName,OrderType,DelDate) values ('" + routename.getText().toString() + "','" + ordertype.getText().toString() + "','" + deliverdate.getText().toString() + "')");
+                                dbH.updateDeals("Insert into TripHeader(RouteName,OrderType,DelDate,dtmCreated,KmStart) values ('" + routename.getText().toString() + "','" + ordertype.getText().toString() + "','" + deliverdate.getText().toString() + "','" + tm + "','" + kmout + "')");
 
-                            dialogBuilder.dismiss();}
+                                dialogBuilder.dismiss();
+                            }
                         }
                     });
                     continue_without.setOnClickListener(new View.OnClickListener() {
@@ -1338,11 +1337,11 @@ try{
                                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             //
-                                            Log.e("test","***"+SERVERIP + "WareHousesNew.php");
+                                            Log.e("test", "***" + SERVERIP + "WareHousesNew.php");
                                             new getWareHouses().execute(SERVERIP + "WareHousesNew.php");
                                             dbH.updateDeals("DROP TABLE IF EXISTS Filters");
                                             dbH.updateDeals("CREATE TABLE IF NOT EXISTS Filters (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,RouteName TEXT, OrderType TEXT ,DelDate TEXT)");
-                                            dbH.updateDeals("Insert into Filters(RouteName,OrderType,DelDate) values ('"+routename.getText().toString()+"','"+ordertype.getText().toString()+"','"+deliverdate.getText().toString()+"')" );
+                                            dbH.updateDeals("Insert into Filters(RouteName,OrderType,DelDate) values ('" + routename.getText().toString() + "','" + ordertype.getText().toString() + "','" + deliverdate.getText().toString() + "')");
                                         }
                                     });
                             AlertDialog alert = builder.create();
@@ -1351,7 +1350,7 @@ try{
                         }
                     });
 
-                   // dialogBuilder.setView(dialogView);
+                    // dialogBuilder.setView(dialogView);
                     dialogBuilder.show();
 
 
@@ -1418,7 +1417,7 @@ try{
                         db.insert("ExtraProducts", null, values);
                     }
 
-                        List<WareHouses> products = new Gson().fromJson(customerOrders.toString(), new TypeToken<List<WareHouses>>() {
+                    List<WareHouses> products = new Gson().fromJson(customerOrders.toString(), new TypeToken<List<WareHouses>>() {
                     }.getType());
                     int i = 1;
                     for (WareHouses product : products) {
@@ -1457,11 +1456,12 @@ try{
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode== KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             return false;
         }
         return super.onKeyDown(keyCode, event);
     }
+
     public File getAlbumStorageDir(String albumName) {
         // Get the directory for the user's public pictures directory.
         File file = new File(Environment.getExternalStoragePublicDirectory(
@@ -1471,7 +1471,8 @@ try{
         }
         return file;
     }
-    public void saveBitmapToJPG(Bitmap bitmap, File photo,String InvoiceNo) throws IOException {
+
+    public void saveBitmapToJPG(Bitmap bitmap, File photo, String InvoiceNo) throws IOException {
         Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
         canvas.drawColor(Color.WHITE);
@@ -1480,8 +1481,8 @@ try{
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         //newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] byteImage =outputStream.toByteArray();
-        String s = Base64.encodeToString(byteImage,Base64.DEFAULT);
+        byte[] byteImage = outputStream.toByteArray();
+        String s = Base64.encodeToString(byteImage, Base64.DEFAULT);
 
 //UploadNewOrderLinesDetails
         //dbH.updateDeals("Update OrderHeaders set imagestring='"+s+"' where InvoiceNo ='"+InvoiceNo+"'");
@@ -1495,17 +1496,18 @@ try{
         for (Routes orderAttributes4 : ordertyp) {
             ordertypeidreturned = orderAttributes4.getRouteName();
         }
-        new UploadNewOrderLinesDetails(deliverdate.getText().toString(), ordertypeidreturned, routeidreturned,s).execute();
+        new UploadNewOrderLinesDetails(deliverdate.getText().toString(), ordertypeidreturned, routeidreturned, s).execute();
 
         // Log.e("********","***************"+s);
         //Log.e("********","***************InvoiceNo----"+InvoiceNo);
         //stream.close();
     }
-    public boolean addJpgSignatureToGallery(Bitmap signature,String invoiceNo) {
+
+    public boolean addJpgSignatureToGallery(Bitmap signature, String invoiceNo) {
         boolean result = false;
         try {
             File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
-            saveBitmapToJPG(signature, photo,invoiceNo);
+            saveBitmapToJPG(signature, photo, invoiceNo);
             scanMediaFile(photo);
             result = true;
         } catch (IOException e) {
@@ -1513,16 +1515,18 @@ try{
         }
         return result;
     }
-    public static BixolonPrinter getPrinterInstance()
-    {
+
+    public static BixolonPrinter getPrinterInstance() {
         return bxlPrinter;
     }
+
     private void scanMediaFile(File photo) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(photo);
         mediaScanIntent.setData(contentUri);
         MainActivity.this.sendBroadcast(mediaScanIntent);
     }
+
     public boolean addSvgSignatureToGallery(String signatureSvg) {
         boolean result = false;
         try {
@@ -1540,12 +1544,13 @@ try{
         }
         return result;
     }
-    private class UploadImage extends AsyncTask<Void , Void, Void> {
+
+    private class UploadImage extends AsyncTask<Void, Void, Void> {
         Bitmap image;
         String name;
-        double  lati;
-        double  longi;
-        String  dateTab;
+        double lati;
+        double longi;
+        String dateTab;
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -1553,7 +1558,7 @@ try{
 
         }
 
-        public UploadImage(Bitmap image, String name,double lati,double longi,String dateTab){
+        public UploadImage(Bitmap image, String name, double lati, double longi, String dateTab) {
             this.image = image;
             this.name = name;
             this.lati = lati;
@@ -1565,49 +1570,48 @@ try{
         @Override
         protected Void doInBackground(Void... params) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-            String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.DEFAULT);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
-            dataToSend.add(new BasicNameValuePair("image",encodedImage));
-            dataToSend.add(new BasicNameValuePair("name",name));
+            dataToSend.add(new BasicNameValuePair("image", encodedImage));
+            dataToSend.add(new BasicNameValuePair("name", name));
             HttpParams httpRequestParams = getHttpRequestParams();
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost(SERVERIP+"savepicture.php");
+            HttpPost post = new HttpPost(SERVERIP + "savepicture.php");
 
-            try{
+            try {
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
                 client.execute(post);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             return null;
 
         }
-        private HttpParams getHttpRequestParams(){
+
+        private HttpParams getHttpRequestParams() {
             HttpParams httpRequestParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpRequestParams,1000*30);
-            HttpConnectionParams.setSoTimeout(httpRequestParams,1000*30);
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, 1000 * 30);
 
             return httpRequestParams;
         }
     }
-    public void checkAndUncheck(String tableName,boolean status,String detaild)
-    {
-        if (tableName.equals("Lines"))
-        {
-            Log.e("sql","checkbox*******"+"Update OrderLines set blnoffloaded="+status+" Where OrderDetailId="+detaild);
 
-            if(status)
-            {
-                dbH.updateDeals("Update OrderLines set blnoffloaded=1 Where OrderDetailId="+detaild);
-            }else
-            {
-                dbH.updateDeals("Update OrderLines set blnoffloaded=0 Where OrderDetailId="+detaild);
+    public void checkAndUncheck(String tableName, boolean status, String detaild) {
+        if (tableName.equals("Lines")) {
+            Log.e("sql", "checkbox*******" + "Update OrderLines set blnoffloaded=" + status + " Where OrderDetailId=" + detaild);
+
+            if (status) {
+                dbH.updateDeals("Update OrderLines set blnoffloaded=1 Where OrderDetailId=" + detaild);
+            } else {
+                dbH.updateDeals("Update OrderLines set blnoffloaded=0 Where OrderDetailId=" + detaild);
             }
 
         }
 
     }
+
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -1625,7 +1629,7 @@ try{
 
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if(mLocation == null){
+        if (mLocation == null) {
             startLocationUpdates();
         }
         if (mLocation != null) {
@@ -1665,12 +1669,12 @@ try{
         }
     }
 
-    private boolean removeItemToList(List<Item> l, Item it){
+    private boolean removeItemToList(List<Item> l, Item it) {
         boolean result = l.remove(it);
         return result;
     }
 
-    private boolean addItemToList(List<Item> l, Item it){
+    private boolean addItemToList(List<Item> l, Item it) {
         boolean result = l.add(it);
         return result;
     }
@@ -1698,7 +1702,7 @@ try{
     }
 
     @Override
-    public void onLocationChanged( android.location.Location location) {
+    public void onLocationChanged(android.location.Location location) {
 
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
@@ -1723,7 +1727,7 @@ try{
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
             String uid = user.getUid();
-            Log.d(TAG, "Existing customer uid*******************************************************************************"+uid);
+            Log.d(TAG, "Existing customer uid*******************************************************************************" + uid);
             //String email = user.getEmail();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -1735,19 +1739,19 @@ try{
             DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(uid).child("deldate");
             DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(uid).child("ordertype");
 
-            myRef.setValue( Double.toString(lat));
-            myRef2.setValue( Double.toString(lon));
-            myRefEmail.setValue( email);
-            myRefstops.setValue( dbH.countSigned());
-            myRefroute.setValue( routename.getText());
-            myRefdeldate.setValue( deliverdate.getText());
-            myRefordertype.setValue( ordertype.getText());
-        }else{
+            myRef.setValue(Double.toString(lat));
+            myRef2.setValue(Double.toString(lon));
+            myRefEmail.setValue(email);
+            myRefstops.setValue(dbH.countSigned());
+            myRefroute.setValue(routename.getText());
+            myRefdeldate.setValue(deliverdate.getText());
+            myRefordertype.setValue(ordertype.getText());
+        } else {
 
 
-            Log.e("DriverEmail**","--------------------------------"+DriverEmail);
-            Log.e("DriverPassword**","--------------------------------"+DriverPassword);
-            try{
+            Log.e("DriverEmail**", "--------------------------------" + DriverEmail);
+            Log.e("DriverPassword**", "--------------------------------" + DriverPassword);
+            try {
                 mAuth.signInWithEmailAndPassword(DriverEmail, DriverPassword)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -1767,13 +1771,13 @@ try{
                                     DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
                                     DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
 
-                                    myRef.setValue( Double.toString(lat));
-                                    myRef2.setValue( Double.toString(lon));
-                                    myRefEmail.setValue( email);
-                                    myRefstops.setValue( dbH.countSigned());
-                                    myRefroute.setValue( routename.getText());
-                                    myRefdeldate.setValue( deliverdate.getText());
-                                    myRefordertype.setValue( ordertype.getText());
+                                    myRef.setValue(Double.toString(lat));
+                                    myRef2.setValue(Double.toString(lon));
+                                    myRefEmail.setValue(email);
+                                    myRefstops.setValue(dbH.countSigned());
+                                    myRefroute.setValue(routename.getText());
+                                    myRefdeldate.setValue(deliverdate.getText());
+                                    myRefordertype.setValue(ordertype.getText());
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -1783,24 +1787,23 @@ try{
                                 // ...
                             }
                         });
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
 
-    }
-
+        }
 
 
     }
 
     private boolean checkLocation() {
-        if(!isLocationEnabled())
+        if (!isLocationEnabled())
             showAlert();
         return isLocationEnabled();
     }
 
     private void showAlert() {
-        final  AlertDialog.Builder dialog = new  AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Enable Location")
                 .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
                         "use this app")
@@ -1826,6 +1829,7 @@ try{
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
+
     private class UploadNewOrderLinesDetails extends AsyncTask<Void, Void, Void> {
 
         String orderdate;
@@ -1834,12 +1838,11 @@ try{
         String signature;
 
 
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDoalog.dismiss();
-             AlertDialog.Builder builder = new  AlertDialog.Builder(MainActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
                     .setTitle("Signature Saved ")
                     .setMessage("Thank you")
@@ -1853,7 +1856,7 @@ try{
 
         }
 
-        public UploadNewOrderLinesDetails(String orderdate,  String ordertype,String route,String signature) {
+        public UploadNewOrderLinesDetails(String orderdate, String ordertype, String route, String signature) {
             this.orderdate = orderdate;
             this.ordertype = ordertype;
             this.route = route;
@@ -1909,6 +1912,7 @@ try{
             return null;
         }
     }
+
     public boolean isInternetAvailable() {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
@@ -1919,50 +1923,44 @@ try{
             return false;
         }
     }
+
     public void OrderHeaderPost() {
 
-        ArrayList<Orders> dealLineToUpload= dbH.getOrderHeadersNotUploaded();
-        for (Orders orderAttributes: dealLineToUpload){
+        ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
+        for (Orders orderAttributes : dealLineToUpload) {
 
             String strNotesDrivers = "NULL";
             String strEmailAddress = "NULL";
             String strCashSig = "NULL";
-            String strStartTime  = "NULL";
-            String strEndTime  = "NULL";
-            String strTheImage  = "NoImage";
-            String signedBy  = "NULL";
-            if (orderAttributes.getstrNotesDrivers() != null && !orderAttributes.getstrNotesDrivers().isEmpty())
-            {
+            String strStartTime = "NULL";
+            String strEndTime = "NULL";
+            String strTheImage = "NoImage";
+            String signedBy = "NULL";
+            if (orderAttributes.getstrNotesDrivers() != null && !orderAttributes.getstrNotesDrivers().isEmpty()) {
                 strNotesDrivers = orderAttributes.getstrNotesDrivers();
             }
-            if (orderAttributes.getstrEmailCustomer() != null && !orderAttributes.getstrEmailCustomer().isEmpty())
-            {
+            if (orderAttributes.getstrEmailCustomer() != null && !orderAttributes.getstrEmailCustomer().isEmpty()) {
                 strEmailAddress = orderAttributes.getstrEmailCustomer();
             }
-            if (orderAttributes.getstrCashsignature() != null && !orderAttributes.getstrCashsignature().isEmpty())
-            {
+            if (orderAttributes.getstrCashsignature() != null && !orderAttributes.getstrCashsignature().isEmpty()) {
                 strCashSig = orderAttributes.getstrCashsignature();
             }
 
-            if (orderAttributes.getStartTripTime() != null && !orderAttributes.getStartTripTime().isEmpty())
-            {
+            if (orderAttributes.getStartTripTime() != null && !orderAttributes.getStartTripTime().isEmpty()) {
                 strStartTime = orderAttributes.getStartTripTime();
             }
-            if (orderAttributes.getEndTripTime() != null && !orderAttributes.getEndTripTime().isEmpty())
-            {
+            if (orderAttributes.getEndTripTime() != null && !orderAttributes.getEndTripTime().isEmpty()) {
                 strEndTime = orderAttributes.getEndTripTime();
             }
-            if (orderAttributes.getimagestring() != null && !orderAttributes.getimagestring().isEmpty())
-            {
+            if (orderAttributes.getimagestring() != null && !orderAttributes.getimagestring().isEmpty()) {
                 strTheImage = orderAttributes.getimagestring();
             }
-            if (orderAttributes.getstrCustomerSignedBy() != null && !orderAttributes.getstrCustomerSignedBy().isEmpty())
-            {
+            if (orderAttributes.getstrCustomerSignedBy() != null && !orderAttributes.getstrCustomerSignedBy().isEmpty()) {
                 signedBy = orderAttributes.getstrCustomerSignedBy();
             }
-            Log.e("*****","********************************note "+ strEmailAddress);
+            Log.e("*****", "********************************note " + strEmailAddress);
             new UploadNewOrderLines(orderAttributes.getInvoiceNo(), orderAttributes.getLatitude(), orderAttributes.getLongitude(),
-                    strTheImage,orderAttributes.getCashPaid(),strNotesDrivers,orderAttributes.getoffloaded(),strEmailAddress,strCashSig,strStartTime,strEndTime,orderAttributes.getDeliverySequence(),orderAttributes.getstrCoordinateStart(),signedBy,orderAttributes.getLoyalty()).execute();
+                    strTheImage, orderAttributes.getCashPaid(), strNotesDrivers, orderAttributes.getoffloaded(), strEmailAddress, strCashSig, strStartTime, strEndTime, orderAttributes.getDeliverySequence(), orderAttributes.getstrCoordinateStart(), signedBy, orderAttributes.getLoyalty()).execute();
         }
 
     }
@@ -1992,8 +1990,8 @@ try{
 
         }
 
-        public UploadNewOrderLines(String invoice, String lat, String lon, String image,String cash, String note,String offload,String email,String strCashSig,String strStartTime,
-                                   String strEndTime,String delseq,String strCoord,String signedBy,String Loyalty) {
+        public UploadNewOrderLines(String invoice, String lat, String lon, String image, String cash, String note, String offload, String email, String strCashSig, String strStartTime,
+                                   String strEndTime, String delseq, String strCoord, String signedBy, String Loyalty) {
             this.invoice = invoice;
             this.lat = lat;
             this.lon = lon;
@@ -2020,9 +2018,9 @@ try{
 
             //dbCreation();
             //}
-            Log.e("postIP","++++++++++++++++++++++++++++++++"+SERVERIP + "PostHeaders");
-            Log.e("postIP","++++++++++++++++++++++++++++++++ signedBy" + signedBy);
-            Log.e("Loyalty","++++++++++++++++++++++++++++++++ Loyalty" + Loyalty);
+            Log.e("postIP", "++++++++++++++++++++++++++++++++" + SERVERIP + "PostHeaders");
+            Log.e("postIP", "++++++++++++++++++++++++++++++++ signedBy" + signedBy);
+            Log.e("Loyalty", "++++++++++++++++++++++++++++++++ Loyalty" + Loyalty);
             HttpPost httppost = new HttpPost(SERVERIP + "PostHeaders");
             try {
                 // Add your data
@@ -2045,7 +2043,7 @@ try{
                 json.put("Loyalty", Loyalty);
 
 
-                Log.e("Loyalty","++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);
+                Log.e("Loyalty", "++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);
                 Log.d("JSON", json.toString());
                 List nameValuePairs = new ArrayList(1);
                 nameValuePairs.add(new BasicNameValuePair("json", json.toString()));
