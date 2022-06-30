@@ -77,7 +77,10 @@
         app:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_creator="1"
-        app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        android:layout_marginBottom="10dp"
+        >
 
         <LinearLayout
             android:id="@+id/pane1"
@@ -151,5 +154,178 @@
                 />
         </LinearLayout>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomLayout"
+        app:layout_constraintTop_toBottomOf="@id/maincontainer"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_creator="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/firstLinearLayout"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_creator="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total :"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1654651"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:layout_marginStart="15dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/secondLinearLayout"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintTop_toBottomOf="@id/firstLinearLayout"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_creator="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cash"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cash"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/background_light"
+                android:ems="10"
+                android:hint="Press here..."/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/thirdLinearLayout"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintTop_toBottomOf="@id/secondLinearLayout"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_creator="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <CheckBox
+                android:id="@+id/accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment Type"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btndocnote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Note"
+                android:layout_marginStart="50dp"
+                android:textSize="14sp" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fourthLinearLayout"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintTop_toBottomOf="@id/thirdLinearLayout"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_creator="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <Button
+                android:id="@+id/cancel_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:text="Cancel Order"
+                android:drawableLeft="@drawable/close_icon"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/acceptthesummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/holo_green_dark"
+                android:fontFamily="@font/lato"
+                android:text="Verify and Save" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

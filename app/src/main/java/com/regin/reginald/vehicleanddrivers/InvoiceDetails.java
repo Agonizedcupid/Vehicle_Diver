@@ -78,6 +78,10 @@ import java.util.Set;
 
 import static com.loopj.android.http.AsyncHttpClient.log;
 
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 
 import jpos.JposException;
@@ -411,6 +415,12 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
     private LocationManager locationManager;
 
+    /**
+     * Instances & Variable
+     */
+
+    private DatabaseAdapter databaseAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -425,11 +435,24 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        ArrayList<SettingsModel> settIP = dbH.getSettings();
+//        ArrayList<SettingsModel> settIP = dbH.getSettings();
+//
+//        for (SettingsModel orderAttributes : settIP) {
+//            SERVERIP = orderAttributes.getstrServerIp();
+//        }
 
-        for (SettingsModel orderAttributes : settIP) {
-            SERVERIP = orderAttributes.getstrServerIp();
+        /**
+         * Getting the server details:
+         */
+
+        databaseAdapter = new DatabaseAdapter(this);
+        List<IpModel> list = databaseAdapter.getServerIpModel();
+        if (list.size() > 0) {
+            SERVERIP = list.get(0).getServerIp();
+        } else {
+            SERVERIP = "";
         }
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -440,51 +463,67 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
         checkLocation();
 
-        invoice_no = (TextView) findViewById(R.id.invoice_no);
-        paymenttype = (TextView) findViewById(R.id.paymenttype);
-        setInvTotIncl = (TextView) findViewById(R.id.total);
-        currentlocation = (TextView) findViewById(R.id.currentlocation);
-        _orderdlistlines = (ListView) findViewById(R.id._orderdlistlines);
-        _orderdlistlinescheckd = (ListView) findViewById(R.id._orderdlistlinescheckd);
+        invoice_no = findViewById(R.id.invoice_no);
+        paymenttype = findViewById(R.id.paymenttype);
+        setInvTotIncl = findViewById(R.id.total);
+        currentlocation = findViewById(R.id.currentlocation);
+        _orderdlistlines = findViewById(R.id._orderdlistlines);
+        _orderdlistlinescheckd = findViewById(R.id._orderdlistlinescheckd);
         //  mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad_lines);
-        btndoneoffloading = (Button) findViewById(R.id.acceptthesummary);
-        closelines = (Button) findViewById(R.id.closelines);
-        btndocnote = (Button) findViewById(R.id.btndocnote);
-        tickall = (Button) findViewById(R.id.tickall);
-        checkunattitems = (Button) findViewById(R.id.checkunattitems);
-        zoom = (Button) findViewById(R.id.zoom);
-        accept = (CheckBox) findViewById(R.id.accept);
-        cash = (Button) findViewById(R.id.cash);
-        truckorder = (Button) findViewById(R.id.truckorder);
-        cancel_order = (Button) findViewById(R.id.cancel_order);
+        btndoneoffloading = findViewById(R.id.acceptthesummary);
+        closelines = findViewById(R.id.closelines);
+        btndocnote = findViewById(R.id.btndocnote);
+        tickall = findViewById(R.id.tickall);
+        checkunattitems = findViewById(R.id.checkunattitems);
+        zoom = findViewById(R.id.zoom);
+        accept = findViewById(R.id.accept);
+        cash = findViewById(R.id.cash);
+        truckorder = findViewById(R.id.truckorder);
+        cancel_order = findViewById(R.id.cancel_order);
         //products_warehouseses = (Spinner) findViewById(R.id.products_warehouseses);
-        productcats_nocheckedMain = (Spinner) findViewById(R.id.productcats_nochecked);
-        productcats_checkedMain = (Spinner) findViewById(R.id.productcats_checked);
-        Intent returndata = getIntent();
+        productcats_nocheckedMain = findViewById(R.id.productcats_nochecked);
+        productcats_checkedMain = findViewById(R.id.productcats_checked);
 
+        Intent returndata = getIntent();
         deldate = returndata.getStringExtra("deldate");
         ordertype = returndata.getStringExtra("ordertype");
         route = returndata.getStringExtra("routes");
-        invoice_no.setText(returndata.getStringExtra("invoiceno"));
         InvoiceNo = returndata.getStringExtra("invoiceno");
+        invoice_no.setText(returndata.getStringExtra("invoiceno"));
         cash.setText(returndata.getStringExtra("cash"));
         final String cashPaid = returndata.getStringExtra("cash");
         Log.e("Cash Paid", "****************************" + cashPaid);
         setPairedDevices();
-        ArrayList<Orders> infoheader = dbH.isSaved(InvoiceNo);
-        ArrayList<Orders> orderheader = dbH.returnOrderHeadersInfoByInvoice(InvoiceNo);
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//        ArrayList<Orders> infoheader = dbH.isSaved(InvoiceNo);
+//        ArrayList<Orders> orderheader = dbH.returnOrderHeadersInfoByInvoice(InvoiceNo);
+
+        /**
+         * New Code
+         */
+        List<OrderModel> infoHeader = databaseAdapter.getOrdersByInvoice(InvoiceNo);
+
         btndoneoffloading.setVisibility(View.INVISIBLE);
 
-        ArrayList<WareHouses> ordertypeWarehouse = dbH.warehouse();
+        //ArrayList<WareHouses> ordertypeWarehouse = dbH.warehouse();
+        List<RouteModel> ordertypeWarehouse = databaseAdapter.getRoutes();
 
-        List<String> labelsWare = new ArrayList<String>();
-        labelsWare.add("ALL");
-        for (WareHouses orderAttributes4 : ordertypeWarehouse) {
-            labelsWare.add(orderAttributes4.getWareHouse());
-        }
-        final ArrayAdapter<String> ordertypeAWare =
-                new ArrayAdapter<String>(InvoiceDetails.this,
-                        android.R.layout.simple_spinner_item, labelsWare);
+//        List<String> labelsWare = new ArrayList<String>();
+//        labelsWare.add("ALL");
+//        for (WareHouses orderAttributes4 : ordertypeWarehouse) {
+//            labelsWare.add(orderAttributes4.getWareHouse());
+//        }
+
+        //Putting the warehouse into Spinner:
+
+//        final ArrayAdapter<String> ordertypeAWare =
+//                new ArrayAdapter<String>(InvoiceDetails.this,
+//                        android.R.layout.simple_spinner_item, labelsWare);
+
+
+        ArrayAdapter<RouteModel> ordertypeAWare = new ArrayAdapter<RouteModel>(InvoiceDetails.this,
+                android.R.layout.simple_spinner_item, ordertypeWarehouse);
         ordertypeAWare.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // products_warehouseses.setAdapter(ordertypeAWare);
         productcats_nocheckedMain.setAdapter(ordertypeAWare);
@@ -556,9 +595,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             }
         });
         //order headers
-        for (Orders orderAttributes : infoheader) {
+        for (OrderModel orderAttributes : infoHeader) {
 
-            if (orderAttributes.getoffloaded().equals("1")) {
+            if (orderAttributes.getOffloaded() == 1) {
                 accept.setChecked(true);
                 //mSignaturePad.setVisibility(View.INVISIBLE);
                 btndocnote.setVisibility(View.INVISIBLE);
@@ -567,12 +606,23 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             }
             cash.setText(orderAttributes.getCashPaid());
         }
-        for (Orders orderAttributes : orderheader) {
-            emailaddress = orderAttributes.getstrEmailCustomer();
+//        for (Orders orderAttributes : orderheader) {
+//            emailaddress = orderAttributes.getstrEmailCustomer();
+//            invoice_no.setText(orderAttributes.getInvoiceNo() + "( " + orderAttributes.getStoreName() + ")");
+//            storename = orderAttributes.getStoreName();
+//            setInvTotIncl.setText(orderAttributes.getInvTotIncl());
+//            paymenttype.setText(orderAttributes.getPaymentType());
+//            // total = orderAttributes.getInvTotIncl();
+//        }
+
+        //New code:
+        for (OrderModel orderAttributes : infoHeader) {
+            emailaddress = orderAttributes.getStrEmailCustomer();
             invoice_no.setText(orderAttributes.getInvoiceNo() + "( " + orderAttributes.getStoreName() + ")");
             storename = orderAttributes.getStoreName();
             setInvTotIncl.setText(orderAttributes.getInvTotIncl());
-            paymenttype.setText(orderAttributes.getPaymentType());
+            //paymenttype.setText(orderAttributes.getPaymentType());
+            paymenttype.setText("CASH");
             // total = orderAttributes.getInvTotIncl();
         }
 

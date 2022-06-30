@@ -457,6 +457,7 @@ public class NetworkingFeedback {
                                 Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
                             }
                             orderListInterface.gotOrders(listOfOrders);
+                            insertOrdersIntoSQLiteDatabase(listOfOrders);
 
                             Log.d("RESPONSE_TESTING", "Inner: " + rootArray);
 
@@ -474,6 +475,42 @@ public class NetworkingFeedback {
 
     }
 
-    private void insertOrderListIntoLocalStorage(List<OrderModel> listOfOrders) {
+
+    /**
+     * Insert order into SQLite database:
+     *
+     * @param listOfOrders
+     */
+    private void insertOrdersIntoSQLiteDatabase(List<OrderModel> listOfOrders) {
+        databaseAdapter.dropOrderTable();
+        Observable<OrderModel> observable = Observable.fromIterable(listOfOrders)
+                .subscribeOn(Schedulers.io());
+
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                if (d.isDisposed()) {
+                    orderDisposable.clear();
+                }
+            }
+
+            @Override
+            public void onNext(Object o) {
+                OrderModel model = (OrderModel) o;
+                databaseAdapter.insertOrders(model);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d("INSERT_ERROR", "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("INSERT_COMPLETED", "onComplete: ");
+            }
+        };
+        observable.subscribe(observer);
+
     }
 }
