@@ -13,6 +13,12 @@ public interface RestApi {
     @GET("OrderTypesTest.php?")
     Observable<ResponseBody> getOrderTypes(@Query("key") String key);
 
+    //It will insert on Local "OrderHeaders" Table
     @GET("OrderHeaders.php?")
-    Observable<ResponseBody> getOrderList(@Query("OrderType") int orderTypeId, @Query("Route") int routeId, @Query("DeliveryDate") String deliveryDate);
+    Observable<ResponseBody> getOrderHeaders(@Query("OrderType") int orderTypeId, @Query("Route") int routeId, @Query("DeliveryDate") String deliveryDate);
+
+    //It will insert on Local "OrderLines" table
+    @GET("OrderLines.php?")
+    Observable<ResponseBody> getOrderLines(@Query("OrderType") int orderTypeId, @Query("Route") int routeId, @Query("DeliveryDate") String deliveryDate);
+
 }

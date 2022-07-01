@@ -10,9 +10,11 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.GetRouteInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.OrderListInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.RestApi;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
+import com.regin.reginald.vehicleanddrivers.OrderLines;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +26,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -32,13 +35,14 @@ import okhttp3.ResponseBody;
 
 public class NetworkingFeedback {
 
-    private CompositeDisposable routeDisposable, orderDisposable;
+    private CompositeDisposable routeDisposable, orderDisposable, orderLinesDisposable;
     private DatabaseAdapter databaseAdapter;
     private RestApi apiService;
 
     public NetworkingFeedback(DatabaseAdapter databaseAdapter) {
         routeDisposable = new CompositeDisposable();
         orderDisposable = new CompositeDisposable();
+        orderLinesDisposable = new CompositeDisposable();
         this.databaseAdapter = databaseAdapter;
     }
 
@@ -210,12 +214,12 @@ public class NetworkingFeedback {
      * GET Available Orders:
      */
 
-    public void getOrdersList(OrderListInterface orderListInterface, String serverIp, String orderDate, int routeId, int orderId) {
+    public void getOrdersHeaders(OrderListInterface orderListInterface, String serverIp, String orderDate, int routeId, int orderId) {
         List<OrderModel> listOfOrders = new ArrayList<>();
 
         apiService = ApiClient.getClient(serverIp).create(RestApi.class);
         //orderListInterface.onError("No order is available!");
-        orderDisposable.add(apiService.getOrderList(orderId, routeId, orderDate)
+        orderDisposable.add(apiService.getOrderHeaders(orderId, routeId, orderDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseBody>() {
@@ -459,6 +463,9 @@ public class NetworkingFeedback {
                             orderListInterface.gotOrders(listOfOrders);
                             insertOrdersIntoSQLiteDatabase(listOfOrders);
 
+                            //Fetching the Orders Lines:
+                            getOrderLines(serverIp, orderDate, routeId, orderId);
+
                             Log.d("RESPONSE_TESTING", "Inner: " + rootArray);
 
                         } else {
@@ -473,6 +480,296 @@ public class NetworkingFeedback {
                     }
                 }));
 
+    }
+
+
+    /**
+     * GET Order lines
+     */
+
+    public void getOrderLines(String serverIp, String orderDate, int routeId, int orderId) {
+        List<OrderLinesModel> orderLinesList = new ArrayList<>();
+
+        apiService = ApiClient.getClient(serverIp).create(RestApi.class);
+        //orderListInterface.onError("No order is available!");
+        orderLinesDisposable.add(apiService.getOrderLines(orderId, routeId, orderDate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ResponseBody>() {
+                    @Override
+                    public void accept(ResponseBody responseBody) throws Throwable {
+                        JSONArray rootArray = new JSONArray(responseBody.string());
+                        Log.d("RESPONSE_TESTING", "accept: server: " + serverIp +
+                                "\n date: " + orderDate + "\n route: " + routeId + "\n order: " + orderId +
+                                "\n Length: " + rootArray.length());
+                        orderLinesList.clear();
+                        if (rootArray.length() > 0) {//If data found
+//                            Gson gson = new Gson();
+//                            OrderModel model = gson.fromJson(responseBody.string(), OrderModel.class);
+//                            listOfOrders.add(model);
+//                            insertOrderListIntoLocalStorage(listOfOrders);
+                            for (int i = 0; i < rootArray.length(); i++) {
+                                JSONObject single = rootArray.getJSONObject(i);
+
+                                String OrderId;
+                                if (single.has("OrderId")) {
+                                    OrderId = single.getString("OrderId");
+                                } else {
+                                    OrderId = "Value Missing";
+                                }
+
+                                String InvoiceNo;
+                                if (single.has("InvoiceNo")) {
+                                    InvoiceNo = single.getString("InvoiceNo");
+                                } else {
+                                    InvoiceNo = "No Invoice Found";
+                                }
+
+                                String CustomerPastelCode;
+                                if (single.has("CustomerPastelCode")) {
+                                    CustomerPastelCode = single.getString("CustomerPastelCode");
+                                } else {
+                                    CustomerPastelCode = "Customer Pastel Code Missing";
+                                }
+
+                                String StoreName;
+                                if (single.has("StoreName")) {
+                                    StoreName = single.getString("StoreName");
+                                } else {
+                                    StoreName = "Store Name Missing";
+                                }
+
+                                String DeliveryDate;
+                                if (single.has("DeliveryDate")) {
+                                    DeliveryDate = single.getString("DeliveryDate");
+                                } else {
+                                    DeliveryDate = "Date Missing";
+                                }
+
+                                double Latitude;
+                                if (single.has("Latitude")) {
+                                    Latitude = single.getDouble("Latitude");
+                                } else {
+                                    Latitude = -777;
+                                }
+
+                                double Longitude;
+                                if (single.has("Longitude")) {
+                                    Longitude = single.getDouble("Longitude");
+                                } else {
+                                    Longitude = -777;
+                                }
+
+                                double OrderValueExc;
+                                if (single.has("OrderValueExc")) {
+                                    OrderValueExc = single.getDouble("OrderValueExc");
+                                } else {
+                                    OrderValueExc = -0.0;
+                                }
+
+                                double OrderValueInc;
+                                if (single.has("OrderValueInc")) {
+                                    OrderValueInc = single.getDouble("OrderValueInc");
+                                } else {
+                                    OrderValueInc = -0.0;
+                                }
+
+                                String DeliveryAddress;
+                                if (single.has("DeliveryAddress")) {
+                                    DeliveryAddress = single.getString("DeliveryAddress");
+                                } else {
+                                    DeliveryAddress = "Value Missing";
+                                }
+
+                                String User;
+                                if (single.has("User")) {
+                                    User = single.getString("User");
+                                } else {
+                                    User = "Value Missing";
+                                }
+
+                                int OrderMass;
+                                if (single.has("OrderMass")) {
+                                    OrderMass = single.getInt("OrderMass");
+                                } else {
+                                    OrderMass = -777;
+                                }
+
+                                int ProductId;
+                                if (single.has("ProductId")) {
+                                    ProductId = single.getInt("ProductId");
+                                } else {
+                                    ProductId = -777;
+                                }
+
+                                int Qty;
+                                if (single.has("Qty")) {
+                                    Qty = single.getInt("Qty");
+                                } else {
+                                    Qty = -777;
+                                }
+
+                                double Price;
+                                if (single.has("Price")) {
+                                    Price = single.getDouble("Price");
+                                } else {
+                                    Price = -777;
+                                }
+
+                                String PastelDescription;
+                                if (single.has("PastelDescription")) {
+                                    PastelDescription = single.getString("PastelDescription");
+                                } else {
+                                    PastelDescription = "Value Missing";
+                                }
+
+
+                                String PastelCode;
+                                if (single.has("PastelCode")) {
+                                    PastelCode = single.getString("PastelCode");
+                                } else {
+                                    PastelCode = "Value Missing";
+                                }
+
+                                int OrderDetailId;
+                                if (single.has("OrderDetailId")) {
+                                    OrderDetailId = single.getInt("OrderDetailId");
+                                } else {
+                                    OrderDetailId = -777;
+                                }
+
+                                String Comment;
+                                if (single.has("Comment")) {
+                                    Comment = single.getString("Comment");
+                                } else {
+                                    Comment = "Value Missing";
+                                }
+
+                                String returnQty;
+                                if (single.has("returnQty")) {
+                                    returnQty = single.getString("returnQty");
+                                } else {
+                                    returnQty = "Value Missing";
+                                }
+
+                                String offLoadComment;
+                                if (single.has("offLoadComment")) {
+                                    offLoadComment = single.getString("offLoadComment");
+                                } else {
+                                    offLoadComment = "Value Missing";
+                                }
+
+                                int blnoffloaded;
+                                if (single.has("blnoffloaded")) {
+                                    blnoffloaded = single.getInt("blnoffloaded");
+                                } else {
+                                    blnoffloaded = -777;
+                                }
+
+                                String strCustomerReason;
+                                if (single.has("strCustomerReason")) {
+                                    strCustomerReason = single.getString("strCustomerReason");
+                                } else {
+                                    strCustomerReason = "Value Missing";
+                                }
+
+
+                                String intWareHouseId;
+                                if (single.has("intWareHouseId")) {
+                                    intWareHouseId = single.getString("intWareHouseId");
+                                } else {
+                                    intWareHouseId = "Value Missing";
+                                }
+
+                                String WareHouseName;
+                                if (single.has("WareHouseName")) {
+                                    WareHouseName = single.getString("WareHouseName");
+                                } else {
+                                    WareHouseName = "Value Missing";
+                                }
+
+
+                                orderLinesList.add(new OrderLinesModel(
+                                        OrderId,
+                                        InvoiceNo,
+                                        CustomerPastelCode,
+                                        StoreName,
+                                        DeliveryDate,
+                                        Latitude,
+                                        Longitude,
+                                        OrderValueExc,
+                                        OrderValueInc,
+                                        DeliveryAddress,
+                                        User,
+                                        OrderMass,
+                                        ProductId,
+                                        Qty,
+                                        Price,
+                                        PastelDescription,
+                                        PastelCode,
+                                        OrderDetailId,
+                                        Comment,
+                                        returnQty,
+                                        offLoadComment,
+                                        blnoffloaded,
+                                        strCustomerReason,
+                                        intWareHouseId,
+                                        WareHouseName
+                                ));
+
+
+                                Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
+                            }
+                            insertOrderLinesIntoSQLiteDatabase(orderLinesList);
+
+                            //Fetching the Orders Lines:
+                            getOrderLines(serverIp, orderDate, routeId, orderId);
+
+                            Log.d("RESPONSE_TESTING", "Inner: " + rootArray);
+
+                        } else {
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("RESPONSE_TESTING", "exception: " + throwable.getMessage());
+                    }
+                }));
+
+    }
+
+    private void insertOrderLinesIntoSQLiteDatabase(List<OrderLinesModel> orderLinesList) {
+
+        Observable<OrderLinesModel> observable = Observable.fromIterable(orderLinesList)
+                .subscribeOn(Schedulers.io());
+
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                if (d.isDisposed()) {
+                    orderLinesDisposable.clear();
+                }
+            }
+
+            @Override
+            public void onNext(Object o) {
+                OrderLinesModel model = (OrderLinesModel) o;
+                databaseAdapter.insertOrderLines(model);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d("ORDER_LINES_ERROR", "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("ORDER_LINES_COMPLETED", "onComplete: ");
+            }
+        };
+
+        observable.subscribe(observer);
     }
 
 

@@ -38,7 +38,7 @@ public class OrderRepositories {
         List<OrderModel> floatingList = new ArrayList<>();
 
         NetworkingFeedback networkingFeedback = new NetworkingFeedback(databaseAdapter);
-        networkingFeedback.getOrdersList(new OrderListInterface() {
+        networkingFeedback.getOrdersHeaders(new OrderListInterface() {
             @Override
             public void gotOrders(List<OrderModel> list) {
                 //floatingList.addAll(list);

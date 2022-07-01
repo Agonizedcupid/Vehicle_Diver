@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
@@ -104,6 +105,42 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.threshold, model.getThreshold());
 
         long id = database.insert(DatabaseHelper.ORDERS_TABLE_NAME, null, contentValues);
+        return id;
+    }
+
+    //Insert OrdersLines
+    public long insertOrderLines(OrderLinesModel model) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.orderId, model.getOrderId());
+        contentValues.put(DatabaseHelper.invoiceNo, model.getInvoiceNo());
+        contentValues.put(DatabaseHelper.customerPastelCode, model.getCustomerPastelCode());
+        contentValues.put(DatabaseHelper.storeName, model.getStoreName());
+        contentValues.put(DatabaseHelper.deliveryDate, model.getDeliveryDate());
+        contentValues.put(DatabaseHelper.latitude, model.getLatitude());
+        contentValues.put(DatabaseHelper.longitude, model.getLongitude());
+        contentValues.put(DatabaseHelper.orderValueExc, model.getOrderValueExc());
+        contentValues.put(DatabaseHelper.orderValueInc, model.getOrderValueInc());
+        contentValues.put(DatabaseHelper.deliveryAddress, model.getDeliveryAddress());
+        contentValues.put(DatabaseHelper.user, model.getUser());
+        contentValues.put(DatabaseHelper.orderMass, model.getOrderMass());
+        contentValues.put(DatabaseHelper.productId, model.getProductId());
+        contentValues.put(DatabaseHelper.qty, model.getQty());
+        contentValues.put(DatabaseHelper.price, model.getPrice());
+        contentValues.put(DatabaseHelper.pastelDescription, model.getPastelDescription());
+        contentValues.put(DatabaseHelper.pastelCode, model.getPastelCode());
+        contentValues.put(DatabaseHelper.orderDetailId, model.getOrderDetailId());
+        contentValues.put(DatabaseHelper.comment, model.getComment());
+        contentValues.put(DatabaseHelper.returnQty, model.getReturnQty());
+        contentValues.put(DatabaseHelper.offLoadComment, model.getOffLoadComment());
+        contentValues.put(DatabaseHelper.blnoffloaded, model.getBlnoffloaded());
+        contentValues.put(DatabaseHelper.strCustomerReason, model.getStrCustomerReason());
+        contentValues.put(DatabaseHelper.intWareHouseId, model.getIntWareHouseId());
+        contentValues.put(DatabaseHelper.wareHouseName, model.getWareHouseName());
+
+
+        long id = database.insert(DatabaseHelper.ORDERS_LINES_TABLE_NAME, null, contentValues);
         return id;
     }
 
@@ -531,6 +568,55 @@ public class DatabaseAdapter {
         private static final String DROP_ORDERS_TABLE = "DROP TABLE IF EXISTS " + ORDERS_TABLE_NAME;
 
 
+        /**
+         * OrderLines Table
+         */
+
+        private static final String ORDERS_LINES_TABLE_NAME = "orders_lines";
+        private static final String productId = "productId";
+        private static final String qty = "qty";
+        private static final String price = "price";
+        private static final String pastelDescription = "pastelDescription";
+        private static final String pastelCode = "pastelCode";
+        private static final String orderDetailId = "orderDetailId";
+        private static final String comment = "comment";
+        private static final String returnQty = "returnQty";
+        private static final String offLoadComment = "offLoadComment";
+        private static final String blnoffloaded = "blnoffloaded";
+        private static final String strCustomerReason = "strCustomerReason";
+        private static final String intWareHouseId = "intWareHouseId";
+        private static final String wareHouseName = "wareHouseName";
+        //Creating the Order Table:
+        private static final String CREATE_ORDERS_LINES_TABLE = "CREATE TABLE " + ORDERS_LINES_TABLE_NAME
+                + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + orderId + " VARCHAR(255),"
+                + invoiceNo + " VARCHAR(255),"
+                + customerPastelCode + " VARCHAR(255),"
+                + storeName + " VARCHAR(255),"
+                + deliveryDate + " VARCHAR(255),"
+                + latitude + " VARCHAR(255),"
+                + longitude + " VARCHAR(255),"
+                + orderValueExc + " VARCHAR(255),"
+                + orderValueInc + " VARCHAR(255),"
+                + deliveryAddress + " VARCHAR(255),"
+                + user + " VARCHAR(255),"
+                + orderMass + " VARCHAR(255),"
+                + productId + " INTEGER,"
+                + qty + " INTEGER,"
+                + price + " VARCHAR(255),"
+                + pastelDescription + " VARCHAR(255),"
+                + pastelCode + " VARCHAR(255),"
+                + orderDetailId + " INTEGER,"
+                + comment + " VARCHAR(255),"
+                + returnQty + " VARCHAR(255),"
+                + offLoadComment + " VARCHAR(255),"
+                + blnoffloaded + " INTEGER,"
+                + strCustomerReason + " VARCHAR(255),"
+                + intWareHouseId + " VARCHAR(255),"
+                + wareHouseName + " VARCHAR(255));";
+        private static final String DROP_ORDERS_LINES_TABLE = "DROP TABLE IF EXISTS " + ORDERS_LINES_TABLE_NAME;
+
+
         public DatabaseHelper(@Nullable Context context) {
             super(context, DATABASE_NAME, null, VERSION_NUMBER);
             this.context = context;
@@ -544,6 +630,7 @@ public class DatabaseAdapter {
                 db.execSQL(CREATE_ROUTE_TABLE);
                 db.execSQL(CREATE_ORDER_TYPE_TABLE);
                 db.execSQL(CREATE_ORDERS_TABLE);
+                db.execSQL(CREATE_ORDERS_LINES_TABLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -557,6 +644,7 @@ public class DatabaseAdapter {
                 db.execSQL(DROP_ROUTE_TABLE);
                 db.execSQL(DROP_ORDER_TYPE_TABLE);
                 db.execSQL(DROP_ORDERS_TABLE);
+                db.execSQL(DROP_ORDERS_LINES_TABLE);
                 onCreate(db);
             } catch (Exception e) {
                 e.printStackTrace();
