@@ -1311,6 +1311,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             if (kmout.length() < 1) {
                                 Toast.makeText(getApplicationContext(), "KM Out is empty", Toast.LENGTH_LONG).show();
                             } else {
+                                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 new getWareHouses().execute(SERVERIP + "WareHousesNew.php");
                                 Calendar c = Calendar.getInstance();
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");

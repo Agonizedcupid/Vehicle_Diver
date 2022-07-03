@@ -13,6 +13,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.WareHousesModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,19 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.ORDER_TYPE, orderType);
 
         long id = database.insert(DatabaseHelper.ORDER_TYPE_TABLE_NAME, null, contentValues);
+        return id;
+    }
+
+    //Insert WAREHOUSE:
+    public long insertWareHouses(String wareHouseId, String wareHouses) {
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.WareHouseId, wareHouseId);
+        contentValues.put(DatabaseHelper.WareHouse, wareHouses);
+
+        long id = database.insert(DatabaseHelper.WAREHOUSE_TABLE_NAME, null, contentValues);
         return id;
     }
 
@@ -172,6 +186,26 @@ public class DatabaseAdapter {
         }
         return list;
     }
+
+    //get WareHouses:
+    public List<WareHousesModel> getWareHouses() {
+
+        List<WareHousesModel> list = new ArrayList<>();
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String[] columns = {DatabaseHelper.UID, DatabaseHelper.WareHouseId, DatabaseHelper.WareHouse};
+        // Cursor cursor = database.query(DatabaseHelper.PLAN_TABLE_NAME, columns, selection, args, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.WAREHOUSE_TABLE_NAME, columns, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            WareHousesModel model = new WareHousesModel(
+                    cursor.getString(1),
+                    cursor.getString(2)
+            );
+            list.add(model);
+        }
+        return list;
+    }
+
 
     //get Routes saved on local storage:
     public List<RouteModel> getRoutes() {
@@ -617,6 +651,25 @@ public class DatabaseAdapter {
         private static final String DROP_ORDERS_LINES_TABLE = "DROP TABLE IF EXISTS " + ORDERS_LINES_TABLE_NAME;
 
 
+        /**
+         * WareHouses Table
+         */
+        /**
+         * Order Type Table
+         */
+
+        private static final String WAREHOUSE_TABLE_NAME = "WareHouses";
+        private static final String WareHouseId = "WareHouseId";
+        private static final String WareHouse = "WareHouse";
+
+        //Creating the table:
+        private static final String CREATE_WAREHOUSE_TABLE = "CREATE TABLE " + WAREHOUSE_TABLE_NAME
+                + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + WareHouseId + " VARCHAR(255),"
+                + WareHouse + " VARCHAR(255));";
+        private static final String DROP_WAREHOUSE_TABLE = "DROP TABLE IF EXISTS " + WAREHOUSE_TABLE_NAME;
+
+
         public DatabaseHelper(@Nullable Context context) {
             super(context, DATABASE_NAME, null, VERSION_NUMBER);
             this.context = context;
@@ -631,6 +684,7 @@ public class DatabaseAdapter {
                 db.execSQL(CREATE_ORDER_TYPE_TABLE);
                 db.execSQL(CREATE_ORDERS_TABLE);
                 db.execSQL(CREATE_ORDERS_LINES_TABLE);
+                db.execSQL(CREATE_WAREHOUSE_TABLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -645,6 +699,7 @@ public class DatabaseAdapter {
                 db.execSQL(DROP_ORDER_TYPE_TABLE);
                 db.execSQL(DROP_ORDERS_TABLE);
                 db.execSQL(DROP_ORDERS_LINES_TABLE);
+                db.execSQL(DROP_WAREHOUSE_TABLE);
                 onCreate(db);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -82,6 +82,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.WareHousesModel;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 
 import jpos.JposException;
@@ -506,8 +507,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
         btndoneoffloading.setVisibility(View.INVISIBLE);
 
-        //ArrayList<WareHouses> ordertypeWarehouse = dbH.warehouse();
-        List<RouteModel> ordertypeWarehouse = databaseAdapter.getRoutes();
+        //ArrayList<WareHousesModel> ordertypeWarehouse = dbH.warehouse();
+        List<WareHousesModel> ordertypeWarehouse = databaseAdapter.getWareHouses();
+        //List<RouteModel> ordertypeWarehouse = databaseAdapter.getRoutes();
 
 //        List<String> labelsWare = new ArrayList<String>();
 //        labelsWare.add("ALL");
@@ -522,13 +524,14 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 //                        android.R.layout.simple_spinner_item, labelsWare);
 
 
-        ArrayAdapter<RouteModel> ordertypeAWare = new ArrayAdapter<RouteModel>(InvoiceDetails.this,
+        ArrayAdapter<WareHousesModel> ordertypeAWare = new ArrayAdapter<WareHousesModel>(InvoiceDetails.this,
                 android.R.layout.simple_spinner_item, ordertypeWarehouse);
         ordertypeAWare.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // products_warehouseses.setAdapter(ordertypeAWare);
         productcats_nocheckedMain.setAdapter(ordertypeAWare);
         productcats_checkedMain.setAdapter(ordertypeAWare);
 
+        //////////////////////////////       Left Side Spinner        /////////////////////////////////////////////////////////////////
         productcats_nocheckedMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -564,6 +567,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        //////////////////////////////       Right Side Spinner        /////////////////////////////////////////////////////////////////
         productcats_checkedMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
