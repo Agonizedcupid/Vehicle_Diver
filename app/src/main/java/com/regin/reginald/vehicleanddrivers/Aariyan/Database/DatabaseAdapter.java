@@ -1,5 +1,6 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
@@ -393,6 +395,7 @@ public class DatabaseAdapter {
         return list;
     }
 
+    //Get Order lines by INVOICE & WAREHOUSE
     public List<OrderLinesModel> returnOrderLinesOffloadedByCategory(String invoice, String warehouse) {
 
         List<OrderLinesModel> list = new ArrayList<>();
@@ -470,6 +473,24 @@ public class DatabaseAdapter {
             list.add(model);
         }
         return list;
+    }
+
+    @SuppressLint("Range")
+    public int returnOrderLinesCrateCount(String InvoiceNo){
+
+        int cratesCount = 0;
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select Qty from '"+DatabaseHelper.ORDERS_LINES_TABLE_NAME+"' where OrderId ='"+InvoiceNo+"'", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                cratesCount = cratesCount + Integer.parseInt(cursor.getString(cursor.getColumnIndex("Qty")) ) ;
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return cratesCount;
     }
 
     /**
