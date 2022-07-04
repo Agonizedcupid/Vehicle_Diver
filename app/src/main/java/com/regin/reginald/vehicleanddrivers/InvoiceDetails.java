@@ -80,6 +80,7 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.WareHousesModel;
@@ -511,23 +512,23 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         List<WareHousesModel> ordertypeWarehouse = databaseAdapter.getWareHouses();
         //List<RouteModel> ordertypeWarehouse = databaseAdapter.getRoutes();
 
-//        List<String> labelsWare = new ArrayList<String>();
-//        labelsWare.add("ALL");
-//        for (WareHouses orderAttributes4 : ordertypeWarehouse) {
-//            labelsWare.add(orderAttributes4.getWareHouse());
-//        }
+        List<String> labelsWare = new ArrayList<String>();
+        labelsWare.add("ALL");
+        for (WareHousesModel orderAttributes4 : ordertypeWarehouse) {
+            labelsWare.add(orderAttributes4.getWareHouse());
+        }
 
         //Putting the warehouse into Spinner:
 
-//        final ArrayAdapter<String> ordertypeAWare =
-//                new ArrayAdapter<String>(InvoiceDetails.this,
-//                        android.R.layout.simple_spinner_item, labelsWare);
+        final ArrayAdapter<String> ordertypeAWare =
+                new ArrayAdapter<String>(InvoiceDetails.this,
+                        android.R.layout.simple_spinner_item, labelsWare);
 
 
-        ArrayAdapter<WareHousesModel> ordertypeAWare = new ArrayAdapter<WareHousesModel>(InvoiceDetails.this,
-                android.R.layout.simple_spinner_item, ordertypeWarehouse);
+//        ArrayAdapter<WareHousesModel> ordertypeAWare = new ArrayAdapter<WareHousesModel>(InvoiceDetails.this,
+//                android.R.layout.simple_spinner_item, ordertypeWarehouse);
         ordertypeAWare.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // products_warehouseses.setAdapter(ordertypeAWare);
+        //products_warehouseses.setAdapter(ordertypeAWare);
         productcats_nocheckedMain.setAdapter(ordertypeAWare);
         productcats_checkedMain.setAdapter(ordertypeAWare);
 
@@ -535,16 +536,17 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         productcats_nocheckedMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_nocheckedMain.getSelectedItem().toString());
+                //ArrayList<OrderLinesModel> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_nocheckedMain.getSelectedItem().toString());
+                List<OrderLinesModel> oD = databaseAdapter.returnOrderLinesOffloadedByCategory(InvoiceNo, productcats_nocheckedMain.getSelectedItem().toString());
                 Log.e("group", productcats_nocheckedMain.getSelectedItem().toString());
                 items1 = new ArrayList<Item>();
                 //  itemsChecked = new ArrayList<Item>();
 
-                for (OrderLines orderAttributes : oD) {
+                for (OrderLinesModel orderAttributes : oD) {
 
-                    if (orderAttributes.getblnoffloaded().equals("0")) {
-                        Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
-                                "", "Return: " + orderAttributes.getreturnQty(), "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
+                    if (orderAttributes.getBlnoffloaded() == 0) {
+                        Item item = new Item(orderAttributes.getPastelDescription(), "" + orderAttributes.getPrice(), "" + orderAttributes.getQty(),
+                                "", "Return: " + orderAttributes.getReturnQty(), "Lines", "" + orderAttributes.getBlnoffloaded(), "" + orderAttributes.getOrderDetailId());
                         items1.add(item);
                     }
                     /*if(orderAttributes.getblnoffloaded() =="1")
@@ -572,15 +574,16 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         productcats_checkedMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
+                //ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
+                List<OrderLinesModel> oD = databaseAdapter.returnOrderLinesOffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
                 Log.e("group", productcats_checkedMain.getSelectedItem().toString());
                 //  items1 = new ArrayList<Item>();
                 itemsChecked = new ArrayList<Item>();
-                for (OrderLines orderAttributes : oD) {
+                for (OrderLinesModel orderAttributes : oD) {
 
-                    if (orderAttributes.getblnoffloaded().equals("1")) {
-                        Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
-                                "", "Return: " + orderAttributes.getreturnQty(), "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
+                    if (orderAttributes.getBlnoffloaded() == 1) {
+                        Item item = new Item(orderAttributes.getPastelDescription(), "" + orderAttributes.getPrice(), "" + orderAttributes.getQty(),
+                                "", "Return: " + orderAttributes.getReturnQty(), "Lines", "" + orderAttributes.getBlnoffloaded(), "" + orderAttributes.getOrderDetailId());
                         itemsChecked.add(item);
                     }
 
@@ -1585,6 +1588,16 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         bondedDevices.clear();
 
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Set<BluetoothDevice> bondedDeviceSet = bluetoothAdapter.getBondedDevices();
 
         for (BluetoothDevice device : bondedDeviceSet) {
@@ -1639,6 +1652,16 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
             if (bluetoothDeviceSet.size() > 0) {
                 for (BluetoothDevice device : bluetoothDeviceSet) {
+                    if (ActivityCompat.checkSelfPermission(InvoiceDetails.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
                     bondedDevices.add(device.getName() + DEVICE_ADDRESS_START + device.getAddress() + DEVICE_ADDRESS_END);
                 }
             } else {

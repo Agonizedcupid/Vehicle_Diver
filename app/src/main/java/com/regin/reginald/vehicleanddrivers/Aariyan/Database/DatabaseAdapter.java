@@ -393,6 +393,85 @@ public class DatabaseAdapter {
         return list;
     }
 
+    public List<OrderLinesModel> returnOrderLinesOffloadedByCategory(String invoice, String warehouse) {
+
+        List<OrderLinesModel> list = new ArrayList<>();
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String[] columns = {DatabaseHelper.UID,
+                DatabaseHelper.orderId,
+                DatabaseHelper.invoiceNo,
+                DatabaseHelper.customerPastelCode,
+                DatabaseHelper.storeName,
+                DatabaseHelper.deliveryDate,
+                DatabaseHelper.latitude,
+                DatabaseHelper.longitude,
+                DatabaseHelper.orderValueExc,
+                DatabaseHelper.orderValueInc,
+                DatabaseHelper.deliveryAddress,
+                DatabaseHelper.user,
+                DatabaseHelper.orderMass,
+                DatabaseHelper.productId,
+                DatabaseHelper.qty,
+                DatabaseHelper.price,
+                DatabaseHelper.pastelDescription,
+                DatabaseHelper.pastelCode,
+                DatabaseHelper.orderDetailId,
+                DatabaseHelper.comment,
+                DatabaseHelper.returnQty,
+                DatabaseHelper.offLoadComment,
+                DatabaseHelper.blnoffloaded,
+                DatabaseHelper.strCustomerReason,
+                DatabaseHelper.intWareHouseId,
+                DatabaseHelper.wareHouseName
+        };
+        String selection = null;
+        String[] args;
+        if (warehouse.equals("ALL")) {
+            selection = DatabaseHelper.invoiceNo + "=?";
+            args = new String[]{"" + invoice};
+        } else {
+            selection = DatabaseHelper.invoiceNo + "=? AND " + DatabaseHelper.wareHouseName + "=?";
+            args = new String[]{"" + invoice, "" + warehouse};
+        }
+        //String selection = DatabaseHelper.invoiceNo + "=?";
+
+        //String[] args = {"" + invoice, "" + warehouse};
+        // Cursor cursor = database.query(DatabaseHelper.PLAN_TABLE_NAME, columns, selection, args, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.ORDERS_LINES_TABLE_NAME, columns, selection, args, null, null, null);
+        while (cursor.moveToNext()) {
+            OrderLinesModel model = new OrderLinesModel(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getInt(6),
+                    cursor.getInt(7),
+                    cursor.getDouble(8),
+                    cursor.getDouble(9),
+                    cursor.getString(10),
+                    cursor.getString(11),
+                    cursor.getInt(12),
+                    cursor.getInt(13),
+                    cursor.getInt(14),
+                    cursor.getInt(15),
+                    cursor.getString(16),
+                    cursor.getString(17),
+                    cursor.getInt(18),
+                    cursor.getString(19),
+                    cursor.getString(20),
+                    cursor.getString(21),
+                    cursor.getInt(22),
+                    cursor.getString(23),
+                    cursor.getString(24),
+                    cursor.getString(25)
+            );
+            list.add(model);
+        }
+        return list;
+    }
+
     /**
      * UPDATE Database
      */

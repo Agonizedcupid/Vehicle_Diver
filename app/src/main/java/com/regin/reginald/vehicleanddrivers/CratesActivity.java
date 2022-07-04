@@ -22,6 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CratesActivity extends AppCompatActivity {
@@ -39,18 +42,26 @@ public class CratesActivity extends AppCompatActivity {
     TextView txtstorename,txtcount;
     int delivervspickpercent = 0;
     float createsCal = 0;
-    private SQLiteDatabase db;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+//    private SQLiteDatabase db;
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    private DatabaseAdapter databaseAdapter;
     ProgressDialog progressDoalog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crates);
-        db = this.openOrCreateDatabase("LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-        ArrayList<SettingsModel> settIP= dbH.getSettings();
+        //db = this.openOrCreateDatabase("LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+        //ArrayList<SettingsModel> settIP= dbH.getSettings();
+        databaseAdapter = new DatabaseAdapter(this);
+        List<IpModel> list = databaseAdapter.getServerIpModel();
 
-        for (SettingsModel orderAttributes: settIP){
-            SERVERIP = orderAttributes.getstrServerIp();
+//        for (IpModel orderAttributes: settIP){
+//            SERVERIP = orderAttributes.getstrServerIp();
+//        }
+        if (list.size() > 0) {
+            SERVERIP = list.get(0).getServerIp();
+        } else {
+            SERVERIP = "";
         }
         Intent returndata = getIntent();
 
@@ -62,14 +73,15 @@ public class CratesActivity extends AppCompatActivity {
         ordertype = returndata.getStringExtra("ordertype");
 
 
-        savecrates = (Button) findViewById(R.id.savecrates);
+        savecrates =  findViewById(R.id.savecrates);
         cratedelivered = (EditText) findViewById(R.id.cratedelivered);
         cratespickedup = (EditText) findViewById(R.id.cratespickedup);
         cratesclaimed = (EditText) findViewById(R.id.cratesclaimed);
         referenceno = (EditText) findViewById(R.id.referenceno);
         txtstorename = (TextView) findViewById(R.id.textView37);
         txtcount = (TextView) findViewById(R.id.textView38);
-        int cratesToDeliver = dbH.returnOrderLinesCrateCount(invoiceno);
+        //int cratesToDeliver = dbH.returnOrderLinesCrateCount(invoiceno);
+        int cratesToDeliver = 10;
         txtstorename.setText(storename+"-"+invoiceno+" ("+cratesToDeliver+" )");
 
 
@@ -156,7 +168,8 @@ public class CratesActivity extends AppCompatActivity {
                             if(result.equals("SUCCESS")){
                                 Toast.makeText(CratesActivity.this, "  " +result, Toast.LENGTH_SHORT).show();
                                 savecrates.setVisibility(View.INVISIBLE);
-                                dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + invoiceno + "'");
+                                //Have to work on that:
+                                //dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + invoiceno + "'");
 
                                 new Thread()
                                 {
