@@ -480,17 +480,59 @@ public class DatabaseAdapter {
 
         int cratesCount = 0;
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select Qty from '"+DatabaseHelper.ORDERS_LINES_TABLE_NAME+"' where OrderId ='"+InvoiceNo+"'", null);
+        Cursor cursor = db.rawQuery("Select qty from '"+DatabaseHelper.ORDERS_LINES_TABLE_NAME+"' where orderId ='"+InvoiceNo+"'", null);
 
         if (cursor.moveToFirst()) {
             do {
-                cratesCount = cratesCount + Integer.parseInt(cursor.getString(cursor.getColumnIndex("Qty")) ) ;
+                cratesCount = cratesCount + Integer.parseInt(cursor.getString(cursor.getColumnIndex("qty")) ) ;
 
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return cratesCount;
+    }
+
+    @SuppressLint("Range")
+    public List<OrderLinesModel> returnOrderLines(String InvoiceNo){
+
+        List<OrderLinesModel> listOfOrdersLines = new ArrayList<>();
+        int cratesCount = 0;
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from '"+DatabaseHelper.ORDERS_LINES_TABLE_NAME+"' where orderId ='"+InvoiceNo+"'", null);
+
+        while (cursor.moveToNext()) {
+            OrderLinesModel model = new OrderLinesModel(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getInt(6),
+                    cursor.getInt(7),
+                    cursor.getDouble(8),
+                    cursor.getDouble(9),
+                    cursor.getString(10),
+                    cursor.getString(11),
+                    cursor.getInt(12),
+                    cursor.getInt(13),
+                    cursor.getInt(14),
+                    cursor.getInt(15),
+                    cursor.getString(16),
+                    cursor.getString(17),
+                    cursor.getInt(18),
+                    cursor.getString(19),
+                    cursor.getString(20),
+                    cursor.getString(21),
+                    cursor.getInt(22),
+                    cursor.getString(23),
+                    cursor.getString(24),
+                    cursor.getString(25)
+            );
+            listOfOrdersLines.add(model);
+        }
+
+        return listOfOrdersLines;
     }
 
     /**

@@ -47,6 +47,26 @@
             app:layout_constraintTop_creator="1"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <Button
+            android:id="@+id/zoom"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/closelines"
+            android:layout_toStartOf="@+id/closelines"
+            android:background="@android:color/holo_red_dark"
+            android:text="ZOOM"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold|italic"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_creator="1"
+            app:layout_constraintLeft_toRightOf="@id/truckorder"
+            android:layout_marginStart="5dp"
+            android:visibility="gone"
+             />
+
         <TextView
             android:id="@+id/invoice_no"
             android:layout_width="wrap_content"
@@ -78,7 +98,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_creator="1"
         app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
-        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        app:layout_constraintBottom_toTopOf="@id/vv"
         android:layout_marginBottom="10dp"
         >
 
@@ -155,9 +175,20 @@
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:id="@+id/vv"
+        android:layout_width="200dp"
+        android:layout_height="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/maincontainer"
+        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        android:background="@color/colorPrimary"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomLayout"
-        app:layout_constraintTop_toBottomOf="@id/maincontainer"
+        app:layout_constraintTop_toBottomOf="@id/vv"
         app:layout_constraintTop_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_creator="1"
@@ -168,6 +199,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         >
 
 

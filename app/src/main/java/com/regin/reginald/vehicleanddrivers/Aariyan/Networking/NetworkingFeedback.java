@@ -458,7 +458,7 @@ public class NetworkingFeedback {
                                 ));
 
 
-                                Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
+                                //Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
                             }
                             orderListInterface.gotOrders(listOfOrders);
                             insertOrdersIntoSQLiteDatabase(listOfOrders);
@@ -718,12 +718,12 @@ public class NetworkingFeedback {
                                 ));
 
 
-                                Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
+                                //Log.d("RESPONSE_TESTING", "accept: " + single.getInt("OrderId"));
                             }
                             insertOrderLinesIntoSQLiteDatabase(orderLinesList);
 
                             //Fetching the Orders Lines:
-                            getOrderLines(serverIp, orderDate, routeId, orderId);
+                            //getOrderLines(serverIp, orderDate, routeId, orderId);
 
                             Log.d("RESPONSE_TESTING", "Inner: " + rootArray);
 

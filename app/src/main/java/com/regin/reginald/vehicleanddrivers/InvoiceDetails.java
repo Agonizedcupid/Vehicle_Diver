@@ -44,6 +44,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -372,7 +373,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
     ListView _orderdlistlines, _orderdlistlinescheckd, listviewsummary, fullviewlist, listview1, listview2;
     TextView invoice_no, invoice_nosummary, setInvTotIncl, currentlocation, paymenttype;
     TextView dot, calculated, cost, zero, one, price_vs_quantity, trend_header, avg_quantity, two, three, four, five, six, seven, eight, nine, backspace;
-    Button btndoneoffloading, closelines, closelinessummary, acceptthesummary, checkunattitems, closecash, submitcash, cash, zoom, closefullview, truckorder, cancel_order;
+    Button btndoneoffloading, closelinessummary, acceptthesummary, checkunattitems, closecash, submitcash, cash, zoom, closefullview, cancel_order;
+    private ImageView closelines;
+    private TextView truckorder;
     EditText cashfielddialog;
     int len = 0;
     //http://so-ca.ddns.net:8179/driver/
@@ -426,7 +429,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout._orderdlistlines);
+        //setContentView(R.layout._orderdlistlines);
+        setContentView(R.layout.dummy_layout);
         AndroidNetworking.initialize(getApplicationContext());
 
         Long tsLong = System.currentTimeMillis() / 1000;
@@ -466,7 +470,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         checkLocation();
 
         invoice_no = findViewById(R.id.invoice_no);
-        paymenttype = findViewById(R.id.paymenttype);
+        //paymenttype = findViewById(R.id.paymenttype);
         setInvTotIncl = findViewById(R.id.total);
         currentlocation = findViewById(R.id.currentlocation);
         _orderdlistlines = findViewById(R.id._orderdlistlines);
@@ -630,29 +634,29 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             storename = orderAttributes.getStoreName();
             setInvTotIncl.setText(orderAttributes.getInvTotIncl());
             //paymenttype.setText(orderAttributes.getPaymentType());
-            paymenttype.setText("CASH");
+            //paymenttype.setText("CASH");
             // total = orderAttributes.getInvTotIncl();
         }
 
 
-        ArrayList<OrderLines> oD = dbH.returnOrderLines(returndata.getStringExtra("invoiceno"));
+        List<OrderLinesModel> oD = databaseAdapter.returnOrderLines(returndata.getStringExtra("invoiceno"));
         Log.e("Cas invoi", "****************************++++++++++++++++++++++++++++++++++++++++++++++++++++++" + returndata.getStringExtra("invoiceno"));
         items1 = new ArrayList<Item>();
         itemsChecked = new ArrayList<Item>();
 
-        for (OrderLines orderAttributes : oD) {
+        for (OrderLinesModel orderAttributes : oD) {
 
-            if (orderAttributes.getblnoffloaded().equals("0")) {
+            if (orderAttributes.getBlnoffloaded() == 0) {
 
-                Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
-                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
+                Item item = new Item(orderAttributes.getPastelDescription(), ""+orderAttributes.getPrice(), ""+orderAttributes.getQty(),
+                        "", "Return: " + orderAttributes.getReturnQty(), "Lines", ""+orderAttributes.getBlnoffloaded(), ""+orderAttributes.getOrderDetailId());
                 items1.add(item);
                 Log.e("items1", "" + items1);
             }
-            if (orderAttributes.getblnoffloaded().equals("1")) {
+            if (orderAttributes.getBlnoffloaded() == 1) {
 
-                Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
-                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
+                Item item = new Item(orderAttributes.getPastelDescription(), ""+orderAttributes.getPrice(), ""+orderAttributes.getQty(),
+                        "", "Return: " + orderAttributes.getReturnQty(), "Lines", ""+orderAttributes.getBlnoffloaded(), ""+orderAttributes.getOrderDetailId());
                 itemsChecked.add(item);
                 Log.e("itemsChecked", "" + itemsChecked);
             }
@@ -937,19 +941,23 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 }
             }
         });
-        tickall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbH.updateDeals("Update OrderLines set blnoffloaded = 1 where OrderID='" + InvoiceNo + "'");
-                Intent doc = new Intent(InvoiceDetails.this, InvoiceDetails.class);
-                doc.putExtra("invoiceno", InvoiceNo);
-                doc.putExtra("deldate", deldate);
-                doc.putExtra("ordertype", ordertype);
-                doc.putExtra("routes", route);
-                doc.putExtra("cash", cashPaid);
-                startActivity(doc);
-            }
-        });
+
+        /**
+         * Have to work on that part later on
+         */
+//        tickall.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dbH.updateDeals("Update OrderLines set blnoffloaded = 1 where OrderID='" + InvoiceNo + "'");
+//                Intent doc = new Intent(InvoiceDetails.this, InvoiceDetails.class);
+//                doc.putExtra("invoiceno", InvoiceNo);
+//                doc.putExtra("deldate", deldate);
+//                doc.putExtra("ordertype", ordertype);
+//                doc.putExtra("routes", route);
+//                doc.putExtra("cash", cashPaid);
+//                startActivity(doc);
+//            }
+//        });
 
         cash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1273,91 +1281,96 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             }
         };
         new Thread(runnableNotify).start();
-        checkunattitems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if (!dbH.isoffladedline(InvoiceNo)) {
-                    final Dialog dialog = new Dialog(InvoiceDetails.this, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
-                    dialog.setContentView(R.layout.summarry);
+        /**
+         * TODO: Have to work on that part later on. I've just commented out for now
+         */
 
-                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-                    ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloaded(InvoiceNo);
-                    items2 = new ArrayList<Item>();
-                    items2Checked = new ArrayList<Item>();
-
-                    for (OrderLines orderAttributes : oD) {
-
-                        Log.e("ontheitem", "////////////////////////////" + orderAttributes.getblnoffloaded());
-
-                        if (orderAttributes.getblnoffloaded() == "0") {
-                            Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
-                                    "", "1", "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
-                            items2.add(item);
-                        }
-                        if (orderAttributes.getblnoffloaded() == "1") {
-                            Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
-                                    "", "1", "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
-                            items2Checked.add(item);
-                        }
-
-
-                    }
-
-                    myItemsListAdapter2 = new ItemsListAdapter(InvoiceDetails.this, items2);
-                    myItemsListAdapter2Checked = new ItemsListAdapter(InvoiceDetails.this, items2Checked);
-                    listviewsummary = (ListView) dialog.findViewById(R.id._orderdlistlines);
-
-                    invoice_nosummary = (TextView) dialog.findViewById(R.id.invoice_no);
-                    closelinessummary = (Button) dialog.findViewById(R.id.closelines);
-                    acceptthesummary = (Button) dialog.findViewById(R.id.acceptthesummary);
-                    listviewsummary.setAdapter(myItemsListAdapter2);
-                    closelinessummary.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    acceptthesummary.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.e("this", "++++++++++++++++++++++++++++++++++++****************************l");
-                            Intent b = new Intent(InvoiceDetails.this, InvoiceDetails.class);
-                            b.putExtra("deldate", deldate);
-                            b.putExtra("routes", route);
-                            b.putExtra("ordertype", ordertype);
-                            b.putExtra("invoiceno", InvoiceNo);
-                            b.putExtra("cash", cash.getText().toString());
-                            startActivity(b);
-                        }
-                    });
-                    listviewsummary.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            final Item selectedItem_line = (Item) (parent.getItemAtPosition(position));
-
-                            Intent lineEdit = new Intent(InvoiceDetails.this, LineEdit.class);
-
-                            lineEdit.putExtra("deldate", deldate);
-                            lineEdit.putExtra("routes", route);
-                            lineEdit.putExtra("ordertype", ordertype);
-                            lineEdit.putExtra("orderdetailId", selectedItem_line.ItemString8);
-                            lineEdit.putExtra("invoiceno", InvoiceNo);
-                            startActivity(lineEdit);
-                            return true;
-                        }
-                    });
-                    dialog.show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "You have attended all the Items ",
-                            Toast.LENGTH_LONG).show();
-                }
-
-                //checkAndUncheck(list.get(position).ItemString6, cb.isChecked(),list.get(position).ItemString8);
-            }
-        });
+//        checkunattitems.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if (!dbH.isoffladedline(InvoiceNo)) {
+//                    final Dialog dialog = new Dialog(InvoiceDetails.this, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+//                    dialog.setContentView(R.layout.summarry);
+//
+//                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//
+//                    ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloaded(InvoiceNo);
+//                    items2 = new ArrayList<Item>();
+//                    items2Checked = new ArrayList<Item>();
+//
+//                    for (OrderLines orderAttributes : oD) {
+//
+//                        Log.e("ontheitem", "////////////////////////////" + orderAttributes.getblnoffloaded());
+//
+//                        if (orderAttributes.getblnoffloaded() == "0") {
+//                            Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
+//                                    "", "1", "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
+//                            items2.add(item);
+//                        }
+//                        if (orderAttributes.getblnoffloaded() == "1") {
+//                            Item item = new Item(orderAttributes.getPastelDescription(), orderAttributes.getPrice(), orderAttributes.getQty(),
+//                                    "", "1", "Lines", orderAttributes.getblnoffloaded(), orderAttributes.getOrderDetailId());
+//                            items2Checked.add(item);
+//                        }
+//
+//
+//                    }
+//
+//                    myItemsListAdapter2 = new ItemsListAdapter(InvoiceDetails.this, items2);
+//                    myItemsListAdapter2Checked = new ItemsListAdapter(InvoiceDetails.this, items2Checked);
+//                    listviewsummary = (ListView) dialog.findViewById(R.id._orderdlistlines);
+//
+//                    invoice_nosummary = (TextView) dialog.findViewById(R.id.invoice_no);
+//                    closelinessummary = (Button) dialog.findViewById(R.id.closelines);
+//                    acceptthesummary = (Button) dialog.findViewById(R.id.acceptthesummary);
+//                    listviewsummary.setAdapter(myItemsListAdapter2);
+//                    closelinessummary.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    acceptthesummary.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Log.e("this", "++++++++++++++++++++++++++++++++++++****************************l");
+//                            Intent b = new Intent(InvoiceDetails.this, InvoiceDetails.class);
+//                            b.putExtra("deldate", deldate);
+//                            b.putExtra("routes", route);
+//                            b.putExtra("ordertype", ordertype);
+//                            b.putExtra("invoiceno", InvoiceNo);
+//                            b.putExtra("cash", cash.getText().toString());
+//                            startActivity(b);
+//                        }
+//                    });
+//                    listviewsummary.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                        @Override
+//                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                            final Item selectedItem_line = (Item) (parent.getItemAtPosition(position));
+//
+//                            Intent lineEdit = new Intent(InvoiceDetails.this, LineEdit.class);
+//
+//                            lineEdit.putExtra("deldate", deldate);
+//                            lineEdit.putExtra("routes", route);
+//                            lineEdit.putExtra("ordertype", ordertype);
+//                            lineEdit.putExtra("orderdetailId", selectedItem_line.ItemString8);
+//                            lineEdit.putExtra("invoiceno", InvoiceNo);
+//                            startActivity(lineEdit);
+//                            return true;
+//                        }
+//                    });
+//                    dialog.show();
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "You have attended all the Items ",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//
+//                //checkAndUncheck(list.get(position).ItemString6, cb.isChecked(),list.get(position).ItemString8);
+//            }
+//        });
 
         cancel_order.setOnClickListener(new View.OnClickListener() {
             @Override

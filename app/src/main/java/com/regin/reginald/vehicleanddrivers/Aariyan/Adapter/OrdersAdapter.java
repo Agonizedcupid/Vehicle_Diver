@@ -65,7 +65,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (model.getThreshold().equals("0")) {
+                //Original Threshold 0 & 1 that i understood from the older source code:
+                //if (model.getThreshold().equals("0")) {
+                // Using 50 for the testing purpose
+                if (model.getThreshold().equals("50")) {
                     Intent b = new Intent(context, InvoiceDetails.class);
                     //UpdateDeliverySeq();
                     b.putExtra("deldate", Constant.DELIVERY_DATE);
