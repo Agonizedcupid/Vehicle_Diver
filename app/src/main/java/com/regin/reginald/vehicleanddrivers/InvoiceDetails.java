@@ -892,7 +892,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-
+////////////////////////////////////      Left List       /////////////////////////////////////////////////////////////////////////////////////////////
         _orderdlistlines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -903,7 +903,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 Item associatedItem = associatedList.get(position);
                 if (removeItemToList(associatedList, associatedItem)) {
 
-                    dbH.updateDeals("Update OrderLines set blnoffloaded=1,Uploaded=0 Where OrderDetailId='" + selectedItem.ItemString8.toString() + "'");
+                    //dbH.updateDeals("Update OrderLines set blnoffloaded=1,Uploaded=0 Where OrderDetailId='" + selectedItem.ItemString8.toString() + "'");
+                    //dbH.updateDeals("Update OrderLines set blnoffloaded=1,Uploaded=0 Where OrderDetailId='" + selectedItem.ItemString8.toString() + "'");
+                    databaseAdapter.listSwappingUpdate(selectedItem.ItemString8, 1);
                     view.invalidate();
                     associatedAdapter.notifyDataSetChanged();
 
@@ -916,7 +918,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 }
             }
         });
-
+//////////////////////////////////////////////////////    Right List    ///////////////////////////////////////////////////////////////////////////
         _orderdlistlinescheckd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -927,8 +929,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 Item associatedItem = associatedList.get(position);
                 if (removeItemToList(associatedList, associatedItem)) {
 
-                    dbH.updateDeals("Update OrderLines set blnoffloaded=0,Uploaded=0 Where OrderDetailId='" + selectedItem.ItemString8.toString() + "'");
-
+                    //dbH.updateDeals("Update OrderLines set blnoffloaded=0,Uploaded=0 Where OrderDetailId='" + selectedItem.ItemString8.toString() + "'");
+                    databaseAdapter.listSwappingUpdate(selectedItem.ItemString8, 0);
                     view.invalidate();
                     associatedAdapter.notifyDataSetChanged();
 

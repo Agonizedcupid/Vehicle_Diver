@@ -152,6 +152,7 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.offLoadComment, model.getOffLoadComment());
         contentValues.put(DatabaseHelper.blnoffloaded, model.getBlnoffloaded());
         contentValues.put(DatabaseHelper.strCustomerReason, model.getStrCustomerReason());
+        contentValues.put(DatabaseHelper.Uploaded, model.getUploaded());
         contentValues.put(DatabaseHelper.intWareHouseId, model.getIntWareHouseId());
         contentValues.put(DatabaseHelper.wareHouseName, model.getWareHouseName());
 
@@ -425,6 +426,7 @@ public class DatabaseAdapter {
                 DatabaseHelper.offLoadComment,
                 DatabaseHelper.blnoffloaded,
                 DatabaseHelper.strCustomerReason,
+                DatabaseHelper.Uploaded,
                 DatabaseHelper.intWareHouseId,
                 DatabaseHelper.wareHouseName
         };
@@ -467,8 +469,9 @@ public class DatabaseAdapter {
                     cursor.getString(21),
                     cursor.getInt(22),
                     cursor.getString(23),
-                    cursor.getString(24),
-                    cursor.getString(25)
+                    cursor.getInt(24),// Extra for uploaded
+                    cursor.getString(25),
+                    cursor.getString(26)
             );
             list.add(model);
         }
@@ -476,15 +479,15 @@ public class DatabaseAdapter {
     }
 
     @SuppressLint("Range")
-    public int returnOrderLinesCrateCount(String InvoiceNo){
+    public int returnOrderLinesCrateCount(String InvoiceNo) {
 
         int cratesCount = 0;
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select qty from '"+DatabaseHelper.ORDERS_LINES_TABLE_NAME+"' where orderId ='"+InvoiceNo+"'", null);
+        Cursor cursor = db.rawQuery("Select qty from '" + DatabaseHelper.ORDERS_LINES_TABLE_NAME + "' where orderId ='" + InvoiceNo + "'", null);
 
         if (cursor.moveToFirst()) {
             do {
-                cratesCount = cratesCount + Integer.parseInt(cursor.getString(cursor.getColumnIndex("qty")) ) ;
+                cratesCount = cratesCount + Integer.parseInt(cursor.getString(cursor.getColumnIndex("qty")));
 
             } while (cursor.moveToNext());
         }
@@ -494,12 +497,12 @@ public class DatabaseAdapter {
     }
 
     @SuppressLint("Range")
-    public List<OrderLinesModel> returnOrderLines(String InvoiceNo){
+    public List<OrderLinesModel> returnOrderLines(String InvoiceNo) {
 
         List<OrderLinesModel> listOfOrdersLines = new ArrayList<>();
         int cratesCount = 0;
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from '"+DatabaseHelper.ORDERS_LINES_TABLE_NAME+"' where orderId ='"+InvoiceNo+"'", null);
+        Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_LINES_TABLE_NAME + "' where orderId ='" + InvoiceNo + "'", null);
 
         while (cursor.moveToNext()) {
             OrderLinesModel model = new OrderLinesModel(
@@ -526,8 +529,9 @@ public class DatabaseAdapter {
                     cursor.getString(21),
                     cursor.getInt(22),
                     cursor.getString(23),
-                    cursor.getString(24),
-                    cursor.getString(25)
+                    cursor.getInt(24), //Extra for uploaded
+                    cursor.getString(25),
+                    cursor.getString(26)
             );
             listOfOrdersLines.add(model);
         }
@@ -538,6 +542,23 @@ public class DatabaseAdapter {
     /**
      * UPDATE Database
      */
+
+    // Removing the Item from Right List to the Left List:
+    public long listSwappingUpdate(String orderDetailedId, int offloaded) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String selection = DatabaseHelper.orderDetailId + " LIKE ? ";
+        String[] args = {"" + orderDetailedId};
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.blnoffloaded, offloaded);
+        contentValues.put(DatabaseHelper.Uploaded, 0);
+
+
+        long ids = database.update(DatabaseHelper.ORDERS_LINES_TABLE_NAME, contentValues, selection, args);
+
+        return ids;
+    }
+
 
     /**
      * DELETE Database
@@ -623,7 +644,7 @@ public class DatabaseAdapter {
         private Context context;
 
         private static final String DATABASE_NAME = "drivers_app.db";
-        private static final int VERSION_NUMBER = 12;
+        private static final int VERSION_NUMBER = 14;
 
         private static final String UID = "_id";
 
@@ -762,6 +783,8 @@ public class DatabaseAdapter {
         private static final String strCustomerReason = "strCustomerReason";
         private static final String intWareHouseId = "intWareHouseId";
         private static final String wareHouseName = "wareHouseName";
+        //This is an extra Quantity (Not present in the API orderLines.php) taken by the reference of Older code:
+        private static final String Uploaded = "Uploaded";
         //Creating the Order Table:
         private static final String CREATE_ORDERS_LINES_TABLE = "CREATE TABLE " + ORDERS_LINES_TABLE_NAME
                 + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -788,6 +811,7 @@ public class DatabaseAdapter {
                 + offLoadComment + " VARCHAR(255),"
                 + blnoffloaded + " INTEGER,"
                 + strCustomerReason + " VARCHAR(255),"
+                + Uploaded + " INTEGER,"
                 + intWareHouseId + " VARCHAR(255),"
                 + wareHouseName + " VARCHAR(255));";
         private static final String DROP_ORDERS_LINES_TABLE = "DROP TABLE IF EXISTS " + ORDERS_LINES_TABLE_NAME;

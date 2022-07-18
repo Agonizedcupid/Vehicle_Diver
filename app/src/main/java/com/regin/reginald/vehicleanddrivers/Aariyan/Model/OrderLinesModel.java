@@ -46,13 +46,14 @@ public class OrderLinesModel {
     public String offLoadComment;
     public int blnoffloaded;
     public String strCustomerReason;
+    public int uploaded;
     public String intWareHouseId;
     @JsonProperty("WareHouseName")
     public String wareHouseName;
 
     public OrderLinesModel(){}
 
-    public OrderLinesModel(String orderId, String invoiceNo, String customerPastelCode, String storeName, String deliveryDate, double latitude, double longitude, double orderValueExc, double orderValueInc, String deliveryAddress, String user, int orderMass, int productId, int qty, double price, String pastelDescription, String pastelCode, int orderDetailId, String comment, String returnQty, String offLoadComment, int blnoffloaded, String strCustomerReason, String intWareHouseId, String wareHouseName) {
+    public OrderLinesModel(String orderId, String invoiceNo, String customerPastelCode, String storeName, String deliveryDate, double latitude, double longitude, double orderValueExc, double orderValueInc, String deliveryAddress, String user, int orderMass, int productId, int qty, double price, String pastelDescription, String pastelCode, int orderDetailId, String comment, String returnQty, String offLoadComment, int blnoffloaded, String strCustomerReason, int uploaded, String intWareHouseId, String wareHouseName) {
         this.orderId = orderId;
         this.invoiceNo = invoiceNo;
         this.customerPastelCode = customerPastelCode;
@@ -76,6 +77,7 @@ public class OrderLinesModel {
         this.offLoadComment = offLoadComment;
         this.blnoffloaded = blnoffloaded;
         this.strCustomerReason = strCustomerReason;
+        this.uploaded = uploaded;
         this.intWareHouseId = intWareHouseId;
         this.wareHouseName = wareHouseName;
     }
@@ -278,5 +280,13 @@ public class OrderLinesModel {
 
     public void setWareHouseName(String wareHouseName) {
         this.wareHouseName = wareHouseName;
+    }
+
+    public int getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(int uploaded) {
+        this.uploaded = uploaded;
     }
 }
