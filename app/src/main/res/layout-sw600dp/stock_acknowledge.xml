@@ -1,39 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
-
-    <com.github.gcacace.signaturepad.views.SignaturePad
-        android:id="@+id/ack_sign"
-        android:layout_width="match_parent"
-        android:layout_height="502dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="75dp"
-        android:background="@android:color/darker_gray" />
-
-    <Button
-        android:id="@+id/btn_submit_ackn"
-        android:layout_width="match_parent"
-        android:layout_height="66dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:background="@android:color/holo_green_dark"
-        android:text="SUBMIT" />
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="Please sign below  before you leave the warehouse"
+        android:textAlignment="center"
         android:textColor="@android:color/background_dark"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/signatureCard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/btn_submit_ackn"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/textView16">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/ack_sign"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:padding="15dp"
+                app:penColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/undoSignature"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/non_pressed"
+                android:src="@drawable/undo_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_submit_ackn"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="66dp"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_marginStart="0dp"-->
+    <!--        android:background="@android:color/holo_green_dark"-->
+    <!--        android:text="SUBMIT" />-->
+
+    <TextView
+        android:id="@+id/btn_submit_ackn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:background="@drawable/button_ripple"
+        android:gravity="center"
+        android:text="SUBMIT"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signatureCard" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/drawable/splash_screen_background.xml" value="0.221" />
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/layout-sw600dp/stock_acknowledge.xml" value="0.290234375" />
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/layout/activity_main.xml" value="0.38697916666666665" />
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/layout/activity_order_not_uploaded.xml" value="0.38697916666666665" />
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/layout/activity_orders.xml" value="0.38697916666666665" />
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/layout/dummy_layout.xml" value="0.38697916666666665" />
+        <entry key="..\:/Android/Practice/Vehicle_Diver/app/src/main/res/layout/stock_acknowledge.xml" value="0.38697916666666665" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/drawable-v26/tab_bar_background.xml" value="0.181" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/drawable-v26/white_background.xml" value="0.14" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.1865" />
