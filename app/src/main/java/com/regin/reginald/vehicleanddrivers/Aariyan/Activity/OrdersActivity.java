@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -69,7 +70,7 @@ public class OrdersActivity extends BaseActivity {
     private OrdersViewModel orderViewModel;
     private RecyclerView recyclerView;
 
-    private TextView routeNames, orderTypes, dDate;
+    private TextView routeNames, orderTypes, dDate, endTripBtn, uploadedCount;
 
     private ImageView backBtn;
     private TextView acknowledgeStockBtn;
@@ -77,6 +78,10 @@ public class OrdersActivity extends BaseActivity {
     private ProgressBar progressBar;
 
     String SERVERIP;
+
+    Handler handler = new Handler();
+    Runnable runnableUpload;
+    int delayUpload = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,59 +116,79 @@ public class OrdersActivity extends BaseActivity {
         acknowledgeStockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(OrdersActivity.this, android.R.style.Theme_Light_NoTitleBar);
-                dialog.setContentView(R.layout.stock_acknowledge);
-
-      /*  TextView textView = new TextView(context);
-        textView.setText();*/
-                dialog.setTitle("Please Type in the Cash");
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                TextView btn_submit_ackn = dialog.findViewById(R.id.btn_submit_ackn);
-                ImageView undoSignature = dialog.findViewById(R.id.undoSignature);
-                undoSignature.setVisibility(View.GONE);
-                SignaturePad ack_sign = (SignaturePad) dialog.findViewById(R.id.ack_sign);
-                ack_sign.setOnSignedListener(new SignaturePad.OnSignedListener() {
-                    @Override
-                    public void onStartSigning() {
-                        undoSignature.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onSigned() {
-                        undoSignature.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onClear() {
-                        undoSignature.setVisibility(View.GONE);
-                    }
-                });
-
-                undoSignature.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ack_sign.clear();
-                    }
-                });
-
-                btn_submit_ackn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bitmap signatureBitmap = ack_sign.getSignatureBitmap();
-                        //new UploadImage(signatureBitmap,IDs).execute();
-                        //new MainActivity.UploadImage(signatureBitmap,selectedItem.ItemString3,lat,lon, tomorrowDate).execute();
-                        if (addSignatureJpg(signatureBitmap, "image")) {
-
-                            Toast.makeText(OrdersActivity.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(OrdersActivity.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                dialog.show();
+                acknowledgeStockFunc();
             }
         });
         progressBar = findViewById(R.id.progressbar);
+
+        endTripBtn = findViewById(R.id.endTripBtn);
+        uploadedCount = findViewById(R.id.uploadedCount);
+
+        //counting the Upload & Non-Upload
+        uploadedNNonUploaded();
+    }
+
+    private void uploadedNNonUploaded() {
+        uploadedCount.setText(databaseAdapter.OrdersNotPostedToTheOffice());
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                Toast.makeText(OrdersActivity.this, "You Are Connected ", Toast.LENGTH_SHORT).show();
+                uploadedCount.setText(databaseAdapter.OrdersNotPostedToTheOffice());
+            }
+        }, delayUpload);
+    }
+
+    private void acknowledgeStockFunc() {
+        Dialog dialog = new Dialog(OrdersActivity.this, android.R.style.Theme_Light_NoTitleBar);
+        dialog.setContentView(R.layout.stock_acknowledge);
+
+      /*  TextView textView = new TextView(context);
+        textView.setText();*/
+        dialog.setTitle("Please Type in the Cash");
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        TextView btn_submit_ackn = dialog.findViewById(R.id.btn_submit_ackn);
+        ImageView undoSignature = dialog.findViewById(R.id.undoSignature);
+        undoSignature.setVisibility(View.GONE);
+        SignaturePad ack_sign = (SignaturePad) dialog.findViewById(R.id.ack_sign);
+        ack_sign.setOnSignedListener(new SignaturePad.OnSignedListener() {
+            @Override
+            public void onStartSigning() {
+                undoSignature.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSigned() {
+                undoSignature.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onClear() {
+                undoSignature.setVisibility(View.GONE);
+            }
+        });
+
+        undoSignature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ack_sign.clear();
+            }
+        });
+
+        btn_submit_ackn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap signatureBitmap = ack_sign.getSignatureBitmap();
+                //new UploadImage(signatureBitmap,IDs).execute();
+                //new MainActivity.UploadImage(signatureBitmap,selectedItem.ItemString3,lat,lon, tomorrowDate).execute();
+                if (addSignatureJpg(signatureBitmap, "image")) {
+
+                    Toast.makeText(OrdersActivity.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(OrdersActivity.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog.show();
     }
 
     private boolean addSignatureJpg(Bitmap signature, String invoiceNo) {

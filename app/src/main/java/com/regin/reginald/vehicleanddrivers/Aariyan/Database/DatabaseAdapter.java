@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -537,6 +538,24 @@ public class DatabaseAdapter {
         }
 
         return listOfOrdersLines;
+    }
+
+    public String OrdersNotPostedToTheOffice() {
+        //X/Y
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int getString = 0;
+        int totalOrders = 0;
+        try {
+            Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_TABLE_NAME
+                    + "' where uploaded=0 ", null);
+            Cursor cursorUploaded = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_TABLE_NAME
+                    + "' where uploaded=1 ", null);
+            getString = cursor.getCount();
+            totalOrders = cursorUploaded.getCount();
+        } catch (Exception e) {
+
+        }
+        return getString + "/" + totalOrders + " NOT UPLOADED";
     }
 
     /**
