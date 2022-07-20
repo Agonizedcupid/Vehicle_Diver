@@ -1,5 +1,7 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Activity;
 
+import static com.regin.reginald.vehicleanddrivers.MainActivity.round;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -22,6 +24,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -58,7 +61,12 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OrdersActivity extends BaseActivity {
@@ -70,7 +78,7 @@ public class OrdersActivity extends BaseActivity {
     private OrdersViewModel orderViewModel;
     private RecyclerView recyclerView;
 
-    private TextView routeNames, orderTypes, dDate, endTripBtn, uploadedCount;
+    private TextView routeNames, orderTypes, dDate, endTripBtn, tripInfoBtn, uploadedCount;
 
     private ImageView backBtn;
     private TextView acknowledgeStockBtn;
@@ -124,8 +132,68 @@ public class OrdersActivity extends BaseActivity {
         endTripBtn = findViewById(R.id.endTripBtn);
         uploadedCount = findViewById(R.id.uploadedCount);
 
+        tripInfoBtn = findViewById(R.id.tripInfoBtn);
+        tripInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTripInfo();
+            }
+        });
+
         //counting the Upload & Non-Upload
         uploadedNNonUploaded();
+    }
+
+    private void startTripInfo() {
+        tripInfoBtn.setTextColor(Color.BLUE);
+        UpdateDeliverySeq();
+        String[] finaldistanceAndTime = distanceAndTime();
+
+        double t = DriversHours(mass, 0, 1, Double.parseDouble(finaldistanceAndTime[0]));
+        BigDecimal result;
+        result = round((float) t, 3);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(OrdersActivity.this);
+        View view;
+        view = LayoutInflater.from(OrdersActivity.this).inflate(R.layout.trip_info_dialog, null);
+        TextView title = (TextView) view.findViewById(R.id.title);
+        TextView delv_time = (TextView) view.findViewById(R.id.delv_time);
+        TextView massll = (TextView) view.findViewById(R.id.mass);
+        TextView distancetocover = (TextView) view.findViewById(R.id.distancetocover);
+        //progressDoalog.dismiss();
+
+        double x = result.doubleValue() - Math.floor(result.doubleValue());
+        Log.e("x****", "****************************************************************" + x);
+        int tdh = result.intValue() / 1;
+        double minutes = x * 60;
+        title.setText("Trip info");
+        delv_time.setText("" + tdh + ":" + (int) minutes + "");
+        massll.setText("" + mass);
+        distancetocover.setText("" + finaldistanceAndTime[0] + "km And " + finaldistanceAndTime[1] + " minutes");
+
+        builder.setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(OrdersActivity.this, "Thank you", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("START TRIP", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkLocation();
+
+                String coordinates = lat + "," + lon;
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_YEAR, 0);
+                Date tomorrow = calendar.getTime();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String tomorrowDate = dateFormat.format(tomorrow);
+                dbH.updateDeals("UPDATE OrderHeaders set StartTripTime='" + tomorrowDate + "', strCoordinateStart='" + coordinates + "'");
+            }
+        });
+        builder.setView(view);
+
+        builder.show();
     }
 
     private void uploadedNNonUploaded() {

@@ -414,6 +414,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
         Log.e("hasdata", "***********************" + dbH.hasData());
+
+        // TODO: it's not done yet.
         if (dbH.hasData()) {
             ArrayList<Orders> oH = dbH.returnOrderHeaders();
             items1 = new ArrayList<Item>();
