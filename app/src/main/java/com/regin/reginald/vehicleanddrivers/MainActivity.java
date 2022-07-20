@@ -50,6 +50,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -80,6 +82,8 @@ import com.regin.reginald.model.Orders;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.model.WareHouses;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 
 import org.apache.http.HttpResponse;
@@ -325,10 +329,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int delayUpload = 10000;
     boolean hasCratesModule = false;
 
+    DatabaseAdapter databaseAdapter;
+
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_new);
         AndroidNetworking.initialize(getApplicationContext());
 
 
@@ -340,26 +349,42 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //mDatabaseHelper = DatabaseHelper.getHelper(this);
         //   final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
         //db = this.openOrCreateDatabase("LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-        ArrayList<SettingsModel> settIP = dbH.getSettings();
+//        ArrayList<SettingsModel> settIP = dbH.getSettings();
+//
+//        for (SettingsModel orderAttributes : settIP) {
+//            SERVERIP = orderAttributes.getstrServerIp();
+//        }
 
-        for (SettingsModel orderAttributes : settIP) {
-            SERVERIP = orderAttributes.getstrServerIp();
+        databaseAdapter = new DatabaseAdapter(this);
+        List<IpModel> list = databaseAdapter.getServerIpModel();
+        if (list.size() > 0) {
+            SERVERIP = list.get(0).getServerIp();
+        } else {
+            SERVERIP = "";
         }
-        start_trip = (Button) findViewById(R.id.start_trip);
-        sort_order = (Button) findViewById(R.id.sort_order);
-        endtrip = (Button) findViewById(R.id.endtrip);
-        deliverdate = (TextView) findViewById(R.id.deliverdate);
-        ordertype = (TextView) findViewById(R.id.ordertype);
-        routename = (TextView) findViewById(R.id.routename);
-        calcr_plan = (TextView) findViewById(R.id.calcr_plan);
-        coord = (TextView) findViewById(R.id.coord);
-        demail = (TextView) findViewById(R.id.demail);
+
+        initUI();
+
+    }
+
+    private void initUI() {
+        start_trip =  findViewById(R.id.start_trip);
+        sort_order =  findViewById(R.id.sort_order);
+        endtrip =  findViewById(R.id.endtrip);
+        deliverdate =  findViewById(R.id.deliverdate);
+        ordertype =  findViewById(R.id.ordertype);
+        routename =  findViewById(R.id.routename);
+        calcr_plan =  findViewById(R.id.calcr_plan);
+        coord =  findViewById(R.id.coord);
+        demail =  findViewById(R.id.demail);
         passwd = (TextView) findViewById(R.id.passwd);
         not_uploade = (TextView) findViewById(R.id.not_uploade);
         // dte_from = (EditText) findViewById(R.id.datetime);
-        _orderdlist = (CustomListView) findViewById(R.id._orderdlistlines);
+        //_orderdlist = (CustomListView) findViewById(R.id._orderdlistlines);
         acknowledge_stock = (Button) findViewById(R.id.acknowledge_stock);
 
+        recyclerView = findViewById(R.id.orderRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (dbH.checkiflinesuploaded() > 0) {
             //
@@ -413,6 +438,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 startActivity(i);
             }
         });
+        ////////////////////////////////////////////                  Till is done  //////////////////////////////////////////////////////////////
         Log.e("hasdata", "***********************" + dbH.hasData());
 
         // TODO: it's not done yet.
@@ -691,7 +717,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         textView.setText();*/
                 dialog.setTitle("Please Type in the Cash");
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                btn_submit_ackn = (Button) dialog.findViewById(R.id.btn_submit_ackn);
+                btn_submit_ackn =  dialog.findViewById(R.id.btn_submit_ackn);
                 ack_sign = (SignaturePad) dialog.findViewById(R.id.ack_sign);
 
                 btn_submit_ackn.setOnClickListener(new View.OnClickListener() {

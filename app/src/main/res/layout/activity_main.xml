@@ -86,7 +86,6 @@
             android:background="@android:color/darker_gray"
             android:text="END TRIP"
             android:visibility="gone" />
-
         <TextView
             android:id="@+id/calcr_plan"
             android:layout_width="206dp"
@@ -103,7 +102,6 @@
             android:layout_above="@+id/calcr_plan"
             android:layout_alignParentStart="true"
             android:text="acknowledge" />
-
         <TextView
             android:id="@+id/coord"
             android:layout_width="wrap_content"

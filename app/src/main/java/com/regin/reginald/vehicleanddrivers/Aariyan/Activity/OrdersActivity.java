@@ -2,26 +2,35 @@ package com.regin.reginald.vehicleanddrivers.Aariyan.Activity;
 
 import static com.regin.reginald.vehicleanddrivers.MainActivity.round;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +43,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.maps.GeoApiContext;
+import com.regin.reginald.model.Orders;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Abstraction.BaseActivity;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Adapter.OrdersAdapter;
@@ -41,9 +63,11 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.Resource;
 import com.regin.reginald.vehicleanddrivers.Aariyan.ViewModel.OrdersViewModel;
 import com.regin.reginald.vehicleanddrivers.Data;
+import com.regin.reginald.vehicleanddrivers.GPSTracker;
 import com.regin.reginald.vehicleanddrivers.MainActivity;
 import com.regin.reginald.vehicleanddrivers.R;
 
@@ -62,6 +86,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +94,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class OrdersActivity extends BaseActivity {
+public class OrdersActivity extends BaseActivity
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private IpModel serverModel;
     private String deliveryDate;
@@ -78,7 +104,7 @@ public class OrdersActivity extends BaseActivity {
     private OrdersViewModel orderViewModel;
     private RecyclerView recyclerView;
 
-    private TextView routeNames, orderTypes, dDate, endTripBtn, tripInfoBtn, uploadedCount;
+    private TextView routeNames, orderTypes, dDate, endTripBtn, tripInfoBtn, uploadedCount, calcr_plan, coord;
 
     private ImageView backBtn;
     private TextView acknowledgeStockBtn;
@@ -90,6 +116,41 @@ public class OrdersActivity extends BaseActivity {
     Handler handler = new Handler();
     Runnable runnableUpload;
     int delayUpload = 10000;
+    double lat = -33.966145;
+    double lon = 22.466218, custlat, custlon;
+
+    /**
+     * Copied from his Code
+     */
+    double prevlat = -33.966145;
+    double prevlon = 22.466218;
+    static double PI_RAD = Math.PI / 180.0;
+    GPSTracker gps;
+    GeoApiContext context = new GeoApiContext.Builder()
+            .apiKey("AIzaSyC5vAgb-nawregIa5gRRG34wnabasN3blk")
+            .build();
+    private static final String TAG = "InvoiceActivity";
+    private TextView mLatitudeTextView;
+    private TextView mLongitudeTextView;
+    private GoogleApiClient mGoogleApiClient;
+    private android.location.Location mLocation;
+    private LocationManager mLocationManager;
+
+    private LocationRequest mLocationRequest;
+    private com.google.android.gms.location.LocationListener listener;
+    private long UPDATE_INTERVAL = 2 * 1000;  /* 10 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+
+    private LocationManager locationManager;
+    Dialog dialog;
+    private FirebaseAuth mAuth;
+
+    boolean hasCratesModule = false;
+    private String DriverEmail;
+    double mass;
+    private String DriverPassword;
+
+    private static List<OrderModel> listOfOrders = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +178,7 @@ public class OrdersActivity extends BaseActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UpdateDeliverySeq();
                 finish();
             }
         });
@@ -140,8 +202,231 @@ public class OrdersActivity extends BaseActivity {
             }
         });
 
+        calcr_plan = findViewById(R.id.calcr_plan);
+        coord = findViewById(R.id.coord);
+
+        //instantiation:
+        instantiate();
+
         //counting the Upload & Non-Upload
         uploadedNNonUploaded();
+    }
+
+    public void UpdateDeliverySeq() {
+
+        if (listOfOrders.size() != 0 ){
+            for (int i = 0; i < listOfOrders.size(); i++) {
+
+                OrderModel model = listOfOrders.get(i);
+
+                int newSeq = i + 1;
+                databaseAdapter.updateOrdersHeaderDeliverySequenceByInvoice(newSeq,model.getInvoiceNo());
+                //dbH.updateDeals("Update OrderHeaders set DeliverySeq=" + newSeq + " Where InvoiceNo='" + model.getInvoiceNo() + "'");
+            }
+        }
+
+//        for (int i = 0; i < _orderdlist.getCount(); i++) {
+//
+//            //yList.getAdapter().getView(i, null, null);
+//            View v = _orderdlist.getAdapter().getView(i, null, null);
+//
+//            TextView et = (TextView) v.findViewById(R.id.orderid);
+//
+//            int newSeq = i + 1;
+//            dbH.updateDeals("Update OrderHeaders set DeliverySeq=" + newSeq + " Where InvoiceNo='" + et.getText().toString() + "'");
+//        }
+
+
+    }
+
+    private void instantiate() {
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        mAuth = FirebaseAuth.getInstance();
+
+
+        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        Runnable runnable = new Runnable() {
+            public void run() {
+                try {
+                    checkLocation();
+
+                } catch (Exception var3) {
+                    Log.e("**********", "Crashed " + var3);
+
+
+                }
+
+            }
+        };
+        (new Thread(runnable)).start();
+
+
+        if (databaseAdapter.checkIfLinesUploaded() > 0) {
+            //
+            if (isInternetAvailable()) {
+                Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
+                OrderHeaderPost();
+            }
+        }
+
+        //has_DATA();
+
+    }
+
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            //You can replace it with your name
+            return !ipAddr.equals("");
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+//    private void has_DATA() {
+//        // TODO: it's not done yet.
+//        if (databaseAdapter.hasData()) {
+//            List<OrderModel> oH = databaseAdapter.returnOrderHeaders();
+//            //items1 = new ArrayList<MainActivity.Item>();
+//            //listdata = new ArrayList<Data>();
+//
+//            for (OrderModel orderAttributes : oH) {
+//               /* Log.e("itemsval","***"+orderAttributes.getStoreName()+"****"+orderAttributes.getDeliveryAddress()+"*******"+orderAttributes.getInvoiceNo()+"-------"+orderAttributes.getOrderMass());
+//                Item item = new Item(orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(),orderAttributes.getInvoiceNo(),
+//                        orderAttributes.getoffloaded(),"1","Header",orderAttributes.getCashPaid(),orderAttributes.getoffloaded());
+//                items1.add(item);*/
+//
+//
+//                Data listItem = new Data((orderAttributes.getStoreName()).trim(), (orderAttributes.getDeliveryAddress()).trim(), (orderAttributes.getInvoiceNo()).trim(),
+//                        ""+orderAttributes.getOffloaded(), "1", "Header", orderAttributes.getCashPaid(), ""+orderAttributes.getOffloaded(), ""+orderAttributes.getLatitude(), ""+orderAttributes.getLongitude(), Integer.toString(orderAttributes.getDeliverySeq()),
+//                        orderAttributes.getThreshold());
+//                //listdata.add(listItem);
+//                mass = mass + Double.parseDouble(orderAttributes.getOrderMass());
+//                acknowledgeStockBtn.setText(orderAttributes.getDriverName() + " Please acknowledge the stock");
+//                DriverEmail = orderAttributes.getDriverEmail();
+//                DriverPassword = orderAttributes.getDriverPassword();
+//
+//                mAuth.createUserWithEmailAndPassword(DriverEmail, DriverPassword)
+//                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                if (task.isSuccessful()) {
+//                                    // Sign in success, update UI with the signed-in user's information
+//                                    Log.d(TAG, "createUserWithEmail:success");
+//                                    String user = mAuth.getCurrentUser().getUid();
+//                                    String email = mAuth.getCurrentUser().getEmail();
+//                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//                                    DatabaseReference myRef = database.getReference().child("Driver").child("users").child(user).child("lat");
+//                                    DatabaseReference myRef2 = database.getReference().child("Driver").child("users").child(user).child("lon");
+//                                    DatabaseReference myRefEmail = database.getReference().child("Driver").child("users").child(user).child("email");
+//                                    DatabaseReference myRefstops = database.getReference().child("Driver").child("users").child(user).child("stops");
+//                                    DatabaseReference myRefroute = database.getReference().child("Driver").child("users").child(user).child("route");
+//                                    DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
+//                                    DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
+//
+//                                    myRef.setValue(Double.toString(lat));
+//                                    myRef2.setValue(Double.toString(lon));
+//                                    myRefEmail.setValue(email);
+//                                    myRefstops.setValue(databaseAdapter.countSigned());
+//                                    myRefroute.setValue(routeNames.getText().toString());
+//                                    myRefdeldate.setValue(dDate.getText().toString());
+//                                    myRefordertype.setValue(orderTypes.getText().toString());
+//                                    //LatLng latLng = new LatLng(lat, lon);
+//                                    //updateUI(user);
+//                                } else {
+//                                    // If sign in fails, display a message to the user.
+//                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//
+//                                }
+//
+//                                // ...
+//                            }
+//                        });
+//                //orderAttributes.getPrice()
+//                //orderAttributes.getPrice()
+//            }
+//            //myItemsListAdapter = new ItemsListAdapter(MainActivity.this, items1);
+//            // _orderdlist.setAdapter(myItemsListAdapter);
+//
+////            Adapter adapter = new Adapter(this, listdata, new Adapter.Listener() {
+////                @Override
+////                public void onGrab(int position, TableLayout row) {
+//////                    _orderdlist.onGrab(position, row);
+////                }
+////            });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////            _orderdlist.setAdapter(adapter);
+////            _orderdlist.setListener(new CustomListView.Listener() {
+////                @Override
+////                public void swapElements(int indexOne, int indexTwo) {
+////                    Data temp = listdata.get(indexOne);
+////                    listdata.set(indexOne, listdata.get(indexTwo));
+////                    listdata.set(indexTwo, temp);
+////                }
+////            });
+//        } else {
+//            uploadedCount.setText("");
+//            startProgress("Syncing");
+////            ArrayList<Routes> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
+////            ArrayList<Routes> ordertyp = dbH.multiId("Select * from OrderTypes where OrderType ='" + ordertype.getText().toString() + "'");
+//
+//            List<RouteModel> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
+//            //ArrayList<RouteModel> ordertyp = dbH.multiId("Select * from OrderTypes where OrderType ='" + ordertype.getText().toString() + "'");
+//
+//            for (Routes orderAttributes4 : routesdata) {
+//                routeidreturned = orderAttributes4.getRouteName();
+//            }
+//
+//            for (Routes orderAttributes4 : ordertyp) {
+//                ordertypeidreturned = orderAttributes4.getRouteName();
+//            }
+//            Log.e("try", "******" + SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+//            new MainActivity.getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+//
+//        }
+//    }
+
+    private boolean checkLocation() {
+        if (!isLocationEnabled())
+            showAlert();
+        return isLocationEnabled();
+    }
+
+    private void showAlert() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
+                        "use this app")
+                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                    }
+                });
+        dialog.show();
+    }
+
+    private boolean isLocationEnabled() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void startTripInfo() {
@@ -194,6 +479,53 @@ public class OrdersActivity extends BaseActivity {
         builder.setView(view);
 
         builder.show();
+    }
+
+    public String[] distanceAndTime() {
+        List<OrderModel> orderheader = databaseAdapter.returnOrderHeaders();
+        //order headers
+        String[] results = new String[2];
+        double totdistance = 0;
+        double totduration = 0;
+        ArrayList<String> stringArrayList = new ArrayList<String>();
+
+        stringArrayList.add(lat + "," + lon);
+        for (OrderModel orderAttributes : orderheader) {
+            stringArrayList.add(orderAttributes.getLatitude() + "," + orderAttributes.getLongitude());
+        }
+        String[] stringArray = stringArrayList.toArray(new String[stringArrayList.size()]);
+        //start_trip.setBackgroundColor(Color.BLUE);
+        String coordinate1 = "";
+        String coordinate2 = "";
+        int k = 0;
+
+        for (int i = 0; i < stringArray.length; i++) {
+
+
+            if (i != (stringArray.length - 1)) {
+                coordinate1 = stringArray[k];
+                coordinate2 = stringArray[i + 1];
+                String[] res = reurndistancetime(coordinate1, coordinate2);
+
+                if (res[0] == null || res[0].equals("NULL")) {
+                    totdistance = totdistance + Double.parseDouble("0");
+                    totduration = totduration + Double.parseDouble("0");
+                } else {
+                    totdistance = totdistance + Double.parseDouble(res[0]);
+                    totduration = totduration + Double.parseDouble(res[1]);
+                }
+
+                //Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+                k = i + 1;
+            }
+
+        }
+        results[0] = String.format("%.0f", totdistance);
+        results[1] = String.format("%.0f", totduration);
+        //Do something with result here
+
+
+        return results;
     }
 
     private void uploadedNNonUploaded() {
@@ -379,6 +711,8 @@ public class OrdersActivity extends BaseActivity {
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         progressBar.setVisibility(View.GONE);
+                        createFirebaseAuthentications(listResource.response);
+                        listOfOrders.addAll(listResource.response);
                         Toast.makeText(OrdersActivity.this, "Size: " + listResource.response.size(), Toast.LENGTH_SHORT).show();
                         break;
                     case LOADING:
@@ -390,9 +724,265 @@ public class OrdersActivity extends BaseActivity {
         });
     }
 
+    //For now it's creating each time the user:
+    private void createFirebaseAuthentications(List<OrderModel> response) {
+        for (OrderModel orderAttributes : response) {
+            mass = mass + Double.parseDouble(orderAttributes.getOrderMass());
+            acknowledgeStockBtn.setText(orderAttributes.getDriverName() + " Please acknowledge the stock");
+            DriverEmail = orderAttributes.getDriverEmail();
+            DriverPassword = orderAttributes.getDriverPassword();
+
+            mAuth.createUserWithEmailAndPassword(DriverEmail, DriverPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                String user = mAuth.getCurrentUser().getUid();
+                                String email = mAuth.getCurrentUser().getEmail();
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                                DatabaseReference myRef = database.getReference().child("Driver").child("users").child(user).child("lat");
+                                DatabaseReference myRef2 = database.getReference().child("Driver").child("users").child(user).child("lon");
+                                DatabaseReference myRefEmail = database.getReference().child("Driver").child("users").child(user).child("email");
+                                DatabaseReference myRefstops = database.getReference().child("Driver").child("users").child(user).child("stops");
+                                DatabaseReference myRefroute = database.getReference().child("Driver").child("users").child(user).child("route");
+                                DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
+                                DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
+
+                                myRef.setValue(Double.toString(lat));
+                                myRef2.setValue(Double.toString(lon));
+                                myRefEmail.setValue(email);
+                                myRefstops.setValue(databaseAdapter.countSigned());
+                                myRefroute.setValue(routeNames.getText().toString());
+                                myRefdeldate.setValue(dDate.getText().toString());
+                                myRefordertype.setValue(orderTypes.getText().toString());
+                                //LatLng latLng = new LatLng(lat, lon);
+                                //updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+
+                            }
+
+                            // ...
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        startLocationUpdates();
+
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if (mLocation == null) {
+            startLocationUpdates();
+        }
+        if (mLocation != null) {
+
+            // mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
+            //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
+        } else {
+            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        lat = location.getLatitude();
+        lon = location.getLongitude();
+
+        coord.setText(Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude()));
+        Log.d(TAG, "Location changed customer*******************************************************************************");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+            Log.d(TAG, "Existing customer uid*******************************************************************************" + uid);
+            //String email = user.getEmail();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            DatabaseReference myRef = database.getReference().child("Driver").child("users").child(uid).child("lat");
+            DatabaseReference myRef2 = database.getReference().child("Driver").child("users").child(uid).child("lon");
+            DatabaseReference myRefEmail = database.getReference().child("Driver").child("users").child(uid).child("email");
+            DatabaseReference myRefstops = database.getReference().child("Driver").child("users").child(uid).child("stops");
+            DatabaseReference myRefroute = database.getReference().child("Driver").child("users").child(uid).child("route");
+            DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(uid).child("deldate");
+            DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(uid).child("ordertype");
+
+            myRef.setValue(Double.toString(lat));
+            myRef2.setValue(Double.toString(lon));
+            myRefEmail.setValue(email);
+            // myRefstops.setValue(dbH.countSigned());
+            myRefstops.setValue(databaseAdapter.countSigned());
+            myRefroute.setValue(routeNames.getText().toString());
+            myRefdeldate.setValue(dDate.getText().toString());
+            myRefordertype.setValue(orderTypes.getText().toString());
+        } else {
+
+
+            Log.e("DriverEmail**", "--------------------------------" + DriverEmail);
+            Log.e("DriverPassword**", "--------------------------------" + DriverPassword);
+            try {
+                mAuth.signInWithEmailAndPassword(DriverEmail, DriverPassword)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "createUserWithEmail:success");
+                                    String user = mAuth.getCurrentUser().getUid();
+                                    String email = mAuth.getCurrentUser().getEmail();
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                                    DatabaseReference myRef = database.getReference().child("Driver").child("users").child(user).child("lat");
+                                    DatabaseReference myRef2 = database.getReference().child("Driver").child("users").child(user).child("lon");
+                                    DatabaseReference myRefEmail = database.getReference().child("Driver").child("users").child(user).child("email");
+                                    DatabaseReference myRefstops = database.getReference().child("Driver").child("users").child(user).child("stops");
+                                    DatabaseReference myRefroute = database.getReference().child("Driver").child("users").child(user).child("route");
+                                    DatabaseReference myRefdeldate = database.getReference().child("Driver").child("users").child(user).child("deldate");
+                                    DatabaseReference myRefordertype = database.getReference().child("Driver").child("users").child(user).child("ordertype");
+
+                                    myRef.setValue(Double.toString(lat));
+                                    myRef2.setValue(Double.toString(lon));
+                                    myRefEmail.setValue(email);
+                                    //myRefstops.setValue(dbH.countSigned());
+                                    myRefstops.setValue(databaseAdapter.countSigned());
+                                    myRefroute.setValue(routeNames.getText().toString());
+                                    myRefdeldate.setValue(dDate.getText().toString());
+                                    myRefordertype.setValue(orderTypes.getText().toString());
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+
+                                }
+
+                                // ...
+                            }
+                        });
+            } catch (Exception e) {
+
+            }
+
+        }
+
+
+    }
+
     /**
      * Background task:
      */
+
+    public void OrderHeaderPost() {
+
+        ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
+        for (Orders orderAttributes : dealLineToUpload) {
+
+            String strNotesDrivers = "NULL";
+            String strEmailAddress = "NULL";
+            String strCashSig = "NULL";
+            String strStartTime = "NULL";
+            String strEndTime = "NULL";
+            String strTheImage = "NoImage";
+            String signedBy = "NULL";
+            if (orderAttributes.getstrNotesDrivers() != null && !orderAttributes.getstrNotesDrivers().isEmpty()) {
+                strNotesDrivers = orderAttributes.getstrNotesDrivers();
+            }
+            if (orderAttributes.getstrEmailCustomer() != null && !orderAttributes.getstrEmailCustomer().isEmpty()) {
+                strEmailAddress = orderAttributes.getstrEmailCustomer();
+            }
+            if (orderAttributes.getstrCashsignature() != null && !orderAttributes.getstrCashsignature().isEmpty()) {
+                strCashSig = orderAttributes.getstrCashsignature();
+            }
+
+            if (orderAttributes.getStartTripTime() != null && !orderAttributes.getStartTripTime().isEmpty()) {
+                strStartTime = orderAttributes.getStartTripTime();
+            }
+            if (orderAttributes.getEndTripTime() != null && !orderAttributes.getEndTripTime().isEmpty()) {
+                strEndTime = orderAttributes.getEndTripTime();
+            }
+            if (orderAttributes.getimagestring() != null && !orderAttributes.getimagestring().isEmpty()) {
+                strTheImage = orderAttributes.getimagestring();
+            }
+            if (orderAttributes.getstrCustomerSignedBy() != null && !orderAttributes.getstrCustomerSignedBy().isEmpty()) {
+                signedBy = orderAttributes.getstrCustomerSignedBy();
+            }
+            Log.e("*****", "********************************note " + strEmailAddress);
+            new UploadNewOrderLines(orderAttributes.getInvoiceNo(), orderAttributes.getLatitude(), orderAttributes.getLongitude(),
+                    strTheImage, orderAttributes.getCashPaid(), strNotesDrivers, orderAttributes.getoffloaded(), strEmailAddress, strCashSig, strStartTime, strEndTime, orderAttributes.getDeliverySequence(), orderAttributes.getstrCoordinateStart(), signedBy, orderAttributes.getLoyalty()).execute();
+        }
+
+    }
 
     private class UploadNewOrderLinesDetails extends AsyncTask<Void, Void, Void> {
 
@@ -473,6 +1063,120 @@ public class OrdersActivity extends BaseActivity {
                 Log.e("JSON", e.getMessage());
             }
             //db.close();
+            return null;
+        }
+    }
+
+
+    public class UploadNewOrderLines extends AsyncTask<Void, Void, Void> {
+
+        String invoice;
+        String lat;
+        String lon;
+        String image;
+        String cash;
+        String note;
+        String offload;
+        String strEmailAddress;
+        String strCashSig;
+        String strStartTime;
+        String strEndTime;
+        String delseq;
+        String strCoord;
+        String signedBy;
+        String Loyalty;
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+
+        public UploadNewOrderLines(String invoice, String lat, String lon, String image, String cash, String note, String offload, String email, String strCashSig, String strStartTime,
+                                   String strEndTime, String delseq, String strCoord, String signedBy, String Loyalty) {
+            this.invoice = invoice;
+            this.lat = lat;
+            this.lon = lon;
+            this.image = image;
+            this.cash = cash;
+            this.note = note;
+            this.offload = offload;
+            this.strEmailAddress = email;
+            this.strCashSig = strCashSig;
+            this.strStartTime = strStartTime;
+            this.strEndTime = strEndTime;
+            this.delseq = delseq;
+            this.strCoord = strCoord;
+            this.signedBy = signedBy;
+            this.Loyalty = Loyalty;
+
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            HttpClient httpclient = new DefaultHttpClient();
+
+            //dbCreation();
+            //}
+            Log.e("postIP", "++++++++++++++++++++++++++++++++" + SERVERIP + "PostHeaders");
+            Log.e("postIP", "++++++++++++++++++++++++++++++++ signedBy" + signedBy);
+            Log.e("Loyalty", "++++++++++++++++++++++++++++++++ Loyalty" + Loyalty);
+            HttpPost httppost = new HttpPost(SERVERIP + "PostHeaders");
+            try {
+                // Add your data
+
+                JSONObject json = new JSONObject();
+                json.put("invoice", invoice);
+                json.put("lat", lat);
+                json.put("lon", lon);
+                json.put("image", image);
+                json.put("cash", cash);
+                json.put("note", note);
+                json.put("offload", offload);
+                json.put("strEmailAddress", strEmailAddress);
+                json.put("strCashSig", strCashSig);
+                json.put("strEndTime", strEndTime);
+                json.put("strStartTime", strStartTime);
+                json.put("delseq", delseq);
+                json.put("strCoord", strCoord);
+                json.put("signedBy", signedBy);
+                json.put("Loyalty", Loyalty);
+
+
+                Log.e("Loyalty", "++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);
+                Log.d("JSON", json.toString());
+                List nameValuePairs = new ArrayList(1);
+                nameValuePairs.add(new BasicNameValuePair("json", json.toString()));
+
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                // Execute HTTP Post Request
+                org.apache.http.HttpResponse response = httpclient.execute(httppost);
+                String responseBody = EntityUtils.toString(response.getEntity());
+                Log.e("JSON-*", "RESPONSE is HEADERS**: " + responseBody);
+                JSONArray BoardInfo = new JSONArray(responseBody);
+
+                for (int j = 0; j < BoardInfo.length(); ++j) {
+
+                    JSONObject BoardDetails = BoardInfo.getJSONObject(j);
+                    String ID, strPartNumber;
+                    ID = BoardDetails.getString("InvoiceNo");
+
+                    //dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + ID + "'");
+                    databaseAdapter.updateOrdersHeaderByInvoice(ID);
+                }
+
+            } catch (ClientProtocolException e) {
+                Log.e("JSON", e.getMessage());
+            } catch (IOException e) {
+                Log.e("JSON", e.getMessage());
+            } catch (Exception e) {
+                Log.e("JSON", e.getMessage());
+            }
+            // db.close();
             return null;
         }
     }

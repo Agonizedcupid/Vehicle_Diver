@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.regin.reginald.model.OrderLines;
+import com.regin.reginald.model.Orders;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
@@ -397,6 +398,71 @@ public class DatabaseAdapter {
         return list;
     }
 
+    public int checkIfLinesUploaded() {
+        //X/Y
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int returnNo = 0;
+        int getString = 0;
+        int countHeaders = 0;
+        try {
+            Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_LINES_TABLE_NAME + "' where Uploaded=0 ", null);
+            Cursor cursorHeader = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_TABLE_NAME + "' where uploaded=0 ", null);
+
+            String status = "";
+
+            //cursor.moveToFirst();
+            // cursorUploaded.moveToFirst();
+            getString = cursor.getCount();
+            countHeaders = cursorHeader.getCount();
+
+            if (getString > 0) {
+                returnNo = 0;
+            } else {
+                if (countHeaders > 0) {
+                    returnNo = 1;
+                } else {
+                    returnNo = 0;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return returnNo;
+    }
+
+    public boolean hasData() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_LINES_TABLE_NAME + "' ", null);
+
+        boolean isDataSave = false;
+        if (cursor.moveToFirst()) {
+            isDataSave = true;
+            while (cursor.moveToNext()) {
+                isDataSave = true;   //Not too sure why is doing this
+            }
+        } else {
+            isDataSave = false;
+        }
+        return isDataSave;
+    }
+
+    public String countSigned() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor notsigned = db.rawQuery("Select Count(*) from OrderHeaders ", null);
+        //Cursor signed = db.rawQuery("Select Count(*) from OrderHeaders where   imagestring IS NOT NULL AND imagestring != '' ", null);
+        Cursor signed = db.rawQuery("Select Count(*) from OrderHeaders where   strCashsignature IS NOT NULL AND strCashsignature != '' ", null);
+
+        int intSignedCount = 0;
+        int intNotSignedCount = 0;
+        notsigned.moveToFirst();
+        signed.moveToFirst();
+        intNotSignedCount = notsigned.getInt(0);
+        intSignedCount = signed.getInt(0);
+
+        String xofy = Integer.toString(intSignedCount) + "/" + Integer.toString(intNotSignedCount);
+        return xofy;
+    }
+
     //Get Order lines by INVOICE & WAREHOUSE
     public List<OrderLinesModel> returnOrderLinesOffloadedByCategory(String invoice, String warehouse) {
 
@@ -477,6 +543,53 @@ public class DatabaseAdapter {
             list.add(model);
         }
         return list;
+    }
+
+    public List<OrderModel> returnOrderHeaders() {
+        List<OrderModel> labels = new ArrayList();
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_TABLE_NAME
+                + "' order by deliverySeq,storeName", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                OrderModel model = new OrderModel(
+                        cursor.getInt(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getInt(6),
+                        cursor.getInt(7),
+                        cursor.getString(8),
+                        cursor.getString(9),
+                        cursor.getString(10),
+                        cursor.getString(11),
+                        cursor.getString(12),
+                        cursor.getInt(13),
+                        cursor.getString(14),
+                        cursor.getInt(15),
+                        cursor.getString(16),
+                        cursor.getString(17),
+                        cursor.getString(18),
+                        cursor.getString(19),
+                        cursor.getString(20),
+                        cursor.getInt(21),
+                        cursor.getString(22),
+                        cursor.getString(23),
+                        cursor.getString(24),
+                        cursor.getString(25),
+                        cursor.getString(26),
+                        cursor.getString(27)
+                );
+                labels.add(model);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return labels;
     }
 
     @SuppressLint("Range")
@@ -578,6 +691,34 @@ public class DatabaseAdapter {
         return ids;
     }
 
+    public long updateOrdersHeaderByInvoice(String invoice) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String selection = DatabaseHelper.invoiceNo + " LIKE ? ";
+        String[] args = {"" + invoice};
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.offloaded, 1);
+        contentValues.put(DatabaseHelper.uploaded, 1);
+
+
+        long ids = database.update(DatabaseHelper.ORDERS_TABLE_NAME, contentValues, selection, args);
+
+        return ids;
+    }
+
+    public long updateOrdersHeaderDeliverySequenceByInvoice(int sequence, String invoice) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String selection = DatabaseHelper.invoiceNo + " LIKE ? ";
+        String[] args = {"" + invoice};
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.deliverySeq, sequence);
+
+        long ids = database.update(DatabaseHelper.ORDERS_TABLE_NAME, contentValues, selection, args);
+
+        return ids;
+    }
+
 
     /**
      * DELETE Database
@@ -663,7 +804,7 @@ public class DatabaseAdapter {
         private Context context;
 
         private static final String DATABASE_NAME = "drivers_app.db";
-        private static final int VERSION_NUMBER = 14;
+        private static final int VERSION_NUMBER = 15;
 
         private static final String UID = "_id";
 
@@ -720,10 +861,10 @@ public class DatabaseAdapter {
         private static final String DROP_ORDER_TYPE_TABLE = "DROP TABLE IF EXISTS " + ORDER_TYPE_TABLE_NAME;
 
         /**
-         * Order Table
+         * Order Table (Order Headers)
          */
 
-        private static final String ORDERS_TABLE_NAME = "orders_table";
+        private static final String ORDERS_TABLE_NAME = "OrderHeaders";
         private static final String orderId = "orderId";
         private static final String invoiceNo = "invoiceNo";
         private static final String customerPastelCode = "customerPastelCode";
