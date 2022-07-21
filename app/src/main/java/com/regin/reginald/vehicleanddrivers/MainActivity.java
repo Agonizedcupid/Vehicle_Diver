@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -267,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     List<Data> listdata;
     ItemsListAdapter myItemsListAdapter;
 
-    Button get, start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info, sort_order, endtrip, acknowledge_stock, btn_submit_ackn, continue_without, starttrip_dialog;
+    Button get, closelines, btndoneoffloading, donelineinfo, close_line_info, btn_submit_ackn, continue_without, starttrip_dialog;
     Spinner route, ordertypes;
     EditText dte_from, qtyordered, notecomment, kmstart_dilog, timestart;
     CustomListView _orderdlist;
@@ -277,6 +278,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static BixolonPrinter bxlPrinter = null;
     TextView product_name, pastelcode, priceline, commentline, deliverdate, ordertype, routename, calcr_plan, coord, passwd, demail, not_uploade;
     private SignaturePad ack_sign;
+
+    private TextView start_trip,endtrip,acknowledge_stock;
+    private ImageView sort_order;
 
     private int year;
     private int month;
@@ -368,23 +372,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void initUI() {
-        start_trip =  findViewById(R.id.start_trip);
-        sort_order =  findViewById(R.id.sort_order);
-        endtrip =  findViewById(R.id.endtrip);
-        deliverdate =  findViewById(R.id.deliverdate);
-        ordertype =  findViewById(R.id.ordertype);
-        routename =  findViewById(R.id.routename);
+        start_trip =  findViewById(R.id.tripInfoBtn);
+        sort_order =  findViewById(R.id.backBtn);
+        endtrip =  findViewById(R.id.endTripBtn);
+        deliverdate =  findViewById(R.id.deliverDate);
+        ordertype =  findViewById(R.id.orderType);
+        routename =  findViewById(R.id.routeName);
         calcr_plan =  findViewById(R.id.calcr_plan);
         coord =  findViewById(R.id.coord);
-        demail =  findViewById(R.id.demail);
-        passwd = (TextView) findViewById(R.id.passwd);
-        not_uploade = (TextView) findViewById(R.id.not_uploade);
+        //demail =  findViewById(R.id.demail);
+        //passwd = (TextView) findViewById(R.id.passwd);
+        not_uploade =  findViewById(R.id.uploadedCount);
         // dte_from = (EditText) findViewById(R.id.datetime);
         //_orderdlist = (CustomListView) findViewById(R.id._orderdlistlines);
-        acknowledge_stock = (Button) findViewById(R.id.acknowledge_stock);
+        acknowledge_stock = findViewById(R.id.acknowledgeBtn);
 
+        /**
+         *
+         */
         recyclerView = findViewById(R.id.orderRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        /**
+         *
+         */
 
         if (dbH.checkiflinesuploaded() > 0) {
             //
@@ -396,6 +406,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         calcr_plan.setVisibility(View.INVISIBLE);
         Intent returndata = getIntent();
+
+//        if (getIntent() != null) {
+//            Toast.makeText(MainActivity.this, "HHH: "+getIntent().getStringExtra("deldate"), Toast.LENGTH_SHORT).show();
+//        }
 
         deliverdate.setText(returndata.getStringExtra("deldate"));
         ordertype.setText(returndata.getStringExtra("ordertype"));
@@ -1130,7 +1144,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////  Here It's crashing now /////////////////////////////////////////////////////////////////////////
     private class getOrderHeaders extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {

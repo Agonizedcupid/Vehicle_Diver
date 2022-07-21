@@ -449,6 +449,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //Intent i = new Intent(LandingPage.this, MainActivity.class);
                     Intent i = new Intent(LandingPage.this, MainActivity.class);
+                    Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
                     i.putExtra("deldate", dateTextView.getText().toString());
                     i.putExtra("routes", route.getSelectedItem().toString());
                     i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
