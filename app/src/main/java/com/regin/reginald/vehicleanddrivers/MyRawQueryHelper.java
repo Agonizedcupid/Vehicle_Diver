@@ -16,6 +16,7 @@ import com.regin.reginald.model.OtherAttributes;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.model.WareHouses;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,9 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 public class MyRawQueryHelper extends SQLiteOpenHelper {
 
     //public static String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
-    public static final String DATABASE_NAME = "LinxDriversOrders.db";
-    public static final int DATABASE_VERSION = 4;
+    //public static final String DATABASE_NAME = "LinxDriversOrders.db";
+    public static final String DATABASE_NAME = "drivers_app.db";
+    public static final int DATABASE_VERSION = Constant.DB_VERSION;
     public static final String TIMESYNC_TABLE_NAME = "TimeSync";
 
     public MyRawQueryHelper(Context context) {

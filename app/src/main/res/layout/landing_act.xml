@@ -111,23 +111,22 @@
         android:id="@+id/printers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:text="SETUP" />
 
     <Button
         android:id="@+id/saveddata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="148dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
+        android:layout_marginBottom="148dp"
         android:background="#0096cc"
         android:text="Continue with saved Filters"
         android:textSize="18sp"
-        android:textStyle="bold"
-   />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/endtrip"
@@ -164,7 +163,7 @@
         android:text="DELIVERY NOTES"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:visibility="gone" />
+         />
 
     <View
         android:id="@+id/divider4"

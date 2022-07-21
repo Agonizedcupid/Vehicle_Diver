@@ -54,7 +54,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.maps.DistanceMatrixApi;
+import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DistanceMatrix;
+import com.google.maps.model.TravelMode;
+import com.google.maps.model.Unit;
 import com.regin.reginald.model.Orders;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Abstraction.BaseActivity;
@@ -473,7 +479,8 @@ public class OrdersActivity extends BaseActivity
                 Date tomorrow = calendar.getTime();
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String tomorrowDate = dateFormat.format(tomorrow);
-                dbH.updateDeals("UPDATE OrderHeaders set StartTripTime='" + tomorrowDate + "', strCoordinateStart='" + coordinates + "'");
+                //TODO:
+                //dbH.updateDeals("UPDATE OrderHeaders set StartTripTime='" + tomorrowDate + "', strCoordinateStart='" + coordinates + "'");
             }
         });
         builder.setView(view);
@@ -481,8 +488,21 @@ public class OrdersActivity extends BaseActivity
         builder.show();
     }
 
+    public double DriversHours(double tonnage, double travelTimeInMinutes, int numberOfStops, double sumdistance) {
+        //100 is hardcoded for testing purpose
+
+        // return sumdistance +(numberOfStops * 5 )+((tonnage/2)/5);
+        int speedIs1KmMinute = 80;
+        double estimatedDriveTimeInMinutes = sumdistance / speedIs1KmMinute;
+
+
+        //return ((tonnage*0.15) + estimatedDriveTimeInMinutes)/60.00;
+
+        return ((tonnage / 6) + sumdistance) / 60;
+    }
+
     public String[] distanceAndTime() {
-        List<OrderModel> orderheader = databaseAdapter.returnOrderHeaders();
+        List<Orders> orderheader = databaseAdapter.returnOrderHeaders();
         //order headers
         String[] results = new String[2];
         double totdistance = 0;
@@ -490,7 +510,7 @@ public class OrdersActivity extends BaseActivity
         ArrayList<String> stringArrayList = new ArrayList<String>();
 
         stringArrayList.add(lat + "," + lon);
-        for (OrderModel orderAttributes : orderheader) {
+        for (Orders orderAttributes : orderheader) {
             stringArrayList.add(orderAttributes.getLatitude() + "," + orderAttributes.getLongitude());
         }
         String[] stringArray = stringArrayList.toArray(new String[stringArrayList.size()]);
@@ -526,6 +546,43 @@ public class OrdersActivity extends BaseActivity
 
 
         return results;
+    }
+
+    public String[] reurndistancetime(String coordinate1, String coordinate2) {
+
+        String[] ret = new String[2];
+        try {
+
+
+            DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
+
+            DistanceMatrix trix = req.origins(coordinate1)
+                    .destinations(coordinate2)
+                    .mode(TravelMode.DRIVING)
+                    .units(Unit.METRIC)
+                    .await();
+
+
+            String inMeters = (trix.rows[0].elements[0].distance.inMeters) + "";
+            ret[0] = Double.toString(Double.parseDouble(inMeters) / 1000);
+
+            String inSec = trix.rows[0].elements[0].duration.inSeconds + "";
+            //ret[0] = ((trix.rows[0].elements[0].distance).toString()).replace("km","") ;
+            ret[1] = Double.toString(Double.parseDouble(inSec) / 60);
+
+            //Log.e("tttttt","*********************************"+(trix.rows[0].elements[0].distance).toString());
+            //Do something with result here
+
+            Log.e("minutes", "*********************************" + ret[1]);
+            Log.e("kmeters", "*********************************" + ret[0]);
+            // ....
+        } catch (ApiException e) {
+            // output += this.printError(e);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return ret;
     }
 
     private void uploadedNNonUploaded() {
@@ -945,7 +1002,8 @@ public class OrdersActivity extends BaseActivity
 
     public void OrderHeaderPost() {
 
-        ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
+        //ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
+        ArrayList<Orders> dealLineToUpload = new ArrayList<>();
         for (Orders orderAttributes : dealLineToUpload) {
 
             String strNotesDrivers = "NULL";

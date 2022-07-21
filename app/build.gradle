@@ -70,6 +70,8 @@ dependencies {
             [group: 'commons-io', name: 'commons-io', version: '2.0.1']
 
     )
+    //Elastic Poetry
+    //implementation 'com.github.elastique:poetry:3.0.1'
     implementation "android.arch.work:work-runtime:1.0.1"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
   //  implementation 'androidx.appcompat:appcompat:28.0.0'

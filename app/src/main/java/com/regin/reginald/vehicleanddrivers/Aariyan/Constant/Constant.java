@@ -16,8 +16,12 @@ public class Constant {
     public static String ROUTES_NAME = "ROUTES_NAME";
     public static int ORDER_TYPE = -777;
 
+    public static final int DB_VERSION = 16;
+
 
     public static boolean isSetUpCompleted = false;
+
+    public static final String ROUTES_TABLE = "Routes";
 
     //It will return the today's date using Java Default DateTime APIs:
     public static String getTodayDate(){

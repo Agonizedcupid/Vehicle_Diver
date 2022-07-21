@@ -16,10 +16,10 @@ public class SettingsModel {
     private String strServerIp;
 
     @DatabaseField(columnName = "regKey")
-   // @MapFrom("regKey")
+    // @MapFrom("regKey")
     private String regKey;
     @DatabaseField(columnName = "Company")
-   // @MapFrom("Company")
+    // @MapFrom("Company")
     private String Company;
 
     @DatabaseField(columnName = "DeviceID")
@@ -27,12 +27,13 @@ public class SettingsModel {
     private String DeviceID;
 
     @DatabaseField(columnName = "Email")
-   // @MapFrom("Email")
+    // @MapFrom("Email")
     private String Email;
 
 
-
-    public int getId(){ return id; }
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -41,15 +42,19 @@ public class SettingsModel {
     public void setregKey(String regKey) {
         this.regKey = regKey;
     }
+
     public void setDeviceID(String DeviceID) {
         this.DeviceID = DeviceID;
     }
+
     public void setstrServerIp(String strServerIp) {
         this.strServerIp = strServerIp;
     }
+
     public void setCompany(String Company) {
         this.Company = Company;
     }
+
     public void setEmail(String Email) {
         this.Email = Email;
     }
@@ -58,15 +63,19 @@ public class SettingsModel {
     public String getregKey() {
         return regKey;
     }
+
     public String getstrServerIp() {
         return strServerIp;
     }
+
     public String getDeviceID() {
         return DeviceID;
     }
+
     public String getCompany() {
         return Company;
     }
+
     public String getEmail() {
         return Email;
     }

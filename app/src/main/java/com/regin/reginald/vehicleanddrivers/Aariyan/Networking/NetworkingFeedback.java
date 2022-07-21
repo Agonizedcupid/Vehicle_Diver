@@ -97,7 +97,7 @@ public class NetworkingFeedback {
     }
 
     //Insert Route into SQLite database:
-    private void insertRouteIntoLocalStorage(List<RouteModel> routeList) {
+    public void insertRouteIntoLocalStorage(List<RouteModel> routeList) {
         Observable<RouteModel> observable = Observable.fromIterable(routeList)
                 .subscribeOn(Schedulers.io());
 

@@ -40,7 +40,7 @@
             android:name=".Aariyan.Activity.OrdersActivity"
             android:exported="false" />
         <activity
-            android:name=".LandingPage"
+            android:name=".Aariyan.Activity.LandingActivity"
             android:exported="false" />
         <activity
             android:name=".CratesActivity"
@@ -51,8 +51,22 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+<!--        <activity-->
+<!--            android:name=".Aariyan.Activity.LandingActivity"-->
+<!--            android:configChanges="orientation|keyboardHidden"-->
+<!--            android:exported="true"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:theme="@style/SplashTheme"-->
+<!--            android:windowSoftInputMode="stateHidden">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
         <activity
-            android:name=".Aariyan.Activity.LandingActivity"
+            android:name=".LandingPage"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:screenOrientation="portrait"

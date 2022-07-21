@@ -25,6 +25,8 @@ import android.provider.Settings;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 /*import android.support.v7.app.AlertDialog;
@@ -36,10 +38,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.nabinbhandari.android.permissions.PermissionHandler;
@@ -49,6 +54,9 @@ import com.regin.reginald.model.OrderTypes;
 import com.regin.reginald.model.OtherAttributes;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -85,13 +93,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+//import nl.elastique.poetry.json.JsonPersister;
 
-public class LandingPage extends AppCompatActivity implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+
+public class LandingPage extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     GPSTracker gps;
-    Button get, start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info, refresh, printers, saveddata,endtrip,btndeliverynotes,btncreditrequest;
+    //Button get, start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info, refresh, printers, saveddata, endtrip, btndeliverynotes, btncreditrequest;
+    Button  start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info  ;
+
+    private TextView get,saveddata,btncreditrequest,endtrip,printers;
+    private FloatingActionButton refresh,btndeliverynotes;
+
     Spinner route, ordertypes;
-    EditText dte_from, qtyordered, notecomment;
+    EditText  qtyordered, notecomment;
     Intent mServiceIntent;
     private OrderService mSensorService;
 
@@ -111,7 +126,8 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
     //So-Ca = http://so-ca.ddns.net:8179/driver/
     //String customerOrders, SERVERIP = "http://linxsystems3.dedicated.co.za:8881/driver/",ordertypeidreturned,routeidreturned,dbDateFrom,dbRoute,dbLateOrder,filterTable="";"http://192.168.0.18:8181/driver/"
     String customerOrders, SERVERIP, LINX = "http://102.37.0.48/driversapp/", ordertypeidreturned, routeidreturned, dbDateFrom, dbRoute, dbLateOrder, filterTable = "";
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     ProgressDialog progressDoalog;
     //private DatabaseHelper mDatabaseHelper;
     private SQLiteDatabase db;
@@ -132,16 +148,35 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
     private FirebaseAuth mAuth;
     private boolean serviceRunning = false;
 
+    private CardView deliveryDateCard;
+    private TextView dateTextView;
+
+    private ConstraintLayout snackBarLayout;
+
+    private ProgressBar progressBar;
+
+    private DatePickerDialog datePickerDialog;
+    private Calendar calendar;
+    String date = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.landing_act);
+        //setContentView(R.layout.landing_act);
+        setContentView(R.layout.activity_landing_page);
         FirebaseApp.initializeApp(LandingPage.this);
         AndroidNetworking.initialize(getApplicationContext());
         DriverPermission();
         if (bxlPrinter == null) {
             bxlPrinter = new BixolonPrinter(this);
         }
+
+
+        calendar = Calendar.getInstance();
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
+        year = calendar.get(Calendar.YEAR);
        /* if (Build.VERSION.SDK_INT >= 23) {
             int hasLocationPermissions = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasLocationPermissions != PackageManager.PERMISSION_GRANTED) {
@@ -195,8 +230,8 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         (new Thread(runnable)).start();
 
         //mDatabaseHelper = DatabaseHelper.getHelper(this);
-        //final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
-        //db = this.openOrCreateDatabase( "LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+        final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
+        db = this.openOrCreateDatabase("LinxDriversOrders.db", Context.MODE_PRIVATE, null);
 
         final String subscriberId = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         dbH.updateDeals("CREATE TABLE IF NOT EXISTS PrinterInfo (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,ProtoType TEXT, LogicalName TEXT ,Address TEXT)");
@@ -214,7 +249,8 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         dbH.updateDeals("CREATE TABLE IF NOT EXISTS CheckLists (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,checkListId INTEGER,checkListMessage TEXT);");
         dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblDeliveryNotesLines (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,CustomerName TEXT,ProductName TEXT, Qty DOUBLE,Weights Double," +
                 "DeliveryDate TEXT,Notes TEXT,ReferenceNumber TEXT)")
-        ;dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblCreditNotesLines (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,CustomerName TEXT,ProductName TEXT, Qty DOUBLE,Weights Double," +
+        ;
+        dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblCreditNotesLines (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,CustomerName TEXT,ProductName TEXT, Qty DOUBLE,Weights Double," +
                 "DeliveryDate TEXT,Notes TEXT,ReferenceNumber TEXT,Uploaded boolean DEFAULT 0,Completed boolean DEFAULT 0)");
         dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblDeliveryNotesHeader (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,CustomerName TEXT ,DeliveryDate TEXT,ReferenceNumber TEXT,username TEXT)");
         dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblCreditNotesHeader (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,CustomerName TEXT ,DeliveryDate TEXT,ReferenceNumber TEXT," +
@@ -250,38 +286,48 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         }
         Log.e("settIP", "**************************************" + SERVERIP);
         //mSensorService = new OrderService(getCtx());
-       // mServiceIntent = new Intent(this, OrderService.class);
-       // getApplicationContext().startForegroundService(mServiceIntent);
+        // mServiceIntent = new Intent(this, OrderService.class);
+        // getApplicationContext().startForegroundService(mServiceIntent);
 
-         if(dbH.selectCountNotUploaded()>0)
-         {
-             ArrayList<OtherAttributes> oD = dbH.returnFilters();
-             for (OtherAttributes orderAttributes : oD) {
-                 dbRoute = orderAttributes.getroute();
-                 dbLateOrder = orderAttributes.getordertype();
-                 dbDateFrom = orderAttributes.getdeliverydate();
-                 Intent i = new Intent(LandingPage.this, OrderNotUploadedActivity.class);
-                 i.putExtra("deldate", dbDateFrom);
-                 i.putExtra("routes", dbRoute);
-                 i.putExtra("ordertype", dbLateOrder);
-                 startActivity(i);
-             }
-         }
+        if (dbH.selectCountNotUploaded() > 0) {
+            ArrayList<OtherAttributes> oD = dbH.returnFilters();
+            for (OtherAttributes orderAttributes : oD) {
+                dbRoute = orderAttributes.getroute();
+                dbLateOrder = orderAttributes.getordertype();
+                dbDateFrom = orderAttributes.getdeliverydate();
+                Intent i = new Intent(LandingPage.this, OrderNotUploadedActivity.class);
+                i.putExtra("deldate", dbDateFrom);
+                i.putExtra("routes", dbRoute);
+                i.putExtra("ordertype", dbLateOrder);
+                startActivity(i);
+            }
+        }
 
-        get = (Button) findViewById(R.id.closelines);
-        start_trip = (Button) findViewById(R.id.start_trip);
-        printers = (Button) findViewById(R.id.printers);
-        refresh = (Button) findViewById(R.id.refresh);
-        saveddata = (Button) findViewById(R.id.saveddata);
-        btndeliverynotes = (Button) findViewById(R.id.btndeliverynotes);
-        btncreditrequest = (Button) findViewById(R.id.btncreditrequest);
-        endtrip = (Button) findViewById(R.id.endtrip);
-        ordertypes = (Spinner) findViewById(R.id.ordertypes);
-        route = (Spinner) findViewById(R.id.routeid);
-        dte_from = (EditText) findViewById(R.id.datetime);
-        saveddata.setVisibility(View.INVISIBLE);
-        endtrip.setVisibility(View.INVISIBLE);
-       // endtrip.setVisibility(View.INVISIBLE);
+        get =  findViewById(R.id.closelines);
+        start_trip =  findViewById(R.id.start_trip);
+        printers = findViewById(R.id.printers);
+        refresh =  findViewById(R.id.refresh);
+        saveddata =  findViewById(R.id.saveddata);
+        btndeliverynotes =  findViewById(R.id.btndeliverynotes);
+        btncreditrequest =  findViewById(R.id.btncreditrequest);
+        endtrip = findViewById(R.id.endtrip);
+        ordertypes =  findViewById(R.id.ordertypes);
+        route =  findViewById(R.id.routeid);
+        dateTextView =  findViewById(R.id.datetime);
+        deliveryDateCard =  findViewById(R.id.deliverDateCard);
+        deliveryDateCard =  findViewById(R.id.deliverDateCard);
+        progressBar = findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.VISIBLE);
+        deliveryDateCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker();
+            }
+        });
+        //dte_from =  findViewById(R.id.datetime);
+        saveddata.setVisibility(View.GONE);
+        endtrip.setVisibility(View.GONE);
+        // endtrip.setVisibility(View.INVISIBLE);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -290,7 +336,8 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String tomorrowDate = dateFormat.format(tomorrow);
-        dte_from.setText(tomorrowDate);
+        //dateTextView.setText(tomorrowDate);
+        dateTextView.setText("2020 - 6 - 23");
         //returnFilters()
        /* Log.e("rule log", "**************************************" + dbH.getThings("Login"));
         if(dbH.getThings("Login") !=0)
@@ -302,29 +349,27 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             }
 
         }*/
-       if(dbH.countOffloaded() < 1)
-       {
-           endtrip.setVisibility(View.VISIBLE);
-       }
-      if(dbH.countFilters() < 1)
-       {
-           endtrip.setVisibility(View.INVISIBLE);
-       }
+        if (dbH.countOffloaded() < 1) {
+            endtrip.setVisibility(View.VISIBLE);
+        }
+        if (dbH.countFilters() < 1) {
+            endtrip.setVisibility(View.GONE);
+        }
 //
-        dte_from.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                year = c.get(Calendar.YEAR);
-                month = c.get(Calendar.MONTH);
-                day = c.get(Calendar.DAY_OF_MONTH);
-                showDialog(DATE_DIALOG_ID);
-
-            }
-        });
+//        dte_from.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Calendar c = Calendar.getInstance();
+//                year = c.get(Calendar.YEAR);
+//                month = c.get(Calendar.MONTH);
+//                day = c.get(Calendar.DAY_OF_MONTH);
+//                showDialog(DATE_DIALOG_ID);
+//
+//            }
+//        });
         Log.e("subID", "**************************************************" + LINX + subscriberId);
         new getOrderTypes().execute(SERVERIP + "OrderTypesTest.php?key=" + subscriberId);
-        new checkIfRegistered().execute(LINX+"Registration.php?key=" + subscriberId);
+        new checkIfRegistered().execute(LINX + "Registration.php?key=" + subscriberId);
 
         //new getRoutes().execute(SERVERIP + "Routes.php?key=" + subscriberId);
         new getRoutes().execute(SERVERIP + "Routes.php");
@@ -335,6 +380,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                 startActivity(i);
             }
         });
+        //TODO: Set Up Btn
         printers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -350,7 +396,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
 
             Log.e("*******", "check is there is data*****************" + dbH.thereIsData());
             saveddata.setVisibility(View.VISIBLE);
-          //  endtrip.setVisibility(View.VISIBLE);
+            //  endtrip.setVisibility(View.VISIBLE);
 
             saveddata.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -371,7 +417,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             endtrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent p = new Intent(LandingPage.this,EndTripActivity.class);
+                    Intent p = new Intent(LandingPage.this, EndTripActivity.class);
                     startActivity(p);
 
                 }
@@ -384,7 +430,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             public void onClick(View v) {
 
                 if (dbH.isUploaded()) {
-                    AlertDialog.Builder builder = new  AlertDialog.Builder(LandingPage.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
                     builder
                             .setTitle("Transactions")
                             .setMessage("You have some outstanding Instruction, please make sure you have better connectivity for the data to upload ")
@@ -403,7 +449,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //Intent i = new Intent(LandingPage.this, MainActivity.class);
                     Intent i = new Intent(LandingPage.this, MainActivity.class);
-                    i.putExtra("deldate", dte_from.getText().toString());
+                    i.putExtra("deldate", dateTextView.getText().toString());
                     i.putExtra("routes", route.getSelectedItem().toString());
                     i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
                     startActivity(i);
@@ -414,14 +460,14 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         btndeliverynotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LandingPage.this,DeliveryNotesLandingPage.class);
+                Intent i = new Intent(LandingPage.this, DeliveryNotesLandingPage.class);
                 startActivity(i);
             }
         });
         btncreditrequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LandingPage.this,CreditRequitionLandingPage.class);
+                Intent i = new Intent(LandingPage.this, CreditRequitionLandingPage.class);
                 startActivity(i);
             }
         });
@@ -441,13 +487,12 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                     }
                     handler.post(new Runnable() {
                         public void run() {
-                            ArrayList<OtherAttributes> dealLineToUpload= dbH.sendANotification();
-                            for (OtherAttributes orderAttributes: dealLineToUpload){
+                            ArrayList<OtherAttributes> dealLineToUpload = dbH.sendANotification();
+                            for (OtherAttributes orderAttributes : dealLineToUpload) {
 
-                                new UploadNotifications(orderAttributes.getMessages(),orderAttributes.getconDocId()).execute();
+                                new UploadNotifications(orderAttributes.getMessages(), orderAttributes.getconDocId()).execute();
                             }
-                            if(dbH.countOffloaded() < 1)
-                            {
+                            if (dbH.countOffloaded() < 1) {
                                 endtrip.setVisibility(View.VISIBLE);
                             }
                         }
@@ -462,17 +507,43 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             Log.e("newToken", newToken);
            /* if(dbH.selectCountNotUploaded()>0)
             {*/
-                ArrayList<OtherAttributes> oD = dbH.returnFilters();
-                for (OtherAttributes orderAttributes : oD) {
-                    dbRoute = orderAttributes.getroute();
-                    dbLateOrder = orderAttributes.getordertype();
-                    dbDateFrom = orderAttributes.getdeliverydate();
+            ArrayList<OtherAttributes> oD = dbH.returnFilters();
+            for (OtherAttributes orderAttributes : oD) {
+                dbRoute = orderAttributes.getroute();
+                dbLateOrder = orderAttributes.getordertype();
+                dbDateFrom = orderAttributes.getdeliverydate();
 
-                }
+            }
             //}
-            new checkfirebasetrip().execute(LINX+"registerfirebasetoken?token=" + newToken+"&ordertype="+dbLateOrder+"&route="+dbRoute+"&deldate="+dbDateFrom+"&counts="+dbH.selectCountNotUploaded());
+            new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + dbLateOrder + "&route=" + dbRoute + "&deldate=" + dbDateFrom + "&counts=" + dbH.selectCountNotUploaded());
         });
     }
+
+    private void openDatePicker() {
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                //Month
+                int j = i1 + 1;
+
+                //date = i + "-" + j + "-" + i2;
+                //date = i2 + "-" + j + "-" + i;
+                date = i + "-" + j + "-" + i2;
+                //2022-1-15
+                dateTextView.setText(date);
+
+            }
+            //}, day, month, year);
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+//        new DatePickerDialog(AddTimeActivity.this, null, calendar.get(Calendar.YEAR),
+//                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+        datePickerDialog.show();
+    }
+
     public boolean isServiceRunning() {
         return serviceRunning;
     }
@@ -485,7 +556,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
     private class getOrderTypes extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-
+            progressBar.setVisibility(View.VISIBLE);
             return GET(urls[0]);
         }
 
@@ -504,24 +575,24 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                     List<OrderTypes> products = new Gson().fromJson(customerOrders, new TypeToken<List<OrderTypes>>() {
                     }.getType());
                     int i = 1;
-                    for (OrderTypes product : products) {
-                        product.setId(i);
-                        i++;
-                    }
-
-                    String productListString = new Gson().toJson(
-                            products,
-                            new TypeToken<ArrayList<OrderTypes>>() {
-                            }.getType());
-
-                    JSONArray product_json = new JSONArray(productListString);
-
-                    // Persist arrays to database
-//                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
-//                    persister.persistArray(OrderTypes.class, product_json);
-                    //readDatabaseProducts();
-                    Log.e("**ql*", "done sync");
-                    ArrayList<OrderTypes> ordertype = dbH.getOrderType();
+//                    for (OrderTypes product : products) {
+//                        product.setId(i);
+//                        i++;
+//                    }
+//
+//                    String productListString = new Gson().toJson(
+//                            products,
+//                            new TypeToken<ArrayList<OrderTypes>>() {
+//                            }.getType());
+//
+//                    JSONArray product_json = new JSONArray(productListString);
+//
+//                    // Persist arrays to database
+////                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
+////                    persister.persistArray(OrderTypes.class, product_json);
+//                    //readDatabaseProducts();
+//                    Log.e("**ql*", "done sync");
+                    List<OrderTypes> ordertype = products;
 
                     List<String> labels = new ArrayList<String>();
                     for (OrderTypes orderAttributes4 : ordertype) {
@@ -533,8 +604,9 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                     ordertypeA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     ordertypes.setAdapter(ordertypeA);
+                    progressBar.setVisibility(View.GONE);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -568,7 +640,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                         results = BoardDetails.getString("results");
 
                         if (results.equals("NOT REGISTERED")) {
-                            get.setVisibility(View.INVISIBLE);
+                            get.setVisibility(View.GONE);
                             saveddata.setText(results);
                             saveddata.setBackgroundColor(Color.RED);
                             Log.e("this is definitely", "not registered!!!!!!!!");
@@ -627,6 +699,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             }
         }
     }
+
     private void DriverPermission() {
         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
         Permissions.check(this/*context*/, permissions, null/*rationale*/, null/*options*/,
@@ -651,10 +724,11 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                     }
                 });
     }
+
     private class getRoutes extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-
+            progressBar.setVisibility(View.VISIBLE);
             return GET(urls[0]);
         }
 
@@ -664,48 +738,61 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
-            Log.e("len***t", "len**************" + len);
+            Log.e("TEST_RESULT", "len**************" + len);
             if (len > 0) {
                 try {
 
                     dbH.updateDeals("DROP TABLE IF EXISTS Routes");
                     dbH.updateDeals("CREATE TABLE IF NOT EXISTS Routes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, RouteId INTEGER , RouteName TEXT)");
 
-                    List<Routes> products = new Gson().fromJson(customerOrders, new TypeToken<List<Routes>>() {
-                    }.getType());
-                    int i = 1;
-                    for (Routes product : products) {
-                        product.setId(i);
-                        i++;
-                    }
-
-                    String productListString = new Gson().toJson(
-                            products,
-                            new TypeToken<ArrayList<Routes>>() {
-                            }.getType());
-
-                    JSONArray product_json = new JSONArray(productListString);
+//                    List<Routes> products = new Gson().fromJson(customerOrders, new TypeToken<List<Routes>>() {
+//                    }.getType());
+//                    int i = 1;
+//                    for (Routes product : products) {
+//                        product.setId(i);
+//                        i++;
+//                    }
+//
+//                    String productListString = new Gson().toJson(
+//                            products,
+//                            new TypeToken<ArrayList<Routes>>() {
+//                            }.getType());
+//
+//                    JSONArray product_json = new JSONArray(productListString);
 
                     // Persist arrays to database
 //                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
 //                    persister.persistArray(Routes.class, product_json);
                     //readDatabaseProducts();
-                    Log.e("**ql*", "done sync");
+                    Log.e("SYNCHRONIZATION", "done sync");
 
-                    ArrayList<Routes> routesdata = dbH.getRoutes();
+                    List<RouteModel> products = new Gson().fromJson(customerOrders, new TypeToken<List<RouteModel>>() {
+                    }.getType());
 
+//                    for (RouteModel model : products) {
+//                        Log.d("RESULT", "onPostExecute: "+model.getRouteName());
+//                    }
+                    new NetworkingFeedback(dbH).insertRouteIntoLocalStorage(products);
+
+                   // List<RouteModel> routesdata = dbH.getRoutes();
+                    List<RouteModel> routesdata = products;
+//                    Toast.makeText(LandingPage.this, "" + routesdata.size(), Toast.LENGTH_SHORT).show();
                     List<String> labels = new ArrayList<String>();
-                    for (Routes orderAttributes4 : routesdata) {
+                    for (RouteModel orderAttributes4 : routesdata) {
                         labels.add(orderAttributes4.getRouteName());
                     }
 
                     ArrayAdapter<String> adapter =
                             new ArrayAdapter<String>(LandingPage.this,
                                     android.R.layout.simple_spinner_item, labels);
+//                    ArrayAdapter<RouteModel> adapter =
+//                            new ArrayAdapter<RouteModel>(LandingPage.this,
+//                                    android.R.layout.simple_spinner_item, products);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     route.setAdapter(adapter);
+                    progressBar.setVisibility(View.GONE);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -731,7 +818,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             month = j;
             day = k;
             updateDisplay();
-            dte_from.setText(currentDate);
+            dateTextView.setText(currentDate);
         }
     };
 
@@ -759,6 +846,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         Log.e("bxlPrinter", "****************" + bxlPrinter);
         return bxlPrinter;
     }
+
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -783,7 +871,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
 
     @Override
     protected void onDestroy() {
-       // stopService(mServiceIntent);
+        // stopService(mServiceIntent);
         Log.i("MAINACT", "onDestroy!");
         super.onDestroy();
 
@@ -928,8 +1016,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
             if (mGoogleApiClient.isConnected()) {
                 mGoogleApiClient.disconnect();
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
@@ -964,16 +1051,14 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                 Double.toString(location.getLongitude());*/
         lat = location.getLatitude();
         lon = location.getLongitude();
-        if (!haveNetwork())
-        {
+        if (!haveNetwork()) {
             saveddata.setBackgroundColor(Color.RED);
-        }else
-        {
+        } else {
             saveddata.setBackgroundColor(Color.GREEN);
         }
         // mLatitudeTextView.setText(String.valueOf(location.getLatitude()));
         //  mLongitudeTextView.setText(String.valueOf(location.getLongitude() ));
-       // Toast.makeText(this, ""+haveNetwork(), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, ""+haveNetwork(), Toast.LENGTH_SHORT).show();
 
         // You can now create a LatLng Object for use with maps
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -987,7 +1072,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
     }
 
     private void showAlert() {
-        final AlertDialog.Builder dialog = new  AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Enable Location")
                 .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
                         "use this app")
@@ -1019,7 +1104,6 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         String tabledId;
 
 
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -1039,7 +1123,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
 
             //dbCreation();
             //}
-            Log.e("sendmessage","***********************************"+SERVERIP + "sendMessage.php");
+            Log.e("sendmessage", "***********************************" + SERVERIP + "sendMessage.php");
             HttpPost httppost = new HttpPost(SERVERIP + "sendMessage.php");
             try {
                 // Add your data
@@ -1068,7 +1152,7 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
                     ID = BoardDetails.getString("id");
 
                     Log.e("JSON-*", "RESPONSE is lines ID ********: " + ID);
-                    dbH.updateDeals("Delete from  Notifications where TabletId = '" + ID+"'");
+                    dbH.updateDeals("Delete from  Notifications where TabletId = '" + ID + "'");
                 }
 
             } catch (ClientProtocolException e) {
@@ -1083,20 +1167,21 @@ public class LandingPage extends AppCompatActivity implements  GoogleApiClient.C
         }
 
     }
+
     private boolean haveNetwork() {
         boolean has_wifi = false;
         boolean has_mobile_data = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo[] networkInfos= connectivityManager.getAllNetworkInfo();
-        for(NetworkInfo info: networkInfos){
-            if(info.getTypeName().equalsIgnoreCase("Wifi")){
-                if(info.isConnected()){
-                    has_wifi=true;
+        NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
+        for (NetworkInfo info : networkInfos) {
+            if (info.getTypeName().equalsIgnoreCase("Wifi")) {
+                if (info.isConnected()) {
+                    has_wifi = true;
                 }
             }
-            if(info.getTypeName().equalsIgnoreCase("Mobile")){
-                if(info.isConnected()){
-                    has_mobile_data=true;
+            if (info.getTypeName().equalsIgnoreCase("Mobile")) {
+                if (info.isConnected()) {
+                    has_mobile_data = true;
                 }
             }
         }

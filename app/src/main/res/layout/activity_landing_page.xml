@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_creator="1"
+        android:background="@color/colorPrimary"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_creator="1"
+                android:text="Home"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                />
+
+            <ImageView
+                android:id="@+id/resetDatabaseIcon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_creator="1"
+                android:layout_marginEnd="15dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/reset_database_icon"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/deliverDateCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/selectDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/selectDateIcon"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="@id/selectDateIcon" />
+
+
+            <ImageView
+                android:id="@+id/selectDateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:foregroundTint="@color/colorPrimary"
+                android:src="@drawable/select_date_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="2020-06-23"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/selectDateText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/orderTypeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/deliverDateCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/orderTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Type"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/orderTypeIcon"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="@id/orderTypeIcon" />
+
+
+            <ImageView
+                android:id="@+id/orderTypeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:foregroundTint="@color/colorPrimary"
+                android:src="@drawable/order_type_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorPrimary" />
+
+            <Spinner
+                android:id="@+id/ordertypes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/orderTypeIcon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/routeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/orderTypeCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/routeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Route"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/routeIcon"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="@id/routeIcon" />
+
+
+            <ImageView
+                android:id="@+id/routeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:foregroundTint="@color/colorPrimary"
+                android:src="@drawable/route_icon"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorPrimary" />
+
+            <Spinner
+                android:id="@+id/routeid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/routeIcon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/closelines"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:max="100"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/routeCard"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toLeftOf="@id/routeCard"
+        android:text="Get"
+        android:layout_marginEnd="15dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_ripple"
+        android:id="@+id/closelines"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:layout_height="40dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/closelines"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintBottom_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_creator="1"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/btncreditrequest"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="CREDIT REQUEST FOR OLD INVOICE"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_ripple"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_height="45dp"/>
+
+                <TextView
+                    android:id="@+id/saveddata"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="15dp"
+                    android:text="Continue with saved Filters"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_ripple"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_height="45dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/endtrip"
+                android:layout_width="match_parent"
+                android:text="End Trip"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_ripple"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_height="40dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_creator="1"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/notes"
+        android:id="@+id/btndeliverynotes"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_creator="1"
+        android:background="@drawable/tab_bar_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/home_icon"
+            android:text="Home"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:drawablePadding="5dp"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:src="@drawable/refresh_icon"
+            android:id="@+id/refresh"
+            android:layout_marginEnd="25dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:layout_marginStart="30dp"
+            />
+
+        <TextView
+            android:id="@+id/printers"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/setup_icon"
+            android:text="SetUp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_gravity="end"
+            android:background="@drawable/button_ripple"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:drawablePadding="5dp"
+            />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
