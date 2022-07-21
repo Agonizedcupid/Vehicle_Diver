@@ -337,7 +337,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String tomorrowDate = dateFormat.format(tomorrow);
         //dateTextView.setText(tomorrowDate);
-        dateTextView.setText("2020 - 6 - 23");
+        dateTextView.setText("2020-6-23");
         //returnFilters()
        /* Log.e("rule log", "**************************************" + dbH.getThings("Login"));
         if(dbH.getThings("Login") !=0)
@@ -557,7 +557,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
     private class getOrderTypes extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-            progressBar.setVisibility(View.VISIBLE);
+            //progressBar.setVisibility(View.VISIBLE);
             return GET(urls[0]);
         }
 
@@ -729,7 +729,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
     private class getRoutes extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-            progressBar.setVisibility(View.VISIBLE);
+            //progressBar.setVisibility(View.VISIBLE);
             return GET(urls[0]);
         }
 
