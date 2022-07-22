@@ -129,7 +129,8 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.driverEmail, model.getDriverEmail());
         contentValues.put(DatabaseHelper.driverPassword, model.getDriverPassword());
         contentValues.put(DatabaseHelper.strCustomerSignedBy, model.getstrCustomerSignedBy());
-        contentValues.put(DatabaseHelper.threshold, model.getThreshold());
+        //contentValues.put(DatabaseHelper.threshold, model.getThreshold()); // Original Value
+        contentValues.put(DatabaseHelper.threshold, 0); // Using "0" for testing purpose
 
         contentValues.put(DatabaseHelper.imagestring, model.getimagestring());
         contentValues.put(DatabaseHelper.strNotesDrivers, model.getstrNotesDrivers());
@@ -145,37 +146,37 @@ public class DatabaseAdapter {
         SQLiteDatabase database = helper.getWritableDatabase();
 
 
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.orderId, model.getOrderId());
         contentValues.put(DatabaseHelper.productId, model.getProductId());
         //contentValues.put(DatabaseHelper.invoiceNo, model.getInvoiceNo());
-        contentValues.put(DatabaseHelper.invoiceNo, "");// "" -> Means -> No data found in the API
-        contentValues.put(DatabaseHelper.customerPastelCode, model.getPastelCode());
-        contentValues.put(DatabaseHelper.storeName,"");
-        contentValues.put(DatabaseHelper.comment,model.getComment());
-        contentValues.put(DatabaseHelper.deliveryDate, "");
-        contentValues.put(DatabaseHelper.latitude, "");
-        contentValues.put(DatabaseHelper.longitude, "");
-        contentValues.put(DatabaseHelper.orderValueExc, "");
-        contentValues.put(DatabaseHelper.orderValueInc, "");
-        contentValues.put(DatabaseHelper.deliveryAddress, "");
-        contentValues.put(DatabaseHelper.user, "");
-        contentValues.put(DatabaseHelper.orderMass, "");
-        contentValues.put(DatabaseHelper.productId, model.getProductId());
-        contentValues.put(DatabaseHelper.qty, model.getQty());
-        contentValues.put(DatabaseHelper.price, model.getPrice());
+        //contentValues.put(DatabaseHelper.invoiceNo, "");// "" -> Means -> No data found in the API
+        //contentValues.put(DatabaseHelper.customerPastelCode, model.getPastelCode());
+        //contentValues.put(DatabaseHelper.storeName, "");
         contentValues.put(DatabaseHelper.pastelDescription, model.getPastelDescription());
         contentValues.put(DatabaseHelper.pastelCode, model.getPastelCode());
+        contentValues.put(DatabaseHelper.qty, model.getQty());
+        contentValues.put(DatabaseHelper.price, model.getPrice());
         contentValues.put(DatabaseHelper.orderDetailId, model.getOrderDetailId());
         contentValues.put(DatabaseHelper.comment, model.getComment());
+//        contentValues.put(DatabaseHelper.deliveryDate, "");
+//        contentValues.put(DatabaseHelper.latitude, "");
+//        contentValues.put(DatabaseHelper.longitude, "");
+//        contentValues.put(DatabaseHelper.orderValueExc, "");
+//        contentValues.put(DatabaseHelper.orderValueInc, "");
+//        contentValues.put(DatabaseHelper.deliveryAddress, "");
+//        contentValues.put(DatabaseHelper.user, "");
+//        contentValues.put(DatabaseHelper.orderMass, "");
+        contentValues.put(DatabaseHelper.offLoadComment, model.getoffLoadComment());
         contentValues.put(DatabaseHelper.returnQty, model.getreturnQty());
-        contentValues.put(DatabaseHelper.offLoadComment, "");
+        contentValues.put(DatabaseHelper.Uploaded, 1);
+
+
         contentValues.put(DatabaseHelper.blnoffloaded, model.getblnoffloaded());
         contentValues.put(DatabaseHelper.strCustomerReason, model.getstrCustomerReason());
-        contentValues.put(DatabaseHelper.Uploaded, 1);
-        contentValues.put(DatabaseHelper.intWareHouseId, "");
-        contentValues.put(DatabaseHelper.blnTruckchecked, ""+model.getblnTruckchecked());
+
+        //contentValues.put(DatabaseHelper.intWareHouseId, "");
+        contentValues.put(DatabaseHelper.blnTruckchecked, "" + model.getblnTruckchecked());
         contentValues.put(DatabaseHelper.wareHouseName, model.getstrWareHouse());
 
 
@@ -630,48 +631,48 @@ public class DatabaseAdapter {
         return cratesCount;
     }
 
-    @SuppressLint("Range")
-    public List<OrderLinesModel> returnOrderLines(String InvoiceNo) {
-
-        List<OrderLinesModel> listOfOrdersLines = new ArrayList<>();
-        int cratesCount = 0;
-        SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_LINES_TABLE_NAME + "' where orderId ='" + InvoiceNo + "'", null);
-
-        while (cursor.moveToNext()) {
-            OrderLinesModel model = new OrderLinesModel(
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4),
-                    cursor.getString(5),
-                    cursor.getInt(6),
-                    cursor.getInt(7),
-                    cursor.getDouble(8),
-                    cursor.getDouble(9),
-                    cursor.getString(10),
-                    cursor.getString(11),
-                    cursor.getInt(12),
-                    cursor.getInt(13),
-                    cursor.getInt(14),
-                    cursor.getInt(15),
-                    cursor.getString(16),
-                    cursor.getString(17),
-                    cursor.getInt(18),
-                    cursor.getString(19),
-                    cursor.getString(20),
-                    cursor.getString(21),
-                    cursor.getInt(22),
-                    cursor.getString(23),
-                    cursor.getInt(24), //Extra for uploaded
-                    cursor.getString(25),
-                    cursor.getString(26)
-            );
-            listOfOrdersLines.add(model);
-        }
-
-        return listOfOrdersLines;
-    }
+//    @SuppressLint("Range")
+//    public List<OrderLinesModel> returnOrderLines(String InvoiceNo) {
+//
+//        List<OrderLinesModel> listOfOrdersLines = new ArrayList<>();
+//        int cratesCount = 0;
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        Cursor cursor = db.rawQuery("Select * from '" + DatabaseHelper.ORDERS_LINES_TABLE_NAME + "' where orderId ='" + InvoiceNo + "'", null);
+//
+//        while (cursor.moveToNext()) {
+//            OrderLinesModel model = new OrderLinesModel(
+//                    cursor.getString(1),
+//                    cursor.getString(2),
+//                    cursor.getString(3),
+//                    cursor.getString(4),
+//                    cursor.getString(5),
+//                    cursor.getInt(6),
+//                    cursor.getInt(7),
+//                    cursor.getDouble(8),
+//                    cursor.getDouble(9),
+//                    cursor.getString(10),
+//                    cursor.getString(11),
+//                    cursor.getInt(12),
+//                    cursor.getInt(13),
+//                    cursor.getInt(14),
+//                    cursor.getInt(15),
+//                    cursor.getString(16),
+//                    cursor.getString(17),
+//                    cursor.getInt(18),
+//                    cursor.getString(19),
+//                    cursor.getString(20),
+//                    cursor.getString(21),
+//                    cursor.getInt(22),
+//                    cursor.getString(23),
+//                    cursor.getInt(24), //Extra for uploaded
+//                    cursor.getString(25),
+//                    cursor.getString(26)
+//            );
+//            listOfOrdersLines.add(model);
+//        }
+//
+//        return listOfOrdersLines;
+//    }
 
     public String OrdersNotPostedToTheOffice() {
         //X/Y
@@ -796,11 +797,18 @@ public class DatabaseAdapter {
         database.execSQL(DatabaseHelper.CREATE_ORDER_TYPE_TABLE);
     }
 
-    //Drop ORDER TYPE Table:
+    //Drop ORDER Table:
     public void dropOrderTable() {
         SQLiteDatabase database = helper.getWritableDatabase();
         database.execSQL(DatabaseHelper.DROP_ORDERS_TABLE);
         database.execSQL(DatabaseHelper.CREATE_ORDERS_TABLE);
+    }
+
+    //Drop ORDER TYPE Table:
+    public void dropOrderLinesTable() {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        database.execSQL(DatabaseHelper.DROP_ORDERS_LINES_TABLE);
+        database.execSQL(DatabaseHelper.CREATE_ORDERS_LINES_TABLE);
     }
 
     //Update Flag by Line No.
@@ -1432,33 +1440,33 @@ public class DatabaseAdapter {
         return labels;
     }
 
-//    public ArrayList<OrderLines> returnOrderLines(String InvoiceNo) {
-//        ArrayList<OrderLines> labels = new ArrayList();
-//
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        Cursor cursor = db.rawQuery("Select * from OrderLines where OrderId ='" + InvoiceNo + "'", null);
-//
-//        OrderLines orders = null;
-//        if (cursor.moveToFirst()) {
-//            do {
-//                orders = new OrderLines();
-//                orders.setPastelCode(cursor.getString(3));
-//                orders.setPastelDescription(cursor.getString(4));
-//                orders.setQty(cursor.getString(5));
-//                orders.setPrice(cursor.getString(6));
-//                orders.setOrderDetailId(cursor.getString(7));
-//                orders.setComment(cursor.getString(8));
-//                orders.setoffLoadComment(cursor.getString(9));
-//                orders.setreturnQty(cursor.getString(10));
-//                orders.setblnoffloaded(cursor.getString(12));
-//
-//                labels.add(orders);
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//        return labels;
-//    }
+    public ArrayList<OrderLines> returnOrderLines(String InvoiceNo) {
+        ArrayList<OrderLines> labels = new ArrayList();
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from OrderLines where orderId ='" + InvoiceNo + "'", null);
+
+        OrderLines orders = null;
+        if (cursor.moveToFirst()) {
+            do {
+                orders = new OrderLines();
+                orders.setPastelCode(cursor.getString(3));
+                orders.setPastelDescription(cursor.getString(4));
+                orders.setQty(cursor.getString(5));
+                orders.setPrice(cursor.getString(6));
+                orders.setOrderDetailId(cursor.getString(7));
+                orders.setComment(cursor.getString(8));
+                orders.setoffLoadComment(cursor.getString(9));
+                orders.setreturnQty(cursor.getString(10));
+                orders.setblnoffloaded(cursor.getString(12));
+
+                labels.add(orders);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return labels;
+    }
 //
 //    public int returnOrderLinesCrateCount(String InvoiceNo) {
 //
@@ -1512,7 +1520,7 @@ public class DatabaseAdapter {
         ArrayList<OrderLines> labels = new ArrayList();
 
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from OrderLines where OrderId ='" + InvoiceNo + "'", null);
+        Cursor cursor = db.rawQuery("Select * from OrderLines where orderId ='" + InvoiceNo + "'", null);
 
         OrderLines orders = null;
         if (cursor.moveToFirst()) {
@@ -1544,9 +1552,11 @@ public class DatabaseAdapter {
         SQLiteDatabase db = helper.getWritableDatabase();
         Cursor cursor = null;
         if (warehouse.equals("ALL")) {
-            cursor = db.rawQuery("Select * from OrderLines where OrderId ='" + InvoiceNo + "'", null);
+            //cursor = db.rawQuery("Select * from OrderLines where OrderId ='" + InvoiceNo + "'", null);
+            cursor = db.rawQuery("Select * from OrderLines where orderId ='" + InvoiceNo + "'", null);
         } else {
-            cursor = db.rawQuery("Select * from OrderLines where OrderId ='" + InvoiceNo + "' and WareHouseName='" + warehouse + "'", null);
+            //cursor = db.rawQuery("Select * from OrderLines where OrderId ='" + InvoiceNo + "' and WareHouseName='" + warehouse + "'", null);
+            cursor = db.rawQuery("Select * from OrderLines where orderId ='" + InvoiceNo + "' and WareHouseName='" + warehouse + "'", null);
         }
 
 
@@ -1822,7 +1832,7 @@ public class DatabaseAdapter {
 
     public boolean isoffladedline(String invoice) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from OrderLines where blnoffloaded=0 and OrderID='" + invoice + "'", null);
+        Cursor cursor = db.rawQuery("Select * from OrderLines where blnoffloaded=0 and orderId='" + invoice + "'", null);
 
         Log.e("try offlo", "Select Count(*) from OrderLines where blnoffloaded=0 and OrderID='" + invoice + "'");
 
@@ -2380,21 +2390,22 @@ public class DatabaseAdapter {
                 + blnoffloaded + " INTEGER,"
                 + strCustomerReason + " VARCHAR(255),"
                 + blnTruckchecked + " INTEGER,"
-                + wareHouseName + " VARCHAR(255),"
 
-                + invoiceNo + " VARCHAR(255),"
-                + customerPastelCode + " VARCHAR(255),"
-                + storeName + " VARCHAR(255),"
-                + deliveryDate + " VARCHAR(255),"
-                + latitude + " VARCHAR(255),"
-                + longitude + " VARCHAR(255),"
-                + orderValueExc + " VARCHAR(255),"
-                + orderValueInc + " VARCHAR(255),"
-                + deliveryAddress + " VARCHAR(255),"
-                + user + " VARCHAR(255),"
-                + orderMass + " VARCHAR(255),"
-                + productId + " INTEGER,"
-                + intWareHouseId + " VARCHAR(255));";
+
+//                + invoiceNo + " VARCHAR(255),"
+//                + customerPastelCode + " VARCHAR(255),"
+//                + storeName + " VARCHAR(255),"
+//                + deliveryDate + " VARCHAR(255),"
+//                + latitude + " VARCHAR(255),"
+//                + longitude + " VARCHAR(255),"
+//                + orderValueExc + " VARCHAR(255),"
+//                + orderValueInc + " VARCHAR(255),"
+//                + deliveryAddress + " VARCHAR(255),"
+//                + user + " VARCHAR(255),"
+//                + orderMass + " VARCHAR(255),"
+//                + productId + " INTEGER,"
+//                + intWareHouseId + " VARCHAR(255),"
+                + wareHouseName + " VARCHAR(255));";
         private static final String DROP_ORDERS_LINES_TABLE = "DROP TABLE IF EXISTS " + ORDERS_LINES_TABLE_NAME;
 
 

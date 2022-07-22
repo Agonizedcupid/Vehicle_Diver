@@ -156,25 +156,25 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void normalClick(String invoiceNo, String cash, String threshold, String storeName) {
         Toast.makeText(MainActivity.this, ""+threshold, Toast.LENGTH_SHORT).show();
+        Intent b;
         if (threshold.equals("0")) {
-            Intent b = new Intent(MainActivity.this, InvoiceDetails.class);
+            b = new Intent(MainActivity.this, InvoiceDetails.class);
             UpdateDeliverySeq();
             b.putExtra("deldate", deliverdate.getText().toString());
             b.putExtra("routes", routename.getText().toString());
             b.putExtra("ordertype", ordertype.getText().toString());
             b.putExtra("invoiceno", invoiceNo);
             b.putExtra("cash", cash);
-            startActivity(b);
         } else {
-            Intent b = new Intent(MainActivity.this, CratesActivity.class);
+            b = new Intent(MainActivity.this, CratesActivity.class);
             b.putExtra("invoiceno", invoiceNo);
             b.putExtra("threshold", threshold);
             b.putExtra("storename", storeName);
             b.putExtra("deldate", deliverdate.getText().toString());
             b.putExtra("routes", routename.getText().toString());
             b.putExtra("ordertype", ordertype.getText().toString());
-            startActivity(b);
         }
+        startActivity(b);
     }
 
     public class Item {
@@ -603,11 +603,19 @@ public class MainActivity extends AppCompatActivity implements
 //            for (Routes orderAttributes4 : ordertyp) {
 //                ordertypeidreturned = orderAttributes4.getRouteName();
 //            }
+
+//            new getOrderLines().execute(SERVERIP + "OrderLines.php?OrderType="
+//                    + orderId + "&Route="
+//                    + routeId + "&DeliveryDate=" + deliverdate.getText().toString());
+
             Log.e("try", "******" + SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
             //new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
             new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType="
                     + orderId
                     + "&Route=" + routeId + "&DeliveryDate=" + deliverdate.getText().toString());
+
+
+
 
         }
 
@@ -1274,7 +1282,7 @@ public class MainActivity extends AppCompatActivity implements
                                 public void onClick(DialogInterface dialog, int id) {
                                     startProgress("Syncing Items");
                                     List<Orders> oH = dbH.returnOrderHeaders();
-                                    Toast.makeText(MainActivity.this, "SIZE: " + oH.size(), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(MainActivity.this, "SIZE: " + oH.size(), Toast.LENGTH_SHORT).show();
                                     listdata = new ArrayList<Data>();
 
                                     for (Orders orderAttributes : oH) {
@@ -1355,10 +1363,15 @@ public class MainActivity extends AppCompatActivity implements
                                         }
                                     });
 
-                                    new getOrderLines().execute(SERVERIP + "OrderLines.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+                                    /**
+                                     * Removed from there
+                                     */
+                                    //new getOrderLines().execute(SERVERIP + "OrderLines.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
                                     //dbH.updateDeals("Update TimeSync set lastTimeSync='"+timeSync()+"' where TableName='PriceLists')");
 
-
+                                    new getOrderLines().execute(SERVERIP + "OrderLines.php?OrderType="
+                                            + orderId + "&Route="
+                                            + routeId + "&DeliveryDate=" + deliverdate.getText().toString());
                                 }
                             });
                     AlertDialog alert = builder.create();
@@ -1381,7 +1394,7 @@ public class MainActivity extends AppCompatActivity implements
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Order Lines Inserting", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);

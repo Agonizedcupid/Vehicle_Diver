@@ -381,7 +381,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
     //http://so-ca.ddns.net:8179/driver/
     // String customerOrders, SERVERIP = "http://linxsystems3.dedicated.co.za:8881/DriverGas/",deldate,ordertype,route,InvoiceNo,priceinput,emailaddress,ts,storename;= "http://192.168.0.18:8181/driver/"
     String customerOrders, SERVERIP, deldate, ordertype, route, InvoiceNo, priceinput, emailaddress, ts, storename;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     ProgressDialog progressDoalog;
     private DatabaseHelper mDatabaseHelper;
     private SQLiteDatabase db;
@@ -472,15 +473,15 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         invoice_no = findViewById(R.id.invoice_no);
         //paymenttype = findViewById(R.id.paymenttype);
         setInvTotIncl = findViewById(R.id.total);
-        currentlocation = findViewById(R.id.currentlocation);
+        //currentlocation = findViewById(R.id.currentlocation);
         _orderdlistlines = findViewById(R.id._orderdlistlines);
         _orderdlistlinescheckd = findViewById(R.id._orderdlistlinescheckd);
         //  mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad_lines);
         btndoneoffloading = findViewById(R.id.acceptthesummary);
         closelines = findViewById(R.id.closelines);
         btndocnote = findViewById(R.id.btndocnote);
-        tickall = findViewById(R.id.tickall);
-        checkunattitems = findViewById(R.id.checkunattitems);
+        //tickall = findViewById(R.id.tickall);
+        //checkunattitems = findViewById(R.id.checkunattitems);
         zoom = findViewById(R.id.zoom);
         accept = findViewById(R.id.accept);
         cash = findViewById(R.id.cash);
@@ -502,23 +503,23 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         setPairedDevices();
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        ArrayList<Orders> infoheader = dbH.isSaved(InvoiceNo);
-//        ArrayList<Orders> orderheader = dbH.returnOrderHeadersInfoByInvoice(InvoiceNo);
+        ArrayList<Orders> infoheader = dbH.isSaved(InvoiceNo);
+        ArrayList<Orders> orderheader = dbH.returnOrderHeadersInfoByInvoice(InvoiceNo);
 
         /**
          * New Code
          */
-        List<OrderModel> infoHeader = databaseAdapter.getOrdersByInvoice(InvoiceNo);
+        //List<OrderModel> infoHeader = databaseAdapter.getOrdersByInvoice(InvoiceNo);
 
-        btndoneoffloading.setVisibility(View.INVISIBLE);
+        btndoneoffloading.setVisibility(View.GONE);
 
-        //ArrayList<WareHousesModel> ordertypeWarehouse = dbH.warehouse();
-        List<WareHousesModel> ordertypeWarehouse = databaseAdapter.getWareHouses();
+        ArrayList<WareHouses> ordertypeWarehouse = dbH.warehouse();
+        //List<WareHousesModel> ordertypeWarehouse = databaseAdapter.getWareHouses();
         //List<RouteModel> ordertypeWarehouse = databaseAdapter.getRoutes();
 
         List<String> labelsWare = new ArrayList<String>();
         labelsWare.add("ALL");
-        for (WareHousesModel orderAttributes4 : ordertypeWarehouse) {
+        for (WareHouses orderAttributes4 : ordertypeWarehouse) {
             labelsWare.add(orderAttributes4.getWareHouse());
         }
 
@@ -541,16 +542,16 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //ArrayList<OrderLinesModel> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_nocheckedMain.getSelectedItem().toString());
-                List<OrderLinesModel> oD = databaseAdapter.returnOrderLinesOffloadedByCategory(InvoiceNo, productcats_nocheckedMain.getSelectedItem().toString());
+                ArrayList<OrderLines> oD = databaseAdapter.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_nocheckedMain.getSelectedItem().toString());
                 Log.e("group", productcats_nocheckedMain.getSelectedItem().toString());
                 items1 = new ArrayList<Item>();
                 //  itemsChecked = new ArrayList<Item>();
 
-                for (OrderLinesModel orderAttributes : oD) {
+                for (OrderLines orderAttributes : oD) {
 
-                    if (orderAttributes.getBlnoffloaded() == 0) {
+                    if (orderAttributes.getblnoffloaded().equals("0")) {
                         Item item = new Item(orderAttributes.getPastelDescription(), "" + orderAttributes.getPrice(), "" + orderAttributes.getQty(),
-                                "", "Return: " + orderAttributes.getReturnQty(), "Lines", "" + orderAttributes.getBlnoffloaded(), "" + orderAttributes.getOrderDetailId());
+                                "", "Return: " + orderAttributes.getreturnQty(), "Lines", "" + orderAttributes.getblnoffloaded(), "" + orderAttributes.getOrderDetailId());
                         items1.add(item);
                     }
                     /*if(orderAttributes.getblnoffloaded() =="1")
@@ -578,16 +579,16 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         productcats_checkedMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
-                List<OrderLinesModel> oD = databaseAdapter.returnOrderLinesOffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
+                ArrayList<OrderLines> oD = dbH.returnOrderLinesoffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
+                //List<OrderLinesModel> oD = databaseAdapter.returnOrderLinesOffloadedByCategory(InvoiceNo, productcats_checkedMain.getSelectedItem().toString());
                 Log.e("group", productcats_checkedMain.getSelectedItem().toString());
                 //  items1 = new ArrayList<Item>();
                 itemsChecked = new ArrayList<Item>();
-                for (OrderLinesModel orderAttributes : oD) {
+                for (OrderLines orderAttributes : oD) {
 
-                    if (orderAttributes.getBlnoffloaded() == 1) {
+                    if (orderAttributes.getblnoffloaded().equals("1")) {
                         Item item = new Item(orderAttributes.getPastelDescription(), "" + orderAttributes.getPrice(), "" + orderAttributes.getQty(),
-                                "", "Return: " + orderAttributes.getReturnQty(), "Lines", "" + orderAttributes.getBlnoffloaded(), "" + orderAttributes.getOrderDetailId());
+                                "", "Return: " + orderAttributes.getreturnQty(), "Lines", "" + orderAttributes.getblnoffloaded(), "" + orderAttributes.getOrderDetailId());
                         itemsChecked.add(item);
                     }
 
@@ -607,9 +608,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             }
         });
         //order headers
-        for (OrderModel orderAttributes : infoHeader) {
+        for (Orders orderAttributes : infoheader) {
 
-            if (orderAttributes.getOffloaded() == 1) {
+            if (orderAttributes.getoffloaded().equals("1")) {
                 accept.setChecked(true);
                 //mSignaturePad.setVisibility(View.INVISIBLE);
                 btndocnote.setVisibility(View.INVISIBLE);
@@ -618,45 +619,46 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             }
             cash.setText(orderAttributes.getCashPaid());
         }
-//        for (Orders orderAttributes : orderheader) {
-//            emailaddress = orderAttributes.getstrEmailCustomer();
-//            invoice_no.setText(orderAttributes.getInvoiceNo() + "( " + orderAttributes.getStoreName() + ")");
-//            storename = orderAttributes.getStoreName();
-//            setInvTotIncl.setText(orderAttributes.getInvTotIncl());
-//            paymenttype.setText(orderAttributes.getPaymentType());
-//            // total = orderAttributes.getInvTotIncl();
-//        }
-
-        //New code:
-        for (OrderModel orderAttributes : infoHeader) {
-            emailaddress = orderAttributes.getStrEmailCustomer();
+        for (Orders orderAttributes : orderheader) {
+            emailaddress = orderAttributes.getstrEmailCustomer();
             invoice_no.setText(orderAttributes.getInvoiceNo() + "( " + orderAttributes.getStoreName() + ")");
             storename = orderAttributes.getStoreName();
             setInvTotIncl.setText(orderAttributes.getInvTotIncl());
             //paymenttype.setText(orderAttributes.getPaymentType());
-            //paymenttype.setText("CASH");
+            accept.setText(orderAttributes.getPaymentType());
             // total = orderAttributes.getInvTotIncl();
         }
 
+        //New code:
+//        for (OrderModel orderAttributes : infoHeader) {
+//            emailaddress = orderAttributes.getStrEmailCustomer();
+//            invoice_no.setText(orderAttributes.getInvoiceNo() + "( " + orderAttributes.getStoreName() + ")");
+//            storename = orderAttributes.getStoreName();
+//            setInvTotIncl.setText(orderAttributes.getInvTotIncl());
+//            //paymenttype.setText(orderAttributes.getPaymentType());
+//            //paymenttype.setText("CASH");
+//            // total = orderAttributes.getInvTotIncl();
+//        }
 
-        List<OrderLinesModel> oD = databaseAdapter.returnOrderLines(returndata.getStringExtra("invoiceno"));
+
+        ArrayList<OrderLines> oD = databaseAdapter.returnOrderLines(returndata.getStringExtra("invoiceno"));
         Log.e("Cas invoi", "****************************++++++++++++++++++++++++++++++++++++++++++++++++++++++" + returndata.getStringExtra("invoiceno"));
         items1 = new ArrayList<Item>();
         itemsChecked = new ArrayList<Item>();
 
-        for (OrderLinesModel orderAttributes : oD) {
+        for (OrderLines orderAttributes : oD) {
 
-            if (orderAttributes.getBlnoffloaded() == 0) {
+            if (orderAttributes.getblnoffloaded().equals("0")) {
 
                 Item item = new Item(orderAttributes.getPastelDescription(), ""+orderAttributes.getPrice(), ""+orderAttributes.getQty(),
-                        "", "Return: " + orderAttributes.getReturnQty(), "Lines", ""+orderAttributes.getBlnoffloaded(), ""+orderAttributes.getOrderDetailId());
+                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", ""+orderAttributes.getblnoffloaded(), ""+orderAttributes.getOrderDetailId());
                 items1.add(item);
                 Log.e("items1", "" + items1);
             }
-            if (orderAttributes.getBlnoffloaded() == 1) {
+            if (orderAttributes.getblnoffloaded().equals("1")) {
 
                 Item item = new Item(orderAttributes.getPastelDescription(), ""+orderAttributes.getPrice(), ""+orderAttributes.getQty(),
-                        "", "Return: " + orderAttributes.getReturnQty(), "Lines", ""+orderAttributes.getBlnoffloaded(), ""+orderAttributes.getOrderDetailId());
+                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", ""+orderAttributes.getblnoffloaded(), ""+orderAttributes.getOrderDetailId());
                 itemsChecked.add(item);
                 Log.e("itemsChecked", "" + itemsChecked);
             }
@@ -950,7 +952,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 //        tickall.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                dbH.updateDeals("Update OrderLines set blnoffloaded = 1 where OrderID='" + InvoiceNo + "'");
+//                dbH.updateDeals("Update OrderLines set blnoffloaded = 1 where orderId='" + InvoiceNo + "'");
 //                Intent doc = new Intent(InvoiceDetails.this, InvoiceDetails.class);
 //                doc.putExtra("invoiceno", InvoiceNo);
 //                doc.putExtra("deldate", deldate);
@@ -1030,7 +1032,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                                 cash.setText("0.0");
                             }
 
-                            dbH.updateDeals("Update OrderHeaders set CashPaid='" + cashfielddialog.getText().toString() + "' where InvoiceNo='" + InvoiceNo + "'");
+                            //dbH.updateDeals("Update OrderHeaders set CashPaid='" + cashfielddialog.getText().toString() + "' where InvoiceNo='" + InvoiceNo + "'");
+                            dbH.updateDeals("Update OrderHeaders set cashPaid='" + cashfielddialog.getText().toString() + "' where invoiceNo='" + InvoiceNo + "'");
                             Calendar calendar = Calendar.getInstance();
                             calendar.add(Calendar.DAY_OF_YEAR, 0);
                             Date tomorrow = calendar.getTime();
@@ -1097,7 +1100,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 if (accept.isChecked() && ((cash.getText().toString()).trim() != null && (cash.getText().toString()).length() > 0)) {
                     checkLocation();
                     //need to remove test this
-                    dbH.updateDeals("Update OrderHeaders set CashPaid='" + cash.getText().toString() + "', Latitude=" + lat + ", Longitude=" + lon + " where InvoiceNo ='" + InvoiceNo + "'");
+                    dbH.updateDeals("Update OrderHeaders set cashPaid='" + cash.getText().toString() + "', Latitude=" + lat + ", Longitude=" + lon + " where invoiceNo ='" + InvoiceNo + "'");
 
                     Intent main = new Intent(InvoiceDetails.this, SignaturePage.class);
                     main.putExtra("deldate", deldate);
@@ -1183,7 +1186,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
                         Toast.LENGTH_LONG).show();
                 Log.e("boolean*", "*******************************************" + dbH.isoffladedline(InvoiceNo));
-                if (dbH.isoffladedline(InvoiceNo) == false) {
+                if (!dbH.isoffladedline(InvoiceNo)) {
                     final Dialog dialog = new Dialog(InvoiceDetails.this, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
                     dialog.setContentView(R.layout.summarry);
 
@@ -1200,10 +1203,10 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                         items2.add(item);
                     }
                     myItemsListAdapter2 = new ItemsListAdapter(InvoiceDetails.this, items2);
-                    listviewsummary = (ListView) dialog.findViewById(R.id._orderdlistlines);
-                    invoice_nosummary = (TextView) dialog.findViewById(R.id.invoice_no);
-                    closelinessummary = (Button) dialog.findViewById(R.id.closelines);
-                    acceptthesummary = (Button) dialog.findViewById(R.id.acceptthesummary);
+                    listviewsummary =  dialog.findViewById(R.id._orderdlistlines);
+                    invoice_nosummary =  dialog.findViewById(R.id.invoice_no);
+                    closelinessummary =  dialog.findViewById(R.id.closelines);
+                    acceptthesummary =  dialog.findViewById(R.id.acceptthesummary);
                     listviewsummary.setAdapter(myItemsListAdapter2);
                     closelinessummary.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1249,7 +1252,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                     });
                     dialog.show();
                     accept.setChecked(false);
-                    btndoneoffloading.setVisibility(View.INVISIBLE);
+                    btndoneoffloading.setVisibility(View.GONE);
                 } else {
                     //Log.e("isoffloaded","*******************"+dbH.isoffladedline());
                     btndoneoffloading.setVisibility(View.VISIBLE);
@@ -1498,7 +1501,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         String s = Base64.encodeToString(byteImage, Base64.DEFAULT);
 
 
-        dbH.updateDeals("Update OrderHeaders set imagestring='" + s + "' where InvoiceNo ='" + InvoiceNo + "'");
+        dbH.updateDeals("Update OrderHeaders set imagestring='" + s + "' where invoiceNo ='" + InvoiceNo + "'");
         // Log.e("********","***************"+s);
         //Log.e("********","***************InvoiceNo----"+InvoiceNo);
         //stream.close();
@@ -1516,7 +1519,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         byte[] byteImage = outputStream.toByteArray();
         String s = Base64.encodeToString(byteImage, Base64.DEFAULT);
 
-        dbH.updateDeals("Update OrderHeaders set strCashsignature='" + s + "' where InvoiceNo ='" + InvoiceNo + "'");
+        dbH.updateDeals("Update OrderHeaders set strCashsignature='" + s + "' where invoiceNo ='" + InvoiceNo + "'");
         // Log.e("********","***************"+s);
         //Log.e("********","***************InvoiceNo----"+InvoiceNo);
         //stream.close();
@@ -1795,8 +1798,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         //  mLongitudeTextView.setText(String.valueOf(location.getLongitude() ));
         //   Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         // You can now create a LatLng Object for use with maps
-        currentlocation.setText(Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude()));
+//        currentlocation.setText(Double.toString(location.getLatitude()) + "," +
+//                Double.toString(location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
     }
 

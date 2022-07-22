@@ -38,7 +38,7 @@ import okhttp3.ResponseBody;
 public class NetworkingFeedback {
 
     private CompositeDisposable routeDisposable, orderDisposable, orderLinesDisposable,
-    wareHousesDisposable;
+            wareHousesDisposable;
     private DatabaseAdapter databaseAdapter;
     private RestApi apiService;
 
@@ -891,7 +891,7 @@ public class NetworkingFeedback {
     }
 
     public void insertNewlyOrderLinesIntoSQLiteDatabase(List<OrderLines> orderLinesList) {
-
+        databaseAdapter.dropOrderLinesTable();
         Observable<OrderLines> observable = Observable.fromIterable(orderLinesList)
                 .subscribeOn(Schedulers.io());
 
@@ -916,7 +916,7 @@ public class NetworkingFeedback {
 
             @Override
             public void onComplete() {
-                Log.d("ORDER_LINES_COMPLETED", "onComplete: ");
+                Log.d("ORDER_LINES_ERROR", "onComplete: " + orderLinesList.size());
             }
         };
 

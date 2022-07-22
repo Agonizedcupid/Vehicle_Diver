@@ -1,191 +1,443 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f1c7c2c2"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="Item Name"
-        android:textColor="#FC0A0A0A" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.github.gcacace.signaturepad.views.SignaturePad
-        android:id="@+id/signature_pad_lines"
-        android:layout_width="fill_parent"
-        android:layout_height="149dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="46dp"
-        android:background="@android:color/background_light"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/closelines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow_icon"
+            app:layout_constraintBottom_creator="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/close_line_info"
-        android:layout_width="123dp"
-        android:layout_height="87dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="65dp"
-        android:text="Exit Without Change" />
+        <TextView
+            android:id="@+id/truckorder"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="Line Details"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_creator="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toRightOf="@id/closelines"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/donelineinfo"
-        android:layout_width="wrap_content"
-        android:layout_height="78dp"
-        android:layout_above="@+id/signature_pad_lines"
-        android:layout_centerHorizontal="true"
-        android:text="Save Changes" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/product_name"
-        android:layout_width="216dp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/pastelcode"
-        android:layout_alignParentTop="true"
-        android:text="TextView"
-        android:textColor="#0F0F0F"
-        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarLayout">
 
-    <EditText
-        android:id="@+id/qtyordered"
-        android:layout_width="258dp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/notecomment"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:background="@android:color/background_light"
-        android:ems="10"
-        android:inputType="number|numberDecimal" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="15dp">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="155dp"
-        android:text="Item Code"
-        android:textColor="#0C0C0C" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:text="Item Name"
+                android:textColor="#FC0A0A0A"
+                android:textStyle="bold"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/product_name"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/notecomment"
-        android:layout_width="260dp"
-        android:layout_height="67dp"
-        android:layout_alignTop="@+id/textView7"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="-3dp"
-        android:background="@android:color/background_light"
-        android:ems="10"
-        android:inputType="textMultiLine" />
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_blue_dark"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="Product Name"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/textView2"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="326dp"
-        android:text="Comments"
-        android:textColor="#FC0A0A0A" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:text="Item Code"
+                android:textColor="#0C0C0C"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/pastelcode"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/textView2" />
 
-    <Spinner
-        android:id="@+id/reason"
-        android:layout_width="260dp"
-        android:layout_height="20dp"
-        android:layout_alignTop="@+id/textView12"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="-3dp"
-        android:background="@android:color/background_light"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:spinnerMode="dialog"
-        android:text="Name" />
+            <TextView
+                android:id="@+id/pastelcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/holo_blue_dark"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="Pastel Code"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toRightOf="@id/textView3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/product_name" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="290dp"
-        android:text="Reason"
-        android:textColor="#FC0A0A0A" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:text="Price"
+                android:textColor="#0C0C0C"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/priceline"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/textView3" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="148dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="218dp"
-        android:text="Special Requirement"
-        android:textColor="#FC0A0A0A" />
+            <TextView
+                android:id="@+id/priceline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/holo_blue_dark"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="Price Line"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toRightOf="@id/textView5"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pastelcode" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="251dp"
-        android:text="Return Quantity"
-        android:textColor="#FC0A0A0A" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:text="Special Requirement"
+                android:textColor="#0C0C0C"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/commentline"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/textView5" />
 
-    <TextView
-        android:id="@+id/commentline"
-        android:layout_width="224dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView6"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="-3dp"
-        android:text="TextView"
-        android:textColor="#FC0A0A0A" />
+            <TextView
+                android:id="@+id/commentline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/holo_blue_dark"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="Price Line"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toRightOf="@id/textView6"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/priceline" />
 
-    <TextView
-        android:id="@+id/pastelcode"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="-3dp"
-        android:text="TextView"
-        android:textColor="#0C0C0C" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:text="Return Quantity"
+                android:textColor="#0C0C0C"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toTopOf="@+id/qtyordered"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/qtyordered"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/qtyordered" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="186dp"
-        android:text="Price"
-        android:textColor="#FC0A0A0A" />
+            <EditText
+                android:id="@+id/qtyordered"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/edit_text_background"
+                android:ems="10"
+                android:inputType="number|numberDecimal"
+                app:layout_constraintLeft_toRightOf="@id/textView4"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/commentline" />
 
-    <TextView
-        android:id="@+id/priceline"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="-3dp"
-        android:text="TextView"
-        android:textColor="#FC0A0A0A" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:text="Reason"
+                android:textColor="#0C0C0C"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toTopOf="@+id/reason"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/reason"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/reason" />
+
+            <Spinner
+                android:id="@+id/reason"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:inputType="number|numberDecimal"
+                app:layout_constraintLeft_toRightOf="@id/textView12"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/qtyordered" />
+
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textColor="#0C0C0C"
+                android:textStyle="bold"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toTopOf="@+id/notecomment"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toLeftOf="@id/notecomment"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@id/notecomment" />
+
+            <EditText
+                android:id="@+id/notecomment"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:background="@drawable/edit_text_background"
+                android:ems="10"
+                android:inputType="number|numberDecimal"
+                app:layout_constraintLeft_toRightOf="@id/textView7"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reason" />
+
+
+            <Button
+                android:id="@+id/close_line_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="75dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/button_ripple"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="Exit Without Change"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/donelineinfo"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <Button
+                android:id="@+id/donelineinfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_ripple"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="Save Changes"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/close_line_info"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toRightOf="@id/close_line_info"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toBottomOf="@+id/close_line_info" />
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signature_pad_lines"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="25dp"
+                android:background="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/close_line_info" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/qtyordered"-->
+    <!--        android:layout_width="258dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignStart="@+id/notecomment"-->
+    <!--        android:layout_alignTop="@+id/textView4"-->
+    <!--        android:layout_marginStart="0dp"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:background="@android:color/background_light"-->
+    <!--        android:ems="10"-->
+    <!--        android:inputType="number|numberDecimal" />-->
+
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/notecomment"-->
+    <!--        android:layout_width="260dp"-->
+    <!--        android:layout_height="67dp"-->
+    <!--        android:layout_alignTop="@+id/textView7"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="-3dp"-->
+    <!--        android:background="@android:color/background_light"-->
+    <!--        android:ems="10"-->
+    <!--        android:inputType="textMultiLine" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView7"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="3dp"-->
+    <!--        android:layout_marginTop="326dp"-->
+    <!--        android:text="Comments"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
+
+    <!--    <Spinner-->
+    <!--        android:id="@+id/reason"-->
+    <!--        android:layout_width="260dp"-->
+    <!--        android:layout_height="20dp"-->
+    <!--        android:layout_alignTop="@+id/textView12"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="-3dp"-->
+    <!--        android:background="@android:color/background_light"-->
+    <!--        android:ems="10"-->
+    <!--        android:inputType="textPersonName"-->
+    <!--        android:spinnerMode="dialog"-->
+    <!--        android:text="Name" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView12"-->
+    <!--        android:layout_width="88dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="3dp"-->
+    <!--        android:layout_marginTop="290dp"-->
+    <!--        android:text="Reason"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView6"-->
+    <!--        android:layout_width="148dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="3dp"-->
+    <!--        android:layout_marginTop="218dp"-->
+    <!--        android:text="Special Requirement"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView4"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="3dp"-->
+    <!--        android:layout_marginTop="251dp"-->
+    <!--        android:text="Return Quantity"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/commentline"-->
+    <!--        android:layout_width="224dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignTop="@+id/textView6"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="-3dp"-->
+    <!--        android:text="TextView"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView5"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="3dp"-->
+    <!--        android:layout_marginTop="186dp"-->
+    <!--        android:text="Price"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/priceline"-->
+    <!--        android:layout_width="228dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignTop="@+id/textView5"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="-3dp"-->
+    <!--        android:text="TextView"-->
+    <!--        android:textColor="#FC0A0A0A" />-->
 
 </RelativeLayout>
