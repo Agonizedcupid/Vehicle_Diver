@@ -34,6 +34,7 @@ import android.support.v7.app.AppCompatActivity;*/
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -55,6 +56,7 @@ import com.regin.reginald.model.OtherAttributes;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
@@ -100,17 +102,19 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 
     GPSTracker gps;
     //Button get, start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info, refresh, printers, saveddata, endtrip, btndeliverynotes, btncreditrequest;
-    Button  start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info  ;
+    Button start_trip, closelines, btndoneoffloading, donelineinfo, close_line_info;
 
-    private TextView get,saveddata,btncreditrequest,endtrip,printers;
-    private FloatingActionButton refresh,btndeliverynotes;
+    private TextView get, saveddata, btncreditrequest, endtrip, printers;
+    private FloatingActionButton refresh, btndeliverynotes;
 
     Spinner route, ordertypes;
-    EditText  qtyordered, notecomment;
+    EditText qtyordered, notecomment;
     Intent mServiceIntent;
     private OrderService mSensorService;
 
     Context ctx;
+    private int selectedRoute;
+    private int selectedOrderTypes;
 
     public Context getCtx() {
         return ctx;
@@ -303,19 +307,19 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
             }
         }
 
-        get =  findViewById(R.id.closelines);
-        start_trip =  findViewById(R.id.start_trip);
+        get = findViewById(R.id.closelines);
+        start_trip = findViewById(R.id.start_trip);
         printers = findViewById(R.id.printers);
-        refresh =  findViewById(R.id.refresh);
-        saveddata =  findViewById(R.id.saveddata);
-        btndeliverynotes =  findViewById(R.id.btndeliverynotes);
-        btncreditrequest =  findViewById(R.id.btncreditrequest);
+        refresh = findViewById(R.id.refresh);
+        saveddata = findViewById(R.id.saveddata);
+        btndeliverynotes = findViewById(R.id.btndeliverynotes);
+        btncreditrequest = findViewById(R.id.btncreditrequest);
         endtrip = findViewById(R.id.endtrip);
-        ordertypes =  findViewById(R.id.ordertypes);
-        route =  findViewById(R.id.routeid);
-        dateTextView =  findViewById(R.id.datetime);
-        deliveryDateCard =  findViewById(R.id.deliverDateCard);
-        deliveryDateCard =  findViewById(R.id.deliverDateCard);
+        ordertypes = findViewById(R.id.ordertypes);
+        route = findViewById(R.id.routeid);
+        dateTextView = findViewById(R.id.datetime);
+        deliveryDateCard = findViewById(R.id.deliverDateCard);
+        deliveryDateCard = findViewById(R.id.deliverDateCard);
         progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
         deliveryDateCard.setOnClickListener(new View.OnClickListener() {
@@ -423,7 +427,6 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
                 }
             });
 
-
         }
         get.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -449,11 +452,15 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //Intent i = new Intent(LandingPage.this, MainActivity.class);
                     Intent i = new Intent(LandingPage.this, MainActivity.class);
-                    Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
                     i.putExtra("deldate", dateTextView.getText().toString());
                     i.putExtra("routes", route.getSelectedItem().toString());
                     i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
+                    i.putExtra("orderId", selectedOrderTypes);
+                    i.putExtra("routeId", selectedRoute);
                     startActivity(i);
+
+                    //Log.d("CHECKING_ID", "onClick: "+selectedOrderTypes + " - "+selectedRoute);
                 }
             }
         });
@@ -573,7 +580,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
                     dbH.updateDeals("DROP TABLE IF EXISTS OrderTypes");
                     dbH.updateDeals("CREATE TABLE IF NOT EXISTS OrderTypes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, OrderTypeId INTEGER , OrderType TEXT)");
 
-                    List<OrderTypes> products = new Gson().fromJson(customerOrders, new TypeToken<List<OrderTypes>>() {
+                    List<OrderTypeModel> products = new Gson().fromJson(customerOrders, new TypeToken<List<OrderTypeModel>>() {
                     }.getType());
                     int i = 1;
 //                    for (OrderTypes product : products) {
@@ -593,10 +600,10 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 ////                    persister.persistArray(OrderTypes.class, product_json);
 //                    //readDatabaseProducts();
 //                    Log.e("**ql*", "done sync");
-                    List<OrderTypes> ordertype = products;
+                    List<OrderTypeModel> ordertype = products;
 
                     List<String> labels = new ArrayList<String>();
-                    for (OrderTypes orderAttributes4 : ordertype) {
+                    for (OrderTypeModel orderAttributes4 : ordertype) {
                         labels.add(orderAttributes4.getOrderType());
                     }
                     ArrayAdapter<String> ordertypeA =
@@ -605,6 +612,20 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
                     ordertypeA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     ordertypes.setAdapter(ordertypeA);
+                    ordertypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                            //selectedRoute = Integer.parseInt(adapterView.getItemAtPosition(position).toString());
+                            selectedOrderTypes = products.get(position).getOrderTypeId();
+                            //routeName = routeList.get(position).getRouteName();
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                     progressBar.setVisibility(View.GONE);
 
                 } catch (Exception e) {
@@ -775,7 +796,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //                    }
                     new NetworkingFeedback(dbH).insertRouteIntoLocalStorage(products);
 
-                   // List<RouteModel> routesdata = dbH.getRoutes();
+                    // List<RouteModel> routesdata = dbH.getRoutes();
                     List<RouteModel> routesdata = products;
 //                    Toast.makeText(LandingPage.this, "" + routesdata.size(), Toast.LENGTH_SHORT).show();
                     List<String> labels = new ArrayList<String>();
@@ -791,6 +812,20 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //                                    android.R.layout.simple_spinner_item, products);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     route.setAdapter(adapter);
+                    route.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                            //selectedRoute = Integer.parseInt(adapterView.getItemAtPosition(position).toString());
+                            selectedRoute = products.get(position).getRouteId();
+                            //routeName = routeList.get(position).getRouteName();
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                     progressBar.setVisibility(View.GONE);
 
                 } catch (Exception e) {

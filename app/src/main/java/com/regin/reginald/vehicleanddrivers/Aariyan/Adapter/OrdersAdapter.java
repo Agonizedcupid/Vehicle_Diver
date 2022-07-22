@@ -44,71 +44,71 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        OrderModel model = list.get(position);
-        holder.storeName.setText(model.getStoreName());
-        holder.orderId.setText("" + model.getOrderId());
-        holder.deliveryAddress.setText(model.getDeliveryAddress());
-        int status = model.getOffloaded();
-        if (status == 0) {
-            holder.checkBox.setChecked(false);
-        } else {
-            holder.checkBox.setChecked(true);
-        }
-
-        holder.offloadStatus.setText("" + model.getOffloaded());
-
-        /**
-         *
-         * Click Listener:
-         */
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Original Threshold 0 & 1 that i understood from the older source code:
-                //if (model.getThreshold().equals("0")) {
-                // Using 50 for the testing purpose
-                if (model.getThreshold().equals("50")) {
-                    Intent b = new Intent(context, InvoiceDetails.class);
-                    //UpdateDeliverySeq();
-                    b.putExtra("deldate", Constant.DELIVERY_DATE);
-                    b.putExtra("routes", Constant.ROUTES_NAME);
-                    b.putExtra("ordertype", Constant.ORDER_TYPE);
-                    b.putExtra("invoiceno", model.getInvoiceNo());
-                    b.putExtra("cash", model.getCashPaid());
-                    context.startActivity(b);
-                } else {
-                    Intent b = new Intent(context, CratesActivity.class);
-                    b.putExtra("invoiceno", model.getInvoiceNo());
-                    b.putExtra("threshold", model.getThreshold());
-                    b.putExtra("storename", model.getStoreName());
-                    b.putExtra("deldate", Constant.DELIVERY_DATE);
-                    b.putExtra("routes", Constant.ROUTES_NAME);
-                    b.putExtra("ordertype", Constant.ORDER_TYPE);
-                    context.startActivity(b);
-                }
-            }
-        });
-
-
-        /**
-         * Long Click
-         */
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Log.d("CHECKING_LOCATION", "" + model.getLatitude() + " - " + model.getLongitude());
-                Intent intent = new Intent(context, MyMapActivity.class);
-                intent.putExtra("Lat", "" + model.getLatitude());
-                intent.putExtra("Lon", "" + model.getLongitude());
-                intent.putExtra("seq", "");
-//                intent.putExtra("currentLat", lat);
-//                intent.putExtra("currentLon", lon);
-                intent.putExtra("custName", "" + model.getCustomerPastelCode());
-                context.startActivity(intent);
-                return false;
-            }
-        });
+//        OrderModel model = list.get(position);
+//        holder.storeName.setText(model.getStoreName());
+//        holder.orderId.setText("" + model.getOrderId());
+//        holder.deliveryAddress.setText(model.getDeliveryAddress());
+//        int status = model.getOffloaded();
+//        if (status == 0) {
+//            holder.checkBox.setChecked(false);
+//        } else {
+//            holder.checkBox.setChecked(true);
+//        }
+//
+//        holder.offloadStatus.setText("" + model.getOffloaded());
+//
+//        /**
+//         *
+//         * Click Listener:
+//         */
+//
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Original Threshold 0 & 1 that i understood from the older source code:
+//                //if (model.getThreshold().equals("0")) {
+//                // Using 50 for the testing purpose
+//                if (model.getThreshold().equals("50")) {
+//                    Intent b = new Intent(context, InvoiceDetails.class);
+//                    //UpdateDeliverySeq();
+//                    b.putExtra("deldate", Constant.DELIVERY_DATE);
+//                    b.putExtra("routes", Constant.ROUTES_NAME);
+//                    b.putExtra("ordertype", Constant.ORDER_TYPE);
+//                    b.putExtra("invoiceno", model.getInvoiceNo());
+//                    b.putExtra("cash", model.getCashPaid());
+//                    context.startActivity(b);
+//                } else {
+//                    Intent b = new Intent(context, CratesActivity.class);
+//                    b.putExtra("invoiceno", model.getInvoiceNo());
+//                    b.putExtra("threshold", model.getThreshold());
+//                    b.putExtra("storename", model.getStoreName());
+//                    b.putExtra("deldate", Constant.DELIVERY_DATE);
+//                    b.putExtra("routes", Constant.ROUTES_NAME);
+//                    b.putExtra("ordertype", Constant.ORDER_TYPE);
+//                    context.startActivity(b);
+//                }
+//            }
+//        });
+//
+//
+//        /**
+//         * Long Click
+//         */
+//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View view) {
+//                Log.d("CHECKING_LOCATION", "" + model.getLatitude() + " - " + model.getLongitude());
+//                Intent intent = new Intent(context, MyMapActivity.class);
+//                intent.putExtra("Lat", "" + model.getLatitude());
+//                intent.putExtra("Lon", "" + model.getLongitude());
+//                intent.putExtra("seq", "");
+////                intent.putExtra("currentLat", lat);
+////                intent.putExtra("currentLon", lon);
+//                intent.putExtra("custName", "" + model.getCustomerPastelCode());
+//                context.startActivity(intent);
+//                return false;
+//            }
+//        });
     }
 
     @Override
@@ -123,11 +123,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            storeName = itemView.findViewById(R.id.storeName);
-            orderId = itemView.findViewById(R.id.orderIds);
-            deliveryAddress = itemView.findViewById(R.id.deliveryAddress);
-            offloadStatus = itemView.findViewById(R.id.offloadStatus);
-            checkBox = itemView.findViewById(R.id.checkbox);
+//            storeName = itemView.findViewById(R.id.storeName);
+//            orderId = itemView.findViewById(R.id.orderIds);
+//            deliveryAddress = itemView.findViewById(R.id.deliveryAddress);
+//            offloadStatus = itemView.findViewById(R.id.offloadStatus);
+//            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
 }

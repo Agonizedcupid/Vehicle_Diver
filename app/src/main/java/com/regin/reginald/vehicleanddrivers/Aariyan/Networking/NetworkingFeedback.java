@@ -3,6 +3,9 @@ package com.regin.reginald.vehicleanddrivers.Aariyan.Networking;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.regin.reginald.model.OrderLines;
+import com.regin.reginald.model.Orders;
+import com.regin.reginald.model.WareHouses;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.ApiClient;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.GetOrderTypeInterface;
@@ -14,7 +17,6 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
-import com.regin.reginald.vehicleanddrivers.OrderLines;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +37,8 @@ import okhttp3.ResponseBody;
 
 public class NetworkingFeedback {
 
-    private CompositeDisposable routeDisposable, orderDisposable, orderLinesDisposable;
+    private CompositeDisposable routeDisposable, orderDisposable, orderLinesDisposable,
+    wareHousesDisposable;
     private DatabaseAdapter databaseAdapter;
     private RestApi apiService;
 
@@ -43,6 +46,7 @@ public class NetworkingFeedback {
         routeDisposable = new CompositeDisposable();
         orderDisposable = new CompositeDisposable();
         orderLinesDisposable = new CompositeDisposable();
+        wareHousesDisposable = new CompositeDisposable();
         this.databaseAdapter = databaseAdapter;
     }
 
@@ -756,7 +760,7 @@ public class NetworkingFeedback {
             @Override
             public void onNext(Object o) {
                 OrderLinesModel model = (OrderLinesModel) o;
-                databaseAdapter.insertOrderLines(model);
+                //databaseAdapter.insertOrderLines(model);
             }
 
             @Override
@@ -795,6 +799,47 @@ public class NetworkingFeedback {
             @Override
             public void onNext(Object o) {
                 OrderModel model = (OrderModel) o;
+                //databaseAdapter.insertOrders(model);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d("INSERT_ERROR", "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("INSERT_COMPLETED", "onComplete: ");
+            }
+        };
+        observable.subscribe(observer);
+
+    }
+
+
+    /**
+     * Newly Insert Order Headers
+     */
+
+    /**
+     * SQLite database part
+     */
+    public void insertOrderHeadersIntoSQLiteDatabase(List<Orders> listOfOrders) {
+        databaseAdapter.dropOrderTable();
+        Observable<Orders> observable = Observable.fromIterable(listOfOrders)
+                .subscribeOn(Schedulers.io());
+
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+//                if (d.isDisposed()) {
+//                    orderDisposable.clear();
+//                }
+            }
+
+            @Override
+            public void onNext(Object o) {
+                Orders model = (Orders) o;
                 databaseAdapter.insertOrders(model);
             }
 
@@ -811,4 +856,72 @@ public class NetworkingFeedback {
         observable.subscribe(observer);
 
     }
+
+
+    public void insertWareHousesIntoSQLiteDatabase(List<WareHouses> listOfWareHouses) {
+        Observable<WareHouses> observable = Observable.fromIterable(listOfWareHouses)
+                .subscribeOn(Schedulers.io());
+
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+//                if (d.isDisposed()) {
+//                    orderDisposable.clear();
+//                }
+            }
+
+            @Override
+            public void onNext(Object o) {
+                WareHouses model = (WareHouses) o;
+                databaseAdapter.insertWareHouses(model);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d("INSERT_ERROR", "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("INSERT_COMPLETED", "onComplete: ");
+            }
+        };
+        observable.subscribe(observer);
+
+    }
+
+    public void insertNewlyOrderLinesIntoSQLiteDatabase(List<OrderLines> orderLinesList) {
+
+        Observable<OrderLines> observable = Observable.fromIterable(orderLinesList)
+                .subscribeOn(Schedulers.io());
+
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+//                if (d.isDisposed()) {
+//                    orderLinesDisposable.clear();
+//                }
+            }
+
+            @Override
+            public void onNext(Object o) {
+                OrderLines model = (OrderLines) o;
+                databaseAdapter.insertOrderLines(model);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d("ORDER_LINES_ERROR", "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("ORDER_LINES_COMPLETED", "onComplete: ");
+            }
+        };
+
+        observable.subscribe(observer);
+    }
+
+
 }

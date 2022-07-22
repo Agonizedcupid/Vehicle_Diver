@@ -86,20 +86,20 @@ public class DatabaseAdapter {
     }
 
     //Insert WAREHOUSE:
-    public long insertWareHouses(String wareHouseId, String wareHouses) {
+    public long insertWareHouses(WareHouses model) {
 
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.WareHouseId, wareHouseId);
-        contentValues.put(DatabaseHelper.WareHouse, wareHouses);
+        contentValues.put(DatabaseHelper.WareHouseId, model.getWareHouseId());
+        contentValues.put(DatabaseHelper.WareHouse, model.getWareHouse());
 
         long id = database.insert(DatabaseHelper.WAREHOUSE_TABLE_NAME, null, contentValues);
         return id;
     }
 
     //Insert Orders
-    public long insertOrders(OrderModel model) {
+    public long insertOrders(Orders model) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -115,43 +115,53 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.deliveryAddress, model.getDeliveryAddress());
         contentValues.put(DatabaseHelper.user, model.getUser());
         contentValues.put(DatabaseHelper.orderMass, model.getOrderMass());
-        contentValues.put(DatabaseHelper.uploaded, model.getUploaded());
+        contentValues.put(DatabaseHelper.uploaded, 1);
         contentValues.put(DatabaseHelper.cashPaid, model.getCashPaid());
-        contentValues.put(DatabaseHelper.offloaded, model.getOffloaded());
-        contentValues.put(DatabaseHelper.strEmailCustomer, model.getStrEmailCustomer());
-        contentValues.put(DatabaseHelper.strCashsignature, model.getStrCashsignature());
+        contentValues.put(DatabaseHelper.offloaded, model.getoffloaded());
+        contentValues.put(DatabaseHelper.strEmailCustomer, model.getstrEmailCustomer());
+        contentValues.put(DatabaseHelper.strCashsignature, model.getstrCashsignature());
         contentValues.put(DatabaseHelper.invTotIncl, model.getInvTotIncl());
         contentValues.put(DatabaseHelper.startTripTime, model.getStartTripTime());
         contentValues.put(DatabaseHelper.endTripTime, model.getEndTripTime());
         contentValues.put(DatabaseHelper.deliverySeq, model.getDeliverySeq());
-        contentValues.put(DatabaseHelper.strCoordinateStart, model.getStrCoordinateStart());
+        contentValues.put(DatabaseHelper.strCoordinateStart, model.getstrCoordinateStart());
         contentValues.put(DatabaseHelper.driverName, model.getDriverName());
         contentValues.put(DatabaseHelper.driverEmail, model.getDriverEmail());
         contentValues.put(DatabaseHelper.driverPassword, model.getDriverPassword());
-        contentValues.put(DatabaseHelper.strCustomerSignedBy, model.getStrCustomerSignedBy());
+        contentValues.put(DatabaseHelper.strCustomerSignedBy, model.getstrCustomerSignedBy());
         contentValues.put(DatabaseHelper.threshold, model.getThreshold());
+
+        contentValues.put(DatabaseHelper.imagestring, model.getimagestring());
+        contentValues.put(DatabaseHelper.strNotesDrivers, model.getstrNotesDrivers());
+        contentValues.put(DatabaseHelper.PaymentType, model.getPaymentType());
+        contentValues.put(DatabaseHelper.Loyalty, model.getLoyalty());
 
         long id = database.insert(DatabaseHelper.ORDERS_TABLE_NAME, null, contentValues);
         return id;
     }
 
     //Insert OrdersLines
-    public long insertOrderLines(OrderLinesModel model) {
+    public long insertOrderLines(OrderLines model) {
         SQLiteDatabase database = helper.getWritableDatabase();
+
+
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.orderId, model.getOrderId());
-        contentValues.put(DatabaseHelper.invoiceNo, model.getInvoiceNo());
-        contentValues.put(DatabaseHelper.customerPastelCode, model.getCustomerPastelCode());
-        contentValues.put(DatabaseHelper.storeName, model.getStoreName());
-        contentValues.put(DatabaseHelper.deliveryDate, model.getDeliveryDate());
-        contentValues.put(DatabaseHelper.latitude, model.getLatitude());
-        contentValues.put(DatabaseHelper.longitude, model.getLongitude());
-        contentValues.put(DatabaseHelper.orderValueExc, model.getOrderValueExc());
-        contentValues.put(DatabaseHelper.orderValueInc, model.getOrderValueInc());
-        contentValues.put(DatabaseHelper.deliveryAddress, model.getDeliveryAddress());
-        contentValues.put(DatabaseHelper.user, model.getUser());
-        contentValues.put(DatabaseHelper.orderMass, model.getOrderMass());
+        contentValues.put(DatabaseHelper.productId, model.getProductId());
+        //contentValues.put(DatabaseHelper.invoiceNo, model.getInvoiceNo());
+        contentValues.put(DatabaseHelper.invoiceNo, "");// "" -> Means -> No data found in the API
+        contentValues.put(DatabaseHelper.customerPastelCode, model.getPastelCode());
+        contentValues.put(DatabaseHelper.storeName,"");
+        contentValues.put(DatabaseHelper.comment,model.getComment());
+        contentValues.put(DatabaseHelper.deliveryDate, "");
+        contentValues.put(DatabaseHelper.latitude, "");
+        contentValues.put(DatabaseHelper.longitude, "");
+        contentValues.put(DatabaseHelper.orderValueExc, "");
+        contentValues.put(DatabaseHelper.orderValueInc, "");
+        contentValues.put(DatabaseHelper.deliveryAddress, "");
+        contentValues.put(DatabaseHelper.user, "");
+        contentValues.put(DatabaseHelper.orderMass, "");
         contentValues.put(DatabaseHelper.productId, model.getProductId());
         contentValues.put(DatabaseHelper.qty, model.getQty());
         contentValues.put(DatabaseHelper.price, model.getPrice());
@@ -159,13 +169,14 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.pastelCode, model.getPastelCode());
         contentValues.put(DatabaseHelper.orderDetailId, model.getOrderDetailId());
         contentValues.put(DatabaseHelper.comment, model.getComment());
-        contentValues.put(DatabaseHelper.returnQty, model.getReturnQty());
-        contentValues.put(DatabaseHelper.offLoadComment, model.getOffLoadComment());
-        contentValues.put(DatabaseHelper.blnoffloaded, model.getBlnoffloaded());
-        contentValues.put(DatabaseHelper.strCustomerReason, model.getStrCustomerReason());
-        contentValues.put(DatabaseHelper.Uploaded, model.getUploaded());
-        contentValues.put(DatabaseHelper.intWareHouseId, model.getIntWareHouseId());
-        contentValues.put(DatabaseHelper.wareHouseName, model.getWareHouseName());
+        contentValues.put(DatabaseHelper.returnQty, model.getreturnQty());
+        contentValues.put(DatabaseHelper.offLoadComment, "");
+        contentValues.put(DatabaseHelper.blnoffloaded, model.getblnoffloaded());
+        contentValues.put(DatabaseHelper.strCustomerReason, model.getstrCustomerReason());
+        contentValues.put(DatabaseHelper.Uploaded, 1);
+        contentValues.put(DatabaseHelper.intWareHouseId, "");
+        contentValues.put(DatabaseHelper.blnTruckchecked, ""+model.getblnTruckchecked());
+        contentValues.put(DatabaseHelper.wareHouseName, model.getstrWareHouse());
 
 
         long id = database.insert(DatabaseHelper.ORDERS_LINES_TABLE_NAME, null, contentValues);
@@ -1200,7 +1211,7 @@ public class DatabaseAdapter {
                 orders.setDriverEmail(cursor.getString(26));
                 orders.setDriverPassword(cursor.getString(27));
                 orders.setPaymentType(cursor.getString(cursor.getColumnIndex("PaymentType")));
-                orders.setThreshold(cursor.getString(cursor.getColumnIndex("Threshold")));
+                orders.setThreshold(cursor.getString(cursor.getColumnIndex("threshold")));
                 labels.add(orders);
             } while (cursor.moveToNext());
         }
@@ -2261,22 +2272,25 @@ public class DatabaseAdapter {
          * Order Table (Order Headers)
          */
 
+
         private static final String ORDERS_TABLE_NAME = "OrderHeaders";
-        private static final String orderId = "orderId";
-        private static final String invoiceNo = "invoiceNo";
-        private static final String customerPastelCode = "customerPastelCode";
         private static final String storeName = "storeName";
+        private static final String orderId = "orderId";
+        private static final String customerPastelCode = "customerPastelCode";
         private static final String deliveryDate = "deliveryDate";
+        private static final String invoiceNo = "invoiceNo";
+        private static final String deliveryAddress = "deliveryAddress";
         private static final String latitude = "latitude";
         private static final String longitude = "longitude";
         private static final String orderValueExc = "orderValueExc";
         private static final String orderValueInc = "orderValueInc";
-        private static final String deliveryAddress = "deliveryAddress";
         private static final String user = "user";
         private static final String orderMass = "orderMass";
-        private static final String uploaded = "uploaded";
-        private static final String cashPaid = "cashPaid";
         private static final String offloaded = "offloaded";
+        private static final String uploaded = "uploaded";
+        private static final String imagestring = "imagestring"; //Not sure yet
+        private static final String cashPaid = "cashPaid";
+        private static final String strNotesDrivers = "strNotesDrivers";
         private static final String strEmailCustomer = "strEmailCustomer";
         private static final String strCashsignature = "strCashsignature";
         private static final String invTotIncl = "invTotIncl";
@@ -2288,25 +2302,30 @@ public class DatabaseAdapter {
         private static final String driverEmail = "driverEmail";
         private static final String driverPassword = "driverPassword";
         private static final String strCustomerSignedBy = "strCustomerSignedBy";
+        private static final String PaymentType = "PaymentType";
+        private static final String Loyalty = "Loyalty";
         private static final String threshold = "threshold";
         //Creating the Order Table:
+
         private static final String CREATE_ORDERS_TABLE = "CREATE TABLE " + ORDERS_TABLE_NAME
                 + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + orderId + " INTEGER,"
-                + invoiceNo + " VARCHAR(255),"
-                + customerPastelCode + " VARCHAR(255),"
                 + storeName + " VARCHAR(255),"
+                + orderId + " INTEGER,"
+                + customerPastelCode + " VARCHAR(255),"
                 + deliveryDate + " VARCHAR(255),"
+                + invoiceNo + " VARCHAR(255),"
+                + deliveryAddress + " VARCHAR(255),"
                 + latitude + " VARCHAR(255),"
                 + longitude + " VARCHAR(255),"
                 + orderValueExc + " VARCHAR(255),"
                 + orderValueInc + " VARCHAR(255),"
-                + deliveryAddress + " VARCHAR(255),"
                 + user + " VARCHAR(255),"
                 + orderMass + " VARCHAR(255),"
-                + uploaded + " INTEGER,"
-                + cashPaid + " VARCHAR(255),"
                 + offloaded + " INTEGER,"
+                + uploaded + " INTEGER,"
+                + imagestring + " VARCHAR(255),"
+                + cashPaid + " VARCHAR(255),"
+                + strNotesDrivers + " VARCHAR(255),"
                 + strEmailCustomer + " VARCHAR(255),"
                 + strCashsignature + " VARCHAR(255),"
                 + invTotIncl + " VARCHAR(255),"
@@ -2318,6 +2337,8 @@ public class DatabaseAdapter {
                 + driverEmail + " VARCHAR(255),"
                 + driverPassword + " VARCHAR(255),"
                 + strCustomerSignedBy + " VARCHAR(255),"
+                + PaymentType + " VARCHAR(255),"
+                + Loyalty + " VARCHAR(255),"
                 + threshold + " VARCHAR(255));";
         private static final String DROP_ORDERS_TABLE = "DROP TABLE IF EXISTS " + ORDERS_TABLE_NAME;
 
@@ -2325,8 +2346,7 @@ public class DatabaseAdapter {
         /**
          * OrderLines Table
          */
-
-        private static final String ORDERS_LINES_TABLE_NAME = "orders_lines";
+        private static final String ORDERS_LINES_TABLE_NAME = "OrderLines";
         private static final String productId = "productId";
         private static final String qty = "qty";
         private static final String price = "price";
@@ -2339,6 +2359,7 @@ public class DatabaseAdapter {
         private static final String blnoffloaded = "blnoffloaded";
         private static final String strCustomerReason = "strCustomerReason";
         private static final String intWareHouseId = "intWareHouseId";
+        private static final String blnTruckchecked = "blnTruckchecked";
         private static final String wareHouseName = "wareHouseName";
         //This is an extra Quantity (Not present in the API orderLines.php) taken by the reference of Older code:
         private static final String Uploaded = "Uploaded";
@@ -2346,6 +2367,21 @@ public class DatabaseAdapter {
         private static final String CREATE_ORDERS_LINES_TABLE = "CREATE TABLE " + ORDERS_LINES_TABLE_NAME
                 + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + orderId + " VARCHAR(255),"
+                + productId + " VARCHAR(255),"
+                + pastelCode + " VARCHAR(255),"
+                + pastelDescription + " VARCHAR(255),"
+                + qty + " INTEGER,"
+                + price + " VARCHAR(255),"
+                + orderDetailId + " INTEGER,"
+                + comment + " VARCHAR(255),"
+                + offLoadComment + " VARCHAR(255),"
+                + returnQty + " VARCHAR(255),"
+                + Uploaded + " INTEGER,"
+                + blnoffloaded + " INTEGER,"
+                + strCustomerReason + " VARCHAR(255),"
+                + blnTruckchecked + " INTEGER,"
+                + wareHouseName + " VARCHAR(255),"
+
                 + invoiceNo + " VARCHAR(255),"
                 + customerPastelCode + " VARCHAR(255),"
                 + storeName + " VARCHAR(255),"
@@ -2358,19 +2394,7 @@ public class DatabaseAdapter {
                 + user + " VARCHAR(255),"
                 + orderMass + " VARCHAR(255),"
                 + productId + " INTEGER,"
-                + qty + " INTEGER,"
-                + price + " VARCHAR(255),"
-                + pastelDescription + " VARCHAR(255),"
-                + pastelCode + " VARCHAR(255),"
-                + orderDetailId + " INTEGER,"
-                + comment + " VARCHAR(255),"
-                + returnQty + " VARCHAR(255),"
-                + offLoadComment + " VARCHAR(255),"
-                + blnoffloaded + " INTEGER,"
-                + strCustomerReason + " VARCHAR(255),"
-                + Uploaded + " INTEGER,"
-                + intWareHouseId + " VARCHAR(255),"
-                + wareHouseName + " VARCHAR(255));";
+                + intWareHouseId + " VARCHAR(255));";
         private static final String DROP_ORDERS_LINES_TABLE = "DROP TABLE IF EXISTS " + ORDERS_LINES_TABLE_NAME;
 
 

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/notes"
@@ -49,7 +47,6 @@
         android:layout_width="125dp"
         android:layout_height="158dp"
         android:layout_below="@id/notes"
-
         android:layout_marginTop="2dp"
         android:ems="10"
         android:hint="Say something about the product here."
@@ -61,7 +58,6 @@
         android:layout_height="160dp"
         android:layout_below="@id/tblproduct"
         android:layout_alignEnd="@id/etcustname"
-
         android:layout_marginEnd="-102dp"
         android:ems="10"
         android:inputType="textMultiLine" />
@@ -72,7 +68,6 @@
         android:layout_height="160dp"
         android:layout_below="@id/txtqty"
         android:layout_alignEnd="@id/edproducts"
-
         android:layout_marginEnd="-86dp"
         android:ems="10"
         android:inputType="numberDecimal"
@@ -84,43 +79,77 @@
         android:layout_height="160dp"
         android:layout_below="@id/wts"
         android:layout_alignEnd="@id/edtqty"
-
         android:layout_marginEnd="-80dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:text="0" />
 
-    <Button
+<!--    <Button-->
+<!--        android:id="@+id/btnadddeliv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="61dp"-->
+<!--        android:layout_below="@id/etcustname"-->
+<!--        android:layout_marginTop="84dp"-->
+<!--        android:background="#9BA39B"-->
+<!--        android:text="ADD"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold" />-->
+
+    <TextView
         android:id="@+id/btnadddeliv"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_below="@id/etcustname"
-        android:layout_marginTop="84dp"
-        android:background="#9BA39B"
+        android:layout_height="40dp"
+        android:layout_below="@id/storename"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/button_ripple"
+        android:gravity="center"
         android:text="ADD"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textAlignment="center"
+        android:textColor="@android:color/white" />
 
     <ListView
         android:id="@+id/lvaddedlines"
         android:layout_width="match_parent"
-        android:layout_height="226dp"
+        android:layout_height="200dp"
         android:layout_below="@id/btnadddeliv"
+        android:layout_above="@+id/vrfdelnote"
         android:layout_marginTop="8dp" />
 
-    <Button
+<!--    <Button-->
+<!--        android:id="@+id/vrfdelnote"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="63dp"-->
+<!--        android:layout_above="@id/reference"-->
+<!--        android:background="#4CAF50"-->
+<!--        android:text="VERIFY CREDIT NOTE" />-->
+
+
+    <TextView
         android:id="@+id/vrfdelnote"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_below="@id/lvaddedlines"
-        android:background="#4CAF50"
-        android:text="VERIFY CREDIT NOTE" />
+        android:layout_height="70dp"
+        android:layout_above="@id/reference"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/button_ripple"
+        android:gravity="center"
+        android:text="VERIFY CREDIT NOTE"
+        android:textAlignment="center"
+        android:textColor="@android:color/white" />
+
 
     <TextView
         android:id="@+id/reference"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/vrfdelnote"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
         android:text="TextView" />
 
     <EditText

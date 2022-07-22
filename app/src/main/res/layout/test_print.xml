@@ -1,153 +1,476 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snackBarlayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <LinearLayout
-            android:id="@+id/LinearLayout1"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical" >
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewPortType"
+                android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Port Type"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="Home"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <RadioGroup
-                android:id="@+id/radioGroupPortType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" >
+            <ImageView
+                android:id="@+id/delete_db"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="15dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/reset_database_icon"
+                app:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_creator="1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_creator="1"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/radioBT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Bluetooth" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
-                <RadioButton
-                    android:id="@+id/radioBLE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BluetoothLowEnergy" />
-            </RadioGroup>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintBottom_creator="1"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
 
             <LinearLayout
-                android:id="@+id/LinearLayout2"
+                android:id="@+id/LinearLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" >
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textViewModel"
+                    android:id="@+id/textViewPortType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Printer Model : " />
+                    android:text="Port Type"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <Spinner
-                    android:id="@+id/spinnerModelList"
+                <RadioGroup
+                    android:id="@+id/radioGroupPortType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-                </Spinner>
+                    android:textAppearance="?android:attr/textAppearanceMedium">
+
+                    <RadioButton
+                        android:id="@+id/radioBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Bluetooth" />
+
+                    <RadioButton
+                        android:id="@+id/radioBLE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bluetooth Low Energy" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewModel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Printer Model : " />
+
+                    <Spinner
+                        android:id="@+id/spinnerModelList"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="15dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textViewBluetoothList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="List Of Bluetooth Devices"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ListView
+                    android:id="@+id/listViewPairedDevices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:background="@drawable/listview_line" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxAsyncMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:checked="true"
+                    android:text="Async Mode" />
+
+
+                <!--Here we are putting the button-->
+                <LinearLayout
+                    android:id="@+id/LinearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+
+                <!--                <Button-->
+                <!--                    android:id="@+id/connectio_string"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Connection String" />-->
+
+                <!--                <Button-->
+                <!--                    android:id="@+id/devicegroups"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Sync Group Policies" />-->
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textViewBluetoothList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Bluetooth List"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <ListView
-                android:id="@+id/listViewPairedDevices"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/listview_line"/>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout3"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottomCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:layout_below="@+id/LinearLayout1"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/card_view_background">
 
-            </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:indeterminate="true"
+                    android:max="100"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/lin"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckBox
-                android:id="@+id/checkBoxAsyncMode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:layout_marginTop="5dp"
-                android:text="Async Mode" />
+                <LinearLayout
+                    android:id="@+id/lin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_creator="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_creator="1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_creator="1"
+                    app:layout_constraintTop_toBottomOf="@id/progressBar1">
 
-            <Button
-                android:id="@+id/connectio_string"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Connection String" />
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/connectio_string"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="60dp"
+                        app:cardElevation="7dp"
+                        app:layout_constraintBottom_toTopOf="@id/syncGroupCard"
+                        app:layout_constraintLeft_creator="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_creator="1"
+                        app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/devicegroups"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sync Group Policies" />
-        </LinearLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnPrinterOpen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/LinearLayout1"
-            android:layout_marginTop="5dp"
-            android:text="Printer Open" />
-        <Button
-            android:id="@+id/registerbtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/btnPrinterOpen"
-            android:text="Register Device" />
+                            <ImageView
+                                android:id="@+id/setUpIcon"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="20dp"
+                                android:src="@drawable/setup"
+                                app:layout_constraintLeft_creator="1"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_creator="1"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_creator="1"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/setUpIp"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="11sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/setUpIcon" />
 
-        <Button
-            android:id="@+id/delete_db"
-            android:layout_width="134dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/holo_red_dark"
-            android:text="Reset Database" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
 
-</ScrollView>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btnPrinterOpen"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="60dp"
+                        app:cardElevation="7dp"
+                        app:layout_constraintBottom_toTopOf="@id/syncGroupCard"
+                        app:layout_constraintLeft_creator="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_creator="1"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/printerOpenIcon"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="20dp"
+                                android:src="@drawable/open_printer"
+                                app:layout_constraintLeft_creator="1"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_creator="1"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_creator="1"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/printerOpenTitle"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="11sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/printerOpenIcon" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/registerbtn"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="60dp"
+                        app:cardElevation="7dp"
+                        app:layout_constraintBottom_toTopOf="@id/syncGroupCard"
+                        app:layout_constraintLeft_creator="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_creator="1"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/registerDeviceIcon"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="20dp"
+                                android:src="@drawable/register_device"
+                                app:layout_constraintLeft_creator="1"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_creator="1"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_creator="1"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/registerDeviceTitle"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="11sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/registerDeviceIcon" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/devicegroups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="7dp"
+                    app:layout_constraintBottom_creator="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_creator="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_creator="1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_creator="1"
+                    app:layout_constraintTop_toBottomOf="@id/lin">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingStart="30dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:id="@+id/syncGroupIcon"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/sync_group_icon"
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/syncText"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/syncText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/syncGroupPolicies"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_creator="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_creator="1"
+                            app:layout_constraintLeft_toRightOf="@id/syncGroupIcon"
+                            app:layout_constraintRight_creator="1"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_creator="1"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--            <Button-->
+            <!--                android:id="@+id/btnPrinterOpen"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@+id/LinearLayout1"-->
+            <!--                android:layout_alignParentStart="true"-->
+            <!--                android:layout_alignParentLeft="true"-->
+            <!--                android:layout_alignParentRight="true"-->
+            <!--                android:layout_marginTop="5dp"-->
+            <!--                android:text="Printer Open" />-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/registerbtn"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@+id/btnPrinterOpen"-->
+            <!--                android:layout_alignParentStart="true"-->
+            <!--                android:layout_alignParentBottom="true"-->
+            <!--                android:text="Register Device" />-->
+
+            <!--            <ProgressBar-->
+            <!--                android:id="@+id/progressBar1"-->
+            <!--                style="?android:attr/progressBarStyleLarge"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_centerInParent="true"-->
+            <!--                android:layout_gravity="center" />-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/delete_db"-->
+            <!--                android:layout_width="134dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_alignParentTop="true"-->
+            <!--                android:layout_alignParentEnd="true"-->
+            <!--                android:background="@android:color/holo_red_dark"-->
+            <!--                android:text="Reset Database" />-->
+
+        </RelativeLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

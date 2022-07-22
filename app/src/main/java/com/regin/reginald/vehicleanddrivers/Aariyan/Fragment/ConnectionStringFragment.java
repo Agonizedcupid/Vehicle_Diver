@@ -62,46 +62,46 @@ public class ConnectionStringFragment extends Fragment implements View.OnClickLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_connection_string, container, false);
-        databaseAdapter = new DatabaseAdapter(requireContext());
-        initUI();
+//        databaseAdapter = new DatabaseAdapter(requireContext());
+//        initUI();
         return root;
     }
 
-    private void initUI() {
-        progressBar = root.findViewById(R.id.progressbar);
-
-        snackBarLayout = root.findViewById(R.id.snackBarLayout);
-        resetDatabaseIcon.setVisibility(View.VISIBLE);
-        resetDatabaseIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(snackBarLayout, getResources().getString(R.string.resetDatabaseTitle), Snackbar.LENGTH_SHORT)
-                        .setAction(getResources().getString(R.string.yes), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                resetDatabase();
-                            }
-                        }).show();
-            }
-        });
-
-        ipEditText = root.findViewById(R.id.ipEditText);
-        emailAddress = root.findViewById(R.id.emailEditText);
-        companyName = root.findViewById(R.id.companyNameEditText);
-        deviceId = root.findViewById(R.id.deviceIdTextView);
-        regKey = root.findViewById(R.id.registrationKeyTextView);
-        submitRegBtn = root.findViewById(R.id.submitRegBtn);
-        submitRegBtn.setOnClickListener(this);
-
-        initAction();
-
-    }
+//    private void initUI() {
+//        progressBar = root.findViewById(R.id.progressbar);
+//
+//        snackBarLayout = root.findViewById(R.id.snackBarLayout);
+//        resetDatabaseIcon.setVisibility(View.VISIBLE);
+//        resetDatabaseIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(snackBarLayout, getResources().getString(R.string.resetDatabaseTitle), Snackbar.LENGTH_SHORT)
+//                        .setAction(getResources().getString(R.string.yes), new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                resetDatabase();
+//                            }
+//                        }).show();
+//            }
+//        });
+//
+//        ipEditText = root.findViewById(R.id.ipEditText);
+//        emailAddress = root.findViewById(R.id.emailEditText);
+//        companyName = root.findViewById(R.id.companyNameEditText);
+//        deviceId = root.findViewById(R.id.deviceIdTextView);
+//        regKey = root.findViewById(R.id.registrationKeyTextView);
+//        submitRegBtn = root.findViewById(R.id.submitRegBtn);
+//        submitRegBtn.setOnClickListener(this);
+//
+//        initAction();
+//
+//    }
 
     //update the field:
     @Override
     public void onResume() {
-        progressBar.setVisibility(View.VISIBLE);
-        loadIp();
+//        progressBar.setVisibility(View.VISIBLE);
+//        loadIp();
         super.onResume();
     }
 
@@ -137,12 +137,12 @@ public class ConnectionStringFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id) {
-            case R.id.submitRegBtn:
-                progressBar.setVisibility(View.VISIBLE);
-                submitInformation();
-                break;
-        }
+//        switch (id) {
+//            case R.id.submitRegBtn:
+//                progressBar.setVisibility(View.VISIBLE);
+//                submitInformation();
+//                break;
+//        }
     }
 
     private void submitInformation() {

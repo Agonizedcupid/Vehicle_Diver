@@ -290,8 +290,11 @@ public class MyMapActivity extends FragmentActivity implements OnMapReadyCallbac
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        lat = location.getLatitude();
-        lon = location.getLongitude();
+
+        //TODO : I've uncomment this whenever i will send this code
+
+        //lat = location.getLatitude();
+        //lon = location.getLongitude();
         // mLatitudeTextView.setText(String.valueOf(location.getLatitude()));
         //  mLongitudeTextView.setText(String.valueOf(location.getLongitude() ));
         //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

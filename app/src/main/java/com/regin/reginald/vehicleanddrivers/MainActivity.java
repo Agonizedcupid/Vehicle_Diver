@@ -84,7 +84,11 @@ import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.model.WareHouses;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomClickListener;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomLongClickListener;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 
 import org.apache.http.HttpResponse;
@@ -131,7 +135,47 @@ import static java.lang.Math.sin;
 //import com.google.firebase.firestore.DocumentReference;
 //import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        com.google.android.gms.location.LocationListener,
+        CustomClickListener, CustomLongClickListener {
+
+
+
+    @Override
+    public void longClick(int position, String lat, String lng, String sequence, String customerName) {
+        Intent i = new Intent(MainActivity.this, MyMapActivity.class);
+        i.putExtra("Lat", lat);
+        i.putExtra("Lon", lng);
+        i.putExtra("seq", sequence);
+        i.putExtra("custName", customerName);
+        startActivity(i);
+    }
+
+    @Override
+    public void normalClick(String invoiceNo, String cash, String threshold, String storeName) {
+        Toast.makeText(MainActivity.this, ""+threshold, Toast.LENGTH_SHORT).show();
+        if (threshold.equals("0")) {
+            Intent b = new Intent(MainActivity.this, InvoiceDetails.class);
+            UpdateDeliverySeq();
+            b.putExtra("deldate", deliverdate.getText().toString());
+            b.putExtra("routes", routename.getText().toString());
+            b.putExtra("ordertype", ordertype.getText().toString());
+            b.putExtra("invoiceno", invoiceNo);
+            b.putExtra("cash", cash);
+            startActivity(b);
+        } else {
+            Intent b = new Intent(MainActivity.this, CratesActivity.class);
+            b.putExtra("invoiceno", invoiceNo);
+            b.putExtra("threshold", threshold);
+            b.putExtra("storename", storeName);
+            b.putExtra("deldate", deliverdate.getText().toString());
+            b.putExtra("routes", routename.getText().toString());
+            b.putExtra("ordertype", ordertype.getText().toString());
+            startActivity(b);
+        }
+    }
 
     public class Item {
         String ItemString;
@@ -205,15 +249,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             if (rowView == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 // rowView = inflater.inflate(R.layout.pick_customer_row, null);
-                rowView = inflater.inflate(R.layout.orders_rows, null);
+                //rowView = inflater.inflate(R.layout.orders_rows, null);
+                rowView = inflater.inflate(R.layout.single_order_rows, null);
 
                 ViewHolder viewHolder = new ViewHolder();
                 //  viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-                viewHolder.text = (TextView) rowView.findViewById(R.id.storename);
-                viewHolder.text2 = (TextView) rowView.findViewById(R.id.address);
-                viewHolder.text3 = (TextView) rowView.findViewById(R.id.orderid);
-                viewHolder.text4 = (TextView) rowView.findViewById(R.id.del);
-                viewHolder.text6 = (CheckBox) rowView.findViewById(R.id.offload);
+                viewHolder.text = rowView.findViewById(R.id.storename);
+                viewHolder.text2 = rowView.findViewById(R.id.address);
+                viewHolder.text3 = rowView.findViewById(R.id.orderid);
+                viewHolder.text4 = rowView.findViewById(R.id.del);
+                viewHolder.text6 = rowView.findViewById(R.id.offload);
                 viewHolder.text4.setBackgroundColor(Color.WHITE);
                 rowView.setTag(viewHolder);
             }
@@ -268,7 +313,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     List<Data> listdata;
     ItemsListAdapter myItemsListAdapter;
 
-    Button get, closelines, btndoneoffloading, donelineinfo, close_line_info, btn_submit_ackn, continue_without, starttrip_dialog;
+    //Button get, closelines, btndoneoffloading, donelineinfo, close_line_info, btn_submit_ackn, continue_without, starttrip_dialog;
+    TextView get, closelines, btndoneoffloading, donelineinfo, close_line_info, btn_submit_ackn, continue_without, starttrip_dialog;
     Spinner route, ordertypes;
     EditText dte_from, qtyordered, notecomment, kmstart_dilog, timestart;
     CustomListView _orderdlist;
@@ -279,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     TextView product_name, pastelcode, priceline, commentline, deliverdate, ordertype, routename, calcr_plan, coord, passwd, demail, not_uploade;
     private SignaturePad ack_sign;
 
-    private TextView start_trip,endtrip,acknowledge_stock;
+    private TextView start_trip, endtrip, acknowledge_stock;
     private ImageView sort_order;
 
     private int year;
@@ -294,8 +340,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int len = 0;
     //String customerOrders, SERVERIP = "http://linxsystems3.dedicated.co.za:8881/driver/",ordertypeidreturned,routeidreturned;= "http://192.168.0.18:8181/driver/"
     // http://so-ca.ddns.net:8179/driver/      169.255.77.160:8181
-    String customerOrders, SERVERIP, ordertypeidreturned, routeidreturned, DriverEmail, DriverPassword, kmstart, kmend;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    String customerOrders, SERVERIP, DriverEmail, DriverPassword, kmstart, kmend;
+    private int ordertypeidreturned, routeidreturned;
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     final OrderNotUploadedActivity postHeaders = new OrderNotUploadedActivity();
     ProgressDialog progressDoalog;
     //private DatabaseHelper mDatabaseHelper;
@@ -337,6 +385,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private RecyclerView recyclerView;
 
+    private int orderId, routeId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -352,46 +402,47 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startService(intent);*/
         //mDatabaseHelper = DatabaseHelper.getHelper(this);
         //   final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
-        //db = this.openOrCreateDatabase("LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-//        ArrayList<SettingsModel> settIP = dbH.getSettings();
-//
-//        for (SettingsModel orderAttributes : settIP) {
-//            SERVERIP = orderAttributes.getstrServerIp();
-//        }
+        //db = openOrCreateDatabase("LinxDriversOrders.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+        db = openOrCreateDatabase("drivers_app.db", Context.MODE_PRIVATE, null);
+        ArrayList<SettingsModel> settIP = dbH.getSettings();
 
-        databaseAdapter = new DatabaseAdapter(this);
-        List<IpModel> list = databaseAdapter.getServerIpModel();
-        if (list.size() > 0) {
-            SERVERIP = list.get(0).getServerIp();
-        } else {
-            SERVERIP = "";
+        for (SettingsModel orderAttributes : settIP) {
+            SERVERIP = orderAttributes.getstrServerIp();
         }
+
+//        databaseAdapter = new DatabaseAdapter(this);
+//        List<IpModel> list = databaseAdapter.getServerIpModel();
+//        if (list.size() > 0) {
+//            SERVERIP = list.get(0).getServerIp();
+//        } else {
+//            SERVERIP = "";
+//        }
 
         initUI();
 
     }
 
     private void initUI() {
-        start_trip =  findViewById(R.id.tripInfoBtn);
-        sort_order =  findViewById(R.id.backBtn);
-        endtrip =  findViewById(R.id.endTripBtn);
-        deliverdate =  findViewById(R.id.deliverDate);
-        ordertype =  findViewById(R.id.orderType);
-        routename =  findViewById(R.id.routeName);
-        calcr_plan =  findViewById(R.id.calcr_plan);
-        coord =  findViewById(R.id.coord);
+        start_trip = findViewById(R.id.tripInfoBtn);
+        sort_order = findViewById(R.id.backBtn);
+        endtrip = findViewById(R.id.endTripBtn);
+        deliverdate = findViewById(R.id.deliverDate);
+        ordertype = findViewById(R.id.orderType);
+        routename = findViewById(R.id.routeName);
+        calcr_plan = findViewById(R.id.calcr_plan);
+        coord = findViewById(R.id.coord);
         //demail =  findViewById(R.id.demail);
         //passwd = (TextView) findViewById(R.id.passwd);
-        not_uploade =  findViewById(R.id.uploadedCount);
+        not_uploade = findViewById(R.id.uploadedCount);
         // dte_from = (EditText) findViewById(R.id.datetime);
-        //_orderdlist = (CustomListView) findViewById(R.id._orderdlistlines);
+        _orderdlist =  findViewById(R.id._orderdlistlines);
         acknowledge_stock = findViewById(R.id.acknowledgeBtn);
 
         /**
          *
          */
-        recyclerView = findViewById(R.id.orderRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView = findViewById(R.id.orderRecyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         /**
          *
          */
@@ -414,6 +465,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         deliverdate.setText(returndata.getStringExtra("deldate"));
         ordertype.setText(returndata.getStringExtra("ordertype"));
         routename.setText(returndata.getStringExtra("routes"));
+        orderId = returndata.getIntExtra("orderId", 0);
+        routeId = returndata.getIntExtra("routeId", 0);
+
+        ordertypeidreturned = orderId;
+        routeidreturned = routeId;
         kmstart = returndata.getStringExtra("edtkm_start");
         kmend = returndata.getStringExtra("edt_km_end");
 
@@ -452,12 +508,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 startActivity(i);
             }
         });
-        ////////////////////////////////////////////                  Till is done  //////////////////////////////////////////////////////////////
         Log.e("hasdata", "***********************" + dbH.hasData());
 
         // TODO: it's not done yet.
         if (dbH.hasData()) {
-            ArrayList<Orders> oH = dbH.returnOrderHeaders();
+            Toast.makeText(MainActivity.this, "Has Data!", Toast.LENGTH_SHORT).show();
+            List<Orders> oH = dbH.returnOrderHeaders();
             items1 = new ArrayList<Item>();
             listdata = new ArrayList<Data>();
 
@@ -520,13 +576,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             //myItemsListAdapter = new ItemsListAdapter(MainActivity.this, items1);
             // _orderdlist.setAdapter(myItemsListAdapter);
 
-            Adapter adapter = new Adapter(this, listdata, new Adapter.Listener() {
+            Adapter adapter = new Adapter(this, listdata,oH, new Adapter.Listener() {
                 @Override
                 public void onGrab(int position, TableLayout row) {
 //                    _orderdlist.onGrab(position, row);
                 }
-            });
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            }, this,this);
             _orderdlist.setAdapter(adapter);
             _orderdlist.setListener(new CustomListView.Listener() {
                 @Override
@@ -539,17 +594,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         } else {
             not_uploade.setText("");
             startProgress("Syncing");
-            ArrayList<Routes> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
-            ArrayList<Routes> ordertyp = dbH.multiId("Select * from OrderTypes where OrderType ='" + ordertype.getText().toString() + "'");
-            for (Routes orderAttributes4 : routesdata) {
-                routeidreturned = orderAttributes4.getRouteName();
-            }
-
-            for (Routes orderAttributes4 : ordertyp) {
-                ordertypeidreturned = orderAttributes4.getRouteName();
-            }
+//            ArrayList<Routes> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
+//            ArrayList<Routes> ordertyp = dbH.multiId("Select * from OrderTypes where OrderType ='" + ordertype.getText().toString() + "'");
+//            for (Routes orderAttributes4 : routesdata) {
+//                routeidreturned = orderAttributes4.getRouteName();
+//            }
+//
+//            for (Routes orderAttributes4 : ordertyp) {
+//                ordertypeidreturned = orderAttributes4.getRouteName();
+//            }
             Log.e("try", "******" + SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
-            new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+            //new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+            new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType="
+                    + orderId
+                    + "&Route=" + routeId + "&DeliveryDate=" + deliverdate.getText().toString());
 
         }
 
@@ -627,7 +685,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String tomorrowDate = dateFormat.format(tomorrow);
-                                //dbH.updateDeals("UPDATE OrderHeaders set Uploaded=0 , EndTripTime='"+tomorrowDate+"'");
+                                dbH.updateDeals("UPDATE OrderHeaders set Uploaded=0 , EndTripTime='" + tomorrowDate + "'");
                                 Intent b = new Intent(MainActivity.this, LandingPage.class);
                                 startActivity(b);
                             }
@@ -644,6 +702,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         /*
         On Click here:
          */
+
+        _orderdlist.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this, "Called", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 ////////////////////////////////////////////////////////////////////////////////////////////
         try {
             _orderdlist.setOnItemClickListener(new OnItemClickListener() {
@@ -704,7 +770,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     final Data selectedItem = (Data) (parent.getItemAtPosition(position));
                     //String lat = selectedItem.ItemString9;
                     //String lon = selectedItem.ItemString10;
-
+                    //Toast.makeText(MainActivity.this, "Called", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(MainActivity.this, MyMapActivity.class);
                     i.putExtra("Lat", selectedItem.ItemString9);
                     i.putExtra("Lon", selectedItem.ItemString10);
@@ -731,8 +797,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         textView.setText();*/
                 dialog.setTitle("Please Type in the Cash");
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                btn_submit_ackn =  dialog.findViewById(R.id.btn_submit_ackn);
-                ack_sign = (SignaturePad) dialog.findViewById(R.id.ack_sign);
+                btn_submit_ackn = dialog.findViewById(R.id.btn_submit_ackn);
+                ack_sign =  dialog.findViewById(R.id.ack_sign);
+                ImageView undoSignature =  dialog.findViewById(R.id.undoSignature);
+                undoSignature.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ack_sign.clear();
+                    }
+                });
 
                 btn_submit_ackn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -807,7 +880,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
 
     public String[] distanceAndTime() {
-        ArrayList<Orders> orderheader = dbH.returnOrderHeaders();
+        List<Orders> orderheader = dbH.returnOrderHeaders();
         //order headers
         String[] results = new String[2];
         double totdistance = 0;
@@ -1062,6 +1135,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 //                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
 //                    persister.persistArray(OrderTypes.class, product_json);
                     //readDatabaseProducts();
+                    //No need
                     Log.e("**ql*", "done sync");
                     ArrayList<OrderTypes> ordertype = dbH.getOrderType();
 
@@ -1122,12 +1196,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 //                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
 //                    persister.persistArray(Routes.class, product_json);
                     //readDatabaseProducts();
+                    //No Need
                     Log.e("**ql*", "done sync");
 
-                    ArrayList<Routes> routesdata = dbH.getRoutes();
+                    List<RouteModel> routesdata = dbH.getRoutes();
 
                     List<String> labels = new ArrayList<String>();
-                    for (Routes orderAttributes4 : routesdata) {
+                    for (RouteModel orderAttributes4 : routesdata) {
                         labels.add(orderAttributes4.getRouteName());
                     }
 
@@ -1144,6 +1219,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    /**
+     * Working here.
+     */
     ///////////////////////////////////////////////////////  Here It's crashing now /////////////////////////////////////////////////////////////////////////
     private class getOrderHeaders extends AsyncTask<String, Void, String> {
         @Override
@@ -1166,23 +1244,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     List<Orders> products = new Gson().fromJson(customerOrders, new TypeToken<List<Orders>>() {
                     }.getType());
-                    int i = 1;
-                    for (Orders product : products) {
-                        product.setId(i);
-                        i++;
-                    }
-
-                    String productListString = new Gson().toJson(
-                            products,
-                            new TypeToken<ArrayList<Orders>>() {
-                            }.getType());
-
-                    JSONArray product_json = new JSONArray(productListString);
+//                    int i = 1;
+//                    for (Orders product : products) {
+//                        product.setId(i);
+//                        i++;
+//                    }
+//
+//                    Log.d("ORDERS_HEADERS_VALUE", ""+customerOrders);
+//
+//                    String productListString = new Gson().toJson(
+//                            products,
+//                            new TypeToken<ArrayList<Orders>>() {
+//                            }.getType());
+//
+//                    JSONArray product_json = new JSONArray(productListString);
 
                     // Persist arrays to database
 //                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
 //                    persister.persistArray(Orders.class, product_json);
                     //readDatabaseProducts();
+                    new NetworkingFeedback(dbH).insertOrderHeadersIntoSQLiteDatabase(products);
                     Log.e("**ql*", "done sync");
 
                     progressDoalog.dismiss();
@@ -1192,15 +1273,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             .setPositiveButton("Get Details", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     startProgress("Syncing Items");
-                                    ArrayList<Orders> oH = dbH.returnOrderHeaders();
-
+                                    List<Orders> oH = dbH.returnOrderHeaders();
+                                    Toast.makeText(MainActivity.this, "SIZE: " + oH.size(), Toast.LENGTH_SHORT).show();
                                     listdata = new ArrayList<Data>();
 
                                     for (Orders orderAttributes : oH) {
                                         Data listItem = new Data(orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(), orderAttributes.getInvoiceNo(),
-                                                orderAttributes.getoffloaded(), "1", "Header", orderAttributes.getCashPaid(), orderAttributes.getoffloaded(), orderAttributes.getLatitude(), orderAttributes.getLongitude(), Integer.toString(orderAttributes.getDeliverySeq())
+                                                orderAttributes.getoffloaded(), "1", "Header", orderAttributes.getCashPaid(), orderAttributes.getoffloaded(),
+                                                orderAttributes.getLatitude(), orderAttributes.getLongitude(),
+                                                Integer.toString(orderAttributes.getDeliverySeq())
                                                 , orderAttributes.getThreshold());
                                         listdata.add(listItem);
+
                                         mass = mass + Double.parseDouble(orderAttributes.getOrderMass());
                                         acknowledge_stock.setText(orderAttributes.getDriverName() + " Please acknowledge the stock");
                                         DriverEmail = orderAttributes.getDriverEmail();
@@ -1254,12 +1338,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                         }
                                         //orderAttributes.getPrice()
                                     }
-                                    Adapter adapter = new Adapter(MainActivity.this, listdata, new Adapter.Listener() {
+                                    Adapter adapter = new Adapter(MainActivity.this, listdata,oH, new Adapter.Listener() {
                                         @Override
                                         public void onGrab(int position, TableLayout row) {
                                             _orderdlist.onGrab(position, row);
                                         }
-                                    });
+                                    }, MainActivity.this, MainActivity.this);
 
                                     _orderdlist.setAdapter(adapter);
                                     _orderdlist.setListener(new CustomListView.Listener() {
@@ -1280,7 +1364,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     AlertDialog alert = builder.create();
                     alert.show();
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -1308,18 +1392,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     List<OrderLines> products = new Gson().fromJson(customerOrders, new TypeToken<List<OrderLines>>() {
                     }.getType());
-                    int i = 1;
-                    for (OrderLines product : products) {
-                        product.setId(i);
-                        i++;
-                    }
-
-                    String productListString = new Gson().toJson(
-                            products,
-                            new TypeToken<ArrayList<OrderLines>>() {
-                            }.getType());
-
-                    JSONArray product_json = new JSONArray(productListString);
+//                    int i = 1;
+//                    for (OrderLines product : products) {
+//                        product.setId(i);
+//                        i++;
+//                    }
+//
+//                    String productListString = new Gson().toJson(
+//                            products,
+//                            new TypeToken<ArrayList<OrderLines>>() {
+//                            }.getType());
+//
+//                    JSONArray product_json = new JSONArray(productListString);
 
                     // Persist arrays to database
 //                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
@@ -1327,7 +1411,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     //readDatabaseProducts();
                     Log.e("**ql*", "done sync");
 
-
+                    new NetworkingFeedback(dbH).insertNewlyOrderLinesIntoSQLiteDatabase(products);
                     progressDoalog.dismiss();
 
                     //  final AlertDialog dialogBuilder = new AlertDialog.Builder(MainActivity.this).create();
@@ -1343,8 +1427,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     String tm = sdf.format(c.getTime());
                     timestart.setText(tm);
 
-                    starttrip_dialog = (Button) dialogBuilder.findViewById(R.id.starttrip_dialog);
-                    continue_without = (Button) dialogBuilder.findViewById(R.id.continue_without);
+                    starttrip_dialog = dialogBuilder.findViewById(R.id.starttrip_dialog);
+                    continue_without = dialogBuilder.findViewById(R.id.continue_without);
 
                     starttrip_dialog.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1413,7 +1497,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     AlertDialog alert = builder.create();
                     alert.show();*/
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -1453,6 +1537,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         ContentValues values = new ContentValues();
 
                         values.put("ProductId", BoardDetails.getInt("intProductId"));
+                        //values.put("ProductId", BoardDetails.getString("intProductId"));
                         values.put("ProductCode", BoardDetails.getString("strProductCode"));
                         values.put("ProductName", BoardDetails.getString("strProductName"));
 
@@ -1462,24 +1547,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     List<WareHouses> products = new Gson().fromJson(customerOrders.toString(), new TypeToken<List<WareHouses>>() {
                     }.getType());
-                    int i = 1;
-                    for (WareHouses product : products) {
-                        product.setId(i);
-                        i++;
-                    }
-
-                    String productListString = new Gson().toJson(
-                            products,
-                            new TypeToken<ArrayList<WareHouses>>() {
-                            }.getType());
-
-                    JSONArray product_json = new JSONArray(productListString);
+//                    int i = 1;
+//                    for (WareHouses product : products) {
+//                        product.setId(i);
+//                        i++;
+//                    }
+//
+//                    String productListString = new Gson().toJson(
+//                            products,
+//                            new TypeToken<ArrayList<WareHouses>>() {
+//                            }.getType());
+//
+//                    JSONArray product_json = new JSONArray(productListString);
 
                     // Persist arrays to database
 //                    JsonPersister persister = new JsonPersister(mDatabaseHelper.getWritableDatabase());
 //                    persister.persistArray(WareHouses.class, product_json);
+                    new NetworkingFeedback(dbH).insertWareHousesIntoSQLiteDatabase(products);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -1528,18 +1614,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         String s = Base64.encodeToString(byteImage, Base64.DEFAULT);
 
 //UploadNewOrderLinesDetails
-        //dbH.updateDeals("Update OrderHeaders set imagestring='"+s+"' where InvoiceNo ='"+InvoiceNo+"'");
+        dbH.updateDeals("Update OrderHeaders set imagestring='" + s + "' where InvoiceNo ='" + InvoiceNo + "'");
         startProgress("Syncing");
-        ArrayList<Routes> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
-        ArrayList<Routes> ordertyp = dbH.multiId("Select * from OrderTypes where OrderType ='" + ordertype.getText().toString() + "'");
-        for (Routes orderAttributes4 : routesdata) {
-            routeidreturned = orderAttributes4.getRouteName();
-        }
+//        ArrayList<Routes> routesdata = dbH.multiId("Select * from Routes where RouteName ='" + routename.getText().toString() + "'");
+//        ArrayList<Routes> ordertyp = dbH.multiId("Select * from OrderTypes where OrderType ='" + ordertype.getText().toString() + "'");
+//        for (Routes orderAttributes4 : routesdata) {
+//            routeidreturned = orderAttributes4.getRouteName();
+//        }
+//
+//        for (Routes orderAttributes4 : ordertyp) {
+//            ordertypeidreturned = orderAttributes4.getRouteName();
+//        }
 
-        for (Routes orderAttributes4 : ordertyp) {
-            ordertypeidreturned = orderAttributes4.getRouteName();
-        }
-        new UploadNewOrderLinesDetails(deliverdate.getText().toString(), ordertypeidreturned, routeidreturned, s).execute();
+        new UploadNewOrderLinesDetails(deliverdate.getText().toString(), "" + ordertypeidreturned, "" + routeidreturned, s).execute();
 
         // Log.e("********","***************"+s);
         //Log.e("********","***************InvoiceNo----"+InvoiceNo);

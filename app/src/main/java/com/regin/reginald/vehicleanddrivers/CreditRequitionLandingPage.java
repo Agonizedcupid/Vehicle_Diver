@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +20,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.regin.reginald.model.OrderLines;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreditRequitionLandingPage  extends AppCompatActivity {
+public class CreditRequitionLandingPage extends AppCompatActivity {
     public class Item {
         String ItemString;
         String ItemString2;
@@ -31,8 +33,7 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
         String ItemString4;
 
 
-
-        Item(String t, String t2,String t3,String t4) {
+        Item(String t, String t2, String t3, String t4) {
             ItemString = t;
             ItemString2 = t2;
             ItemString3 = t3;
@@ -40,6 +41,7 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
 
         }
     }
+
     static class ViewHolder {
         //ImageView icon;
         TextView text;
@@ -47,6 +49,7 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
         TextView text3;
         TextView text4;
     }
+
     public class ItemsListAdapter extends BaseAdapter {
 
         private Context context;
@@ -61,10 +64,12 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
         public int getCount() {
             return list.size();
         }
+
         @Override
         public Object getItem(int position) {
             return list.get(position);
         }
+
         @Override
         public long getItemId(int position) {
             return position;
@@ -105,29 +110,31 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
         }
     }
 
-    List<Item> items1,lineinfo;
+    List<Item> items1, lineinfo;
 
-    Button createdeliverynote;
+    ImageView createdeliverynote;
     EditText datetime;
     ListView lvtobeposted;
     ItemsListAdapter myItemsListAdapter;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     Handler handler = new Handler();
     Runnable runnable;
     int delay = 10000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.requisitionlist);
 
-        createdeliverynote = (Button) findViewById(R.id.createdeliverynote);
+        createdeliverynote = findViewById(R.id.createdeliverynote);
 
-        lvtobeposted = (ListView) findViewById(R.id.lvtobeposted);
+        lvtobeposted = findViewById(R.id.lvtobeposted);
 
         createdeliverynote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreditRequitionLandingPage.this,CreateCreditRequisition.class);
+                Intent i = new Intent(CreditRequitionLandingPage.this, CreateCreditRequisition.class);
                 startActivity(i);
             }
         });
@@ -149,7 +156,7 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
                 items1 = new ArrayList<Item>();
                 ArrayList<OrderLines> sett = dbH.ReturnUnPostedCreditLines();
                 for (OrderLines orderAttributes : sett) {
-                    Item item = new Item(orderAttributes.getPastelCode() , orderAttributes.getPastelDescription(), orderAttributes.getQty(),
+                    Item item = new Item(orderAttributes.getPastelCode(), orderAttributes.getPastelDescription(), orderAttributes.getQty(),
                             "");
                     items1.add(item);
                 }
@@ -170,7 +177,7 @@ public class CreditRequitionLandingPage  extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        Intent i = new Intent(CreditRequitionLandingPage.this,LandingPage.class);
+        Intent i = new Intent(CreditRequitionLandingPage.this, LandingPage.class);
         startActivity(i);
     }
 }

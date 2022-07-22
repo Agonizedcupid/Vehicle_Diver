@@ -12,6 +12,12 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.regin.reginald.model.Orders;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomClickListener;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomLongClickListener;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +32,19 @@ public class Adapter extends ArrayAdapter<Data> {
         void onGrab(int position, TableLayout row);
     }
 
+    CustomClickListener customClickListener;
+    CustomLongClickListener customLongClickListener;
+
     final Listener listener;
     final Map<Data, Integer> mIdMap = new HashMap<>();
+    List<Orders> oH ;
 
-    public Adapter(Context context, List<Data> list, Listener listener) {
+    public Adapter(Context context, List<Data> list,List<Orders> oH, Listener listener, CustomClickListener customClickListener, CustomLongClickListener customLongClickListener) {
         super(context, 0, list);
         this.listener = listener;
+        this.oH = oH;
+        this.customClickListener = customClickListener;
+        this.customLongClickListener = customLongClickListener;
         for (int i = 0; i < list.size(); ++i) {
             mIdMap.put(list.get(i), i);
         }
@@ -42,29 +55,29 @@ public class Adapter extends ArrayAdapter<Data> {
         Context context = getContext();
         final Data data = getItem(position);
         if(null == view) {
-            view = LayoutInflater.from(context).inflate(R.layout.orders_rows, null);
+            view = LayoutInflater.from(context).inflate(R.layout.single_order_rows, null);
         }
 
-        final TableLayout row = (TableLayout) view.findViewById(
+        final TableLayout row =  view.findViewById(
                 R.id.lytPattern);
 
         View color = view.findViewById(R.id.orderid);
-        color.setBackgroundColor(Color.rgb(206, 204, 204));//
-        TextView textView = (TextView)view.findViewById(R.id.storename);
+        //color.setBackgroundColor(Color.rgb(206, 204, 204));//
+        TextView textView = view.findViewById(R.id.storename);
         textView.setText(data.ItemString);
 
-        TextView timerange = (TextView)view.findViewById(R.id.address);
+        TextView timerange = view.findViewById(R.id.address);
         timerange.setText(data.ItemString2);
 
-        TextView orderid = (TextView)view.findViewById(R.id.orderid);
+        TextView orderid = view.findViewById(R.id.orderid);
         orderid.setText(data.ItemString3);
 
 
 
-        TextView del = (TextView)view.findViewById(R.id.del);
+        TextView del = view.findViewById(R.id.del);
         del.setText(data.ItemString4);
 
-        CheckBox offload = (CheckBox) view.findViewById(R.id.offload);
+        CheckBox offload =  view.findViewById(R.id.offload);
         //del.setText(data.ItemString4);
         if(data.ItemString4.equals("1"))
         {
@@ -74,6 +87,23 @@ public class Adapter extends ArrayAdapter<Data> {
         {
             ((CheckBox) view.findViewById(R.id.offload)).setChecked(false);
         }
+
+        ConstraintLayout layoutClick = view.findViewById(R.id.cardClickListener);
+        layoutClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customClickListener.normalClick(oH.get(position).getInvoiceNo(),oH.get(position).getCashPaid(),
+                        oH.get(position).getThreshold(), oH.get(position).getStoreName());
+            }
+        });
+        layoutClick.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                customLongClickListener.longClick(position,oH.get(position).getLatitude(),
+                        oH.get(position).getLongitude(),oH.get(position).getDeliverySequence(),oH.get(position).getStoreName());
+                return false;
+            }
+        });
 
         view.findViewById(R.id.orderid)
             .setOnTouchListener(new View.OnTouchListener() {

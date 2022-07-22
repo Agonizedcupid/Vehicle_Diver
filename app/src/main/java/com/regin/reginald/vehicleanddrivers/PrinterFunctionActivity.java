@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -34,14 +35,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bxl.config.editor.BXLConfigLoader;
 import com.bxl.config.util.BXLBluetoothLE;
+import com.google.android.material.snackbar.Snackbar;
 import com.regin.reginald.data.DatabaseHelper;
 import com.regin.reginald.model.OrderTypes;
 import com.regin.reginald.model.SettingsModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,45 +88,51 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
     private CheckBox checkBoxAsyncMode;
     ProgressDialog progressDoalog;
 
-    private Button btnPrinterOpen;
-    private Button registerbtn,delete_db,connectio_string,devicegroups;
+    private CardView btnPrinterOpen;
+    private CardView registerbtn, connectio_string, devicegroups;
+    private ImageView delete_db;
     int len = 0;
-    String customerOrders, SERVERIP,LINX = "http://102.37.0.48/driversapp/";// = "http://192.168.0.18:8181/driver/";
+    String customerOrders, SERVERIP, LINX = "http://102.37.0.48/driversapp/";// = "http://192.168.0.18:8181/driver/";
     private ProgressBar mProgressLarge;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     //private DatabaseHelper mDatabaseHelper;
+
+    private ConstraintLayout snackBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_print);
-        ArrayList<SettingsModel> settIP= dbH.getSettings();
+        ArrayList<SettingsModel> settIP = dbH.getSettings();
 
-        for (SettingsModel orderAttributes: settIP){
+        for (SettingsModel orderAttributes : settIP) {
             SERVERIP = orderAttributes.getstrServerIp();
         }
         Intent returndata = getIntent();
-        layoutModel = (LinearLayout) findViewById(R.id.LinearLayout2);
-        layoutIPAddress = (LinearLayout) findViewById(R.id.LinearLayout3);
+        layoutModel = findViewById(R.id.LinearLayout2);
+        layoutIPAddress = findViewById(R.id.LinearLayout3);
         layoutIPAddress.setVisibility(View.GONE);
 
-        textViewBluetooth =(TextView) findViewById(R.id.textViewBluetoothList);
-        checkBoxAsyncMode = (CheckBox) findViewById(R.id.checkBoxAsyncMode);
+        textViewBluetooth = findViewById(R.id.textViewBluetoothList);
+        checkBoxAsyncMode = findViewById(R.id.checkBoxAsyncMode);
 
-        btnPrinterOpen = (Button) findViewById(R.id.btnPrinterOpen);
-        registerbtn = (Button) findViewById(R.id.registerbtn);
-        delete_db = (Button) findViewById(R.id.delete_db);
-        connectio_string = (Button) findViewById(R.id.connectio_string);
-        devicegroups = (Button) findViewById(R.id.devicegroups);
+        btnPrinterOpen = findViewById(R.id.btnPrinterOpen);
+        registerbtn = findViewById(R.id.registerbtn);
+        delete_db = findViewById(R.id.delete_db);
+        connectio_string = findViewById(R.id.connectio_string);
+        devicegroups = findViewById(R.id.devicegroups);
         btnPrinterOpen.setOnClickListener(this);
 
-        mProgressLarge = (ProgressBar) findViewById(R.id.progressBar1);
+        snackBarLayout = findViewById(R.id.snackBarlayout);
+
+        mProgressLarge = findViewById(R.id.progressBar1);
         mProgressLarge.setVisibility(ProgressBar.GONE);
         final String subscriberId = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         setPairedDevices();
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, bondedDevices);
-        listView = (ListView) findViewById(R.id.listViewPairedDevices);
+        listView = findViewById(R.id.listViewPairedDevices);
         listView.setAdapter(arrayAdapter);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -135,8 +146,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
                 startProgress("...");
                 try {
                     new registerTheDevice().execute(SERVERIP + "RegisterDevice.php?key=" + subscriberId);
-                }catch (Exception var3)
-                {
+                } catch (Exception var3) {
 
                 }
             }
@@ -146,10 +156,9 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             public void onClick(View v) {
                 startProgress("...");
                 try {
-                    Log.e("skelere",""+LINX + "GetGroupsFunctions.php?key=" + subscriberId);
+                    Log.e("skelere", "" + LINX + "GetGroupsFunctions.php?key=" + subscriberId);
                     new GetDeviceGroups().execute(LINX + "GetGroupsFunctions.php?key=" + subscriberId);
-                }catch (Exception var3)
-                {
+                } catch (Exception var3) {
 
                 }
             }
@@ -158,7 +167,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             @Override
             public void onClick(View v) {
 
-                Intent s = new Intent(PrinterFunctionActivity.this,Settings.class);
+                Intent s = new Intent(PrinterFunctionActivity.this, Settings.class);
                 startActivity(s);
             }
         });
@@ -172,11 +181,11 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
                 dbH.updateDeals("DROP TABLE IF EXISTS ManagementConsole");
                 dbH.updateDeals("DROP TABLE IF EXISTS OrderLines");
                 dbH.updateDeals("DROP TABLE IF EXISTS OrderHeaders");
-                Intent i = new Intent (PrinterFunctionActivity.this,LandingPage.class);
+                Intent i = new Intent(PrinterFunctionActivity.this, LandingPage.class);
                 startActivity(i);
             }
         });
-        Spinner modelList =(Spinner) findViewById(R.id.spinnerModelList);
+        Spinner modelList = (Spinner) findViewById(R.id.spinnerModelList);
 
         ArrayAdapter modelAdapter = ArrayAdapter.createFromResource(this, R.array.modelList, android.R.layout.simple_spinner_dropdown_item);
         modelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -198,6 +207,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             }
         }
     }
+
     private void setPairedDevices() {
         bondedDevices.clear();
 
@@ -212,11 +222,13 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             arrayAdapter.notifyDataSetChanged();
         }
     }
+
     private void setBleDevices() {
         mHandler.obtainMessage(0).sendToTarget();
         BXLBluetoothLE.setBLEDeviceSearchOption(5, 1);
         new searchBLEPrinterTask().execute();
     }
+
     private class registerTheDevice extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -232,15 +244,15 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
             if (len > 0) {
-             //lastmess
+                //lastmess
                 progressDoalog.dismiss();
                 AlertDialog.Builder builder = new AlertDialog.Builder(PrinterFunctionActivity.this);
                 builder.setTitle("Please talk to your manager about this ID.")
-                        .setMessage("ID :"+customerOrders)
+                        .setMessage("ID :" + customerOrders)
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent main = new Intent( PrinterFunctionActivity.this,LandingPage.class);
+                                Intent main = new Intent(PrinterFunctionActivity.this, LandingPage.class);
                                 startActivity(main);
                                 dialog.dismiss();
                             }
@@ -250,6 +262,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             }
         }
     }
+
     private class GetDeviceGroups extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -266,27 +279,30 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             Log.e("len***t", "len**************" + len);
             dbH.updateDeals("DROP TABLE IF EXISTS tblGroupsetup");
             if (len > 0) {
-             //lastmess
+                //lastmess
 
                 try {
                     JSONArray BoardInfo = new JSONArray(customerOrders);
                     for (int j = 0; j < BoardInfo.length(); ++j) {
 
                         JSONObject BoardDetails = BoardInfo.getJSONObject(j);
-                        String results,OptionDesc,GroupID;
+                        String results, OptionDesc, GroupID;
                         results = BoardDetails.getString("results");
                         OptionDesc = BoardDetails.getString("OptionDesc");
                         GroupID = BoardDetails.getString("GroupID");
 
                         if (results.equals("NOT REGISTERED")) {
-                            devicegroups.setText("Not Registered, please speak to your administrator");
+                            //devicegroups.setText("Not Registered, please speak to your administrator");
+                            Snackbar.make(snackBarLayout,"Not Registered, please speak to your administrator",
+                                    Snackbar.LENGTH_LONG).show();
                         } else {
 
                             dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblGroupsetup (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,OptionDesc TEXT, GroupID ID)");
-                            dbH.updateDeals("Insert into tblGroupsetup (OptionDesc,GroupID) values('"+OptionDesc+"','"+GroupID+"')");
+                            dbH.updateDeals("Insert into tblGroupsetup (OptionDesc,GroupID) values('" + OptionDesc + "','" + GroupID + "')");
 
                         }
-                    } progressDoalog.dismiss();
+                    }
+                    progressDoalog.dismiss();
 
                 } catch (Exception e) {
                     Log.e("JSON", e.getMessage());
@@ -305,7 +321,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
         InputStream inputStream = null;
         URL url;
 
-        try{
+        try {
             url = new URL(urlp);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -316,14 +332,14 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             // Initialize a new string buffer object
             StringBuffer stringBuffer = new StringBuffer();
 
-            String line ="";
+            String line = "";
             // Loop through the lines
-            while((line= bufferedReader.readLine())!=null){
+            while ((line = bufferedReader.readLine()) != null) {
                 // Append the current line to string buffer
                 stringBuffer.append(line);
             }
 
-            movieJsonStr =  stringBuffer.toString();
+            movieJsonStr = stringBuffer.toString();
 
         } catch (Throwable e) {
             Log.e("backgroundtask", "EXCEPTION", e);
@@ -332,9 +348,9 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             try {
 
 
-                if(bufferedReader != null)
+                if (bufferedReader != null)
                     bufferedReader.close();
-                if(inputStream != null)
+                if (inputStream != null)
                     inputStream.close();
             } catch (IOException e) {
                 Log.e("READER.CLOSE()", e.toString());
@@ -348,6 +364,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
         }
         return result;
     }
+
     private class searchBLEPrinterTask extends AsyncTask<Integer, Integer, Set<BluetoothDevice>> {
         private String message;
 
@@ -423,12 +440,10 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String device = ((TextView) view).getText().toString();
-        if(portType == BXLConfigLoader.DEVICE_BUS_WIFI)
-        {
+        if (portType == BXLConfigLoader.DEVICE_BUS_WIFI) {
             editTextIPAddress.setText(device);
             address = device;
-        }
-        else {
+        } else {
             address = device.substring(device.indexOf(DEVICE_ADDRESS_START) + DEVICE_ADDRESS_START.length(), device.indexOf(DEVICE_ADDRESS_END));
         }
     }
@@ -438,8 +453,8 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
         switch (view.getId()) {
             case R.id.btnPrinterOpen:
                 dbH.updateDeals("delete from PrinterInfo");
-                dbH.updateDeals("INSERT INTO PrinterInfo (ProtoType,LogicalName,Address) VALUES ('"+portType+"','"+logicalName+"','"+address+"')");
-                Intent a =  new Intent(PrinterFunctionActivity.this,LandingPage.class);
+                dbH.updateDeals("INSERT INTO PrinterInfo (ProtoType,LogicalName,Address) VALUES ('" + portType + "','" + logicalName + "','" + address + "')");
+                Intent a = new Intent(PrinterFunctionActivity.this, LandingPage.class);
                 startActivity(a);
                 /*Intent a =  new Intent(PrinterFunctionActivity.this,TestTextFragment.class);
                 startActivity(a);
@@ -470,6 +485,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -502,11 +518,10 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
         }
     });
 
-    public void startProgress(String msg)
-    {
+    public void startProgress(String msg) {
         progressDoalog = new ProgressDialog(PrinterFunctionActivity.this);
         progressDoalog.setMax(100);
-        progressDoalog.setMessage("Please Wait...."+msg);
+        progressDoalog.setMessage("Please Wait...." + msg);
         progressDoalog.setTitle("Synchronizing data");
         progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDoalog.setCanceledOnTouchOutside(false);

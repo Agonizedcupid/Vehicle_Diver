@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +37,7 @@ public class CreateCreditRequisition extends AppCompatActivity {
         String ItemString4;
 
 
-
-        Item(String t, String t2,String t3,String t4) {
+        Item(String t, String t2, String t3, String t4) {
             ItemString = t;
             ItemString2 = t2;
             ItemString3 = t3;
@@ -44,6 +45,7 @@ public class CreateCreditRequisition extends AppCompatActivity {
 
         }
     }
+
     static class ViewHolder {
         //ImageView icon;
         TextView text;
@@ -51,6 +53,7 @@ public class CreateCreditRequisition extends AppCompatActivity {
         TextView text3;
         TextView text4;
     }
+
     public class ItemsListAdapter extends BaseAdapter {
 
         private Context context;
@@ -65,10 +68,12 @@ public class CreateCreditRequisition extends AppCompatActivity {
         public int getCount() {
             return list.size();
         }
+
         @Override
         public Object getItem(int position) {
             return list.get(position);
         }
+
         @Override
         public long getItemId(int position) {
             return position;
@@ -109,53 +114,54 @@ public class CreateCreditRequisition extends AppCompatActivity {
         }
     }
 
-    List<Item> items1,lineinfo;
+    List<Item> items1, lineinfo;
     ItemsListAdapter myItemsListAdapter;
     EditText[] textBoxes = new EditText[20];
-    Button btnadddeliv,vrfdelnote;
+    TextView btnadddeliv, vrfdelnote;
     TextView reference;
-    EditText etcustname,edproducts,edtqty,etdWghts,storename,username;
+    EditText etcustname, edproducts, edtqty, etdWghts, storename, username;
     ListView lvaddedlines;
     String formattedDate;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //inal MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createacreditrequest);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 0);
         Date tomorrow = calendar.getTime();
         final String subscriberId = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        Long tsLong = System.currentTimeMillis()/1000;
+        Long tsLong = System.currentTimeMillis() / 1000;
         String ts = tsLong.toString();
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time => "+c.getTime());
+        System.out.println("Current time => " + c.getTime());
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         formattedDate = df.format(c.getTime());
 
-        final String idTimestamp = subscriberId+"-"+ts;
-        btnadddeliv =(Button) findViewById(R.id.btnadddeliv);
-        vrfdelnote =(Button) findViewById(R.id.vrfdelnote);
-        reference =(TextView) findViewById(R.id.reference);
-        etcustname = (EditText) findViewById(R.id.etcustname);
-        edproducts = (EditText) findViewById(R.id.edproducts);
-        edtqty = (EditText) findViewById(R.id.edtqty);
-        etdWghts = (EditText) findViewById(R.id.etdWghts);
-        storename = (EditText) findViewById(R.id.storename);
-     //   username = (EditText) findViewById(R.id.username);
-        lvaddedlines = (ListView) findViewById(R.id.lvaddedlines);
+        final String idTimestamp = subscriberId + "-" + ts;
+        btnadddeliv = findViewById(R.id.btnadddeliv);
+        vrfdelnote = findViewById(R.id.vrfdelnote);
+        reference = findViewById(R.id.reference);
+        etcustname = findViewById(R.id.etcustname);
+        edproducts = findViewById(R.id.edproducts);
+        edtqty = findViewById(R.id.edtqty);
+        etdWghts = findViewById(R.id.etdWghts);
+        storename = findViewById(R.id.storename);
+        //   username = (EditText) findViewById(R.id.username);
+        lvaddedlines = findViewById(R.id.lvaddedlines);
         reference.setText(idTimestamp);
         items1 = new ArrayList<Item>();
         btnadddeliv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if((storename.getText().toString().trim() ).length() !=0){
-                    if((edproducts.getText().toString().trim()).length() !=0) {
-                        dbH.insertCreditNoteLines(reference.getText().toString(),storename.getText().toString(),etcustname.getText().toString(),edtqty.getText().toString(),etdWghts.getText().toString()
-                                ,formattedDate,edproducts.getText().toString());
+                if ((storename.getText().toString().trim()).length() != 0) {
+                    if ((edproducts.getText().toString().trim()).length() != 0) {
+                        dbH.insertCreditNoteLines(reference.getText().toString(), storename.getText().toString(), etcustname.getText().toString(), edtqty.getText().toString(), etdWghts.getText().toString()
+                                , formattedDate, edproducts.getText().toString());
                         Item item = new Item(etcustname.getText().toString(), edproducts.getText().toString(), edtqty.getText().toString(),
                                 etdWghts.getText().toString());
                         items1.add(item);
@@ -165,16 +171,13 @@ public class CreateCreditRequisition extends AppCompatActivity {
                         edproducts.setText("");
                         //storename.setText("");
 
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(CreateCreditRequisition.this, "Please check that you have the product", Toast.LENGTH_SHORT).show();
                     }
 
-                }else
-                {
+                } else {
 
-                        Toast.makeText(CreateCreditRequisition.this, "Please check that you have the customer name.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateCreditRequisition.this, "Please check that you have the customer name.", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -185,15 +188,14 @@ public class CreateCreditRequisition extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if((storename.getText().toString().trim()).length() !=0) {
-                    dbH.insertCreditNoteHeaders(reference.getText().toString(),storename.getText().toString(),formattedDate,"",idTimestamp);
-                    Intent i = new Intent(CreateCreditRequisition.this,SignForCreditNotes.class);
-                    i.putExtra("uniqueId",idTimestamp);
+                if ((storename.getText().toString().trim()).length() != 0) {
+                    dbH.insertCreditNoteHeaders(reference.getText().toString(), storename.getText().toString(), formattedDate, "", idTimestamp);
+                    Intent i = new Intent(CreateCreditRequisition.this, SignForCreditNotes.class);
+                    i.putExtra("uniqueId", idTimestamp);
                     startActivity(i);
 
 
-                }  else
-                {
+                } else {
                     Toast.makeText(CreateCreditRequisition.this, "Please Put In The Name Of The Person Requesting The Credit", Toast.LENGTH_SHORT).show();
                 }
 
@@ -205,6 +207,7 @@ public class CreateCreditRequisition extends AppCompatActivity {
 
 
     }
+
     private void setPairedDevices() {
        /* bondedDevices.clear();
 
@@ -223,7 +226,7 @@ public class CreateCreditRequisition extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        Intent i = new Intent(CreateCreditRequisition.this,CreditRequitionLandingPage.class);
+        Intent i = new Intent(CreateCreditRequisition.this, CreditRequitionLandingPage.class);
         startActivity(i);
     }
 

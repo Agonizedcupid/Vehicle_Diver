@@ -53,6 +53,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.regin.reginald.model.OrderLines;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 public class OrderNotUploadedActivity extends AppCompatActivity {
 
@@ -139,7 +140,8 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
             return list;
         }
     }
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     List<Item> items1;
     ItemsListAdapter myItemsListAdapter1 ;
 

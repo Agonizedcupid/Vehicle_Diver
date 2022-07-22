@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="100dp"
+    android:padding="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <TextView-->
+<!--        android:id="@+id/storename"-->
+<!--        android:layout_width="176dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/lato"-->
+<!--        android:padding="3dip"-->
+<!--        android:text="test"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textStyle="bold" />-->
 
     <TextView
         android:id="@+id/storename"
-        android:layout_width="176dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lato"
-        android:padding="3dip"
-        android:text="test"
-        android:textColor="@android:color/background_dark"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:text="Store Name"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/orderid"
         android:layout_width="86dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/storename"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/non_pressed"
         android:fontFamily="@font/lato"
         android:gravity="left"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:padding="1dip"
         android:text="dfgsdf"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/storename"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/lato"
+        android:gravity="left"
+        android:layout_toStartOf="@+id/del"
+        android:layout_marginEnd="10dp"
+        android:text="Address"
+        android:textColor="@android:color/background_dark"
+        android:textSize="12sp"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/comment"
@@ -39,49 +71,43 @@
         android:gravity="left"
         android:padding="1dip"
         android:text="dsfgsdf"
+        android:visibility="gone"
         android:textColor="@android:color/background_dark"
         android:textSize="10sp"
         android:textStyle="bold" />
 
     <CheckBox
         android:id="@+id/offload"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderid"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="0dp"
         android:focusable="false"
-        android:text="sdasd"
+        android:layout_marginTop="7dp"
         android:focusableInTouchMode="false"
         android:textColor="@android:color/background_light" />
 
-
-    <TextView
-        android:id="@+id/address"
-        android:layout_width="257dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/storename"
-        android:layout_alignParentStart="true"
-        android:fontFamily="@font/lato"
-        android:gravity="left"
-        android:text="sdfasd"
-        android:textColor="@android:color/background_dark"
-        android:textSize="12sp"
-        android:textStyle="italic" />
-
-
     <TextView
         android:id="@+id/del"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/storename"
-        android:layout_toEndOf="@+id/orderid"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/orderid"
+        android:layout_toStartOf="@id/offload"
         android:fontFamily="@font/lato"
-        android:text="dsgfads"
-        android:padding="1dip"
-        android:textColor="@android:color/background_dark"
-        android:textSize="10sp"
+        android:text="a"
+        android:gravity="center"
+        android:background="@drawable/non_pressed"
+        android:layout_marginEnd="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
         android:textStyle="bold" />
 
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="2dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="@color/colorAccent" />-->
 
 </RelativeLayout>

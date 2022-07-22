@@ -11,53 +11,58 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.regin.reginald.data.DatabaseHelper;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-//import com.example.reginald.model.SettingsModel;
-
-/**
- * Created by Reginald on 2017-01-05.
- */
 public class Settings extends AppCompatActivity {
     public static final String SERVERIP = "ServerIp";
     private SQLiteDatabase db;
     private Cursor c;
-    Button submitSettings,test;
-    String theIp,trucksheet;
+    TextView submitSettings, test;
+    String theIp, trucksheet;
 
     EditText serverIps;
-    ImageView withoutcompany,withcompany,nofooter,noprev;
+    ImageView withoutcompany, withcompany, nofooter, noprev;
     SharedPreferences sharedpreferences;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     //private DatabaseHelper mDatabaseHelper;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
-    EditText deviceId,CompanyName,regKey,email;
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
+    EditText CompanyName, regKey, email;
+    private TextView deviceId;
+
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
+        //setContentView(R.layout.settings);
+        setContentView(R.layout.fragment_connection_string);
 
-       // mDatabaseHelper = DatabaseHelper.getHelper(this);
-        deviceId = (EditText) findViewById(R.id.device_id);
-        CompanyName = (EditText) findViewById(R.id.company_name);
-        regKey = (EditText) findViewById(R.id.reg_key);
-        serverIps = (EditText) findViewById(R.id.serverIps);
-        email = (EditText) findViewById(R.id.email);
-        submitSettings = (Button) findViewById(R.id.submit_settings);
+        // mDatabaseHelper = DatabaseHelper.getHelper(this);
+        deviceId = findViewById(R.id.device_id);
+        CompanyName = findViewById(R.id.company_name);
+        regKey = findViewById(R.id.reg_key);
+        serverIps = findViewById(R.id.serverIps);
+        email = findViewById(R.id.email);
+        submitSettings = findViewById(R.id.submit_settings);
+        progressBar = findViewById(R.id.progressbar);
 
-        ArrayList<SettingsModel> oD= dbH.getSettings();
-       // int nameIndex2 = c.getColumnIndex("strTruckSheet");
+        ArrayList<SettingsModel> oD = dbH.getSettings();
+        // int nameIndex2 = c.getColumnIndex("strTruckSheet");
         final String subscriberId = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         deviceId.setText(subscriberId);
-        for (SettingsModel orderAttributes: oD){
+        for (SettingsModel orderAttributes : oD) {
 
             CompanyName.setText(orderAttributes.getCompany());
             regKey.setText(orderAttributes.getregKey());
@@ -67,11 +72,13 @@ public class Settings extends AppCompatActivity {
         submitSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 dbH.updateDeals("Delete from tblSettings");
                 // strServerIp VARCHAR,regKey TEXT,Company VARCHAR,DeviceID TEXT,Email TEXT
-                dbH.updateDeals("Insert into tblSettings (strServerIp,regKey,Company,DeviceID,Email) values('"+serverIps.getText().toString()+"','"+regKey.getText().toString()+"','"+CompanyName.getText().toString()+"','"+subscriberId+"','"+email.getText().toString()+"')");
-                  Intent o = new Intent(Settings.this,LandingPage.class);
-                  startActivity(o);
+                dbH.updateDeals("Insert into tblSettings (strServerIp,regKey,Company,DeviceID,Email) values('" + serverIps.getText().toString() + "','" + regKey.getText().toString() + "','" + CompanyName.getText().toString() + "','" + subscriberId + "','" + email.getText().toString() + "')");
+                Intent o = new Intent(Settings.this, LandingPage.class);
+                startActivity(o);
+                progressBar.setVisibility(View.GONE);
             }
         });
         //c.close();
@@ -80,6 +87,7 @@ public class Settings extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS: {
                 // If request is cancelled, the result arrays are empty.
@@ -90,7 +98,7 @@ public class Settings extends AppCompatActivity {
 
                 } else {
 
-                     AlertDialog.Builder builder = new  AlertDialog.Builder(Settings.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
                     builder.setMessage("In Order for this App to work it is highly recommended to allow Location ")
                             .setCancelable(false)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -107,8 +115,9 @@ public class Settings extends AppCompatActivity {
 
         }
     }
-    public void createSettings(String serverIp){
+
+    public void createSettings(String serverIp) {
         String dateCreated = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        db.execSQL("INSERT INTO tblSettings (strServerIp,strDateCreated,UserName,Company,UserId)VALUES('"+serverIp+"','"+ dateCreated +"','reg','DIMS','0')");
+        db.execSQL("INSERT INTO tblSettings (strServerIp,strDateCreated,UserName,Company,UserId)VALUES('" + serverIp + "','" + dateCreated + "','reg','DIMS','0')");
     }
 }

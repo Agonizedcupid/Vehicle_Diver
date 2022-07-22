@@ -94,11 +94,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/deliverDate" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/orderRecyclerView"
+    <com.regin.reginald.vehicleanddrivers.CustomListView
+        android:id="@+id/_orderdlistlines"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@id/bottomLayout"
         app:layout_constraintLeft_creator="1"
@@ -106,7 +106,22 @@
         app:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progressbar"
-        tools:listitem="@layout/single_order_rows" />
+        tools:listitem="@layout/single_order_rows"
+        />
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/orderRecyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/bottomLayout"-->
+<!--        app:layout_constraintLeft_creator="1"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_creator="1"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/progressbar"-->
+<!--        tools:listitem="@layout/single_order_rows" />-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomLayout"
