@@ -7,66 +7,115 @@
     tools:context=".SignaturePage"
     tools:layout_editor_absoluteY="25dp">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow_icon"
+            app:layout_constraintBottom_creator="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/truckorder"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="Signature"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_creator="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toRightOf="@id/closelines"
+            app:layout_constraintTop_creator="1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.github.gcacace.signaturepad.views.SignaturePad
         android:id="@+id/signature_pad"
         android:layout_width="match_parent"
         android:layout_height="546dp"
         android:layout_above="@+id/finish_signature"
-
         android:layout_below="@+id/txtlabel"
         android:layout_alignParentStart="true"
         android:layout_marginTop="8dp"
         android:background="#efecec"
+        app:penColor="@android:color/black"
         tools:layout_editor_absoluteY="0dp" />
 
     <EditText
         android:id="@+id/enterusername"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="-2dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/toolbarLayout"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/edit_text_background"
         android:ems="10"
         android:hint="Your Name"
-
-        />
+        android:paddingStart="15dp" />
 
     <Button
         android:id="@+id/finish_signature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/holo_green_dark"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
         android:text="FINISH"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-       />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/email_cust"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="48dp"
         android:layout_below="@+id/enterusername"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/edit_text_background"
         android:ems="10"
         android:hint="Email"
         android:inputType="textPersonName"
+        android:paddingStart="15dp"
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/txtlabel"
-        android:layout_width="281dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_cust"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:text="Please, sign to acknowledge the delivery."
         android:textColor="@android:color/background_dark"
         android:textStyle="bold"

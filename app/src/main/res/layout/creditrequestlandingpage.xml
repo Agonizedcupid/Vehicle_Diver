@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/createdeliverynote"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#4CAF50"
+        android:layout_height="75dp"
+        android:background="@drawable/button_ripple_green"
+        android:layout_margin="15dp"
         android:text="CREATE A CREDIT REQUEST"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -16,5 +18,8 @@
         android:id="@+id/viewdeliverynotes"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@drawable/button_ripple"
+        android:textColor="@android:color/white"
+        android:layout_margin="15dp"
         android:text="VIEW EXISTING CREDIT REQUESTS" />
 </LinearLayout>

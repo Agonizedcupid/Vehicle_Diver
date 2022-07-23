@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/closelines"
+            android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/left_arrow_icon"
@@ -269,6 +269,7 @@
                 android:inputType="number|numberDecimal"
                 app:layout_constraintLeft_toRightOf="@id/textView7"
                 app:layout_constraintRight_creator="1"
+                android:layout_marginTop="10dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/reason" />
 

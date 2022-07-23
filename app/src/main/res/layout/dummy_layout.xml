@@ -338,7 +338,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:background="@android:color/holo_red_dark"
+                android:background="@drawable/button_ripple_red"
                 android:textColor="@android:color/white"
                 android:paddingStart="7dp"
                 android:paddingEnd="7dp"
@@ -352,10 +352,9 @@
                 android:id="@+id/acceptthesummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:background="@android:color/holo_green_dark"
+                android:background="@drawable/button_ripple_green"
                 android:fontFamily="@font/lato"
+                android:textColor="@android:color/white"
                 android:text="Verify and Save" />
 
         </LinearLayout>

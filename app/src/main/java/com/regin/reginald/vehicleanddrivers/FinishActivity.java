@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -45,7 +46,8 @@ import java.util.List;
 
 public class FinishActivity extends AppCompatActivity {
      //final Handler handler;
-     final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+     //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+     final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
      String InvoiceNo,Status,deldate,ordertype,route;
      TextView post_status,cust_email,signedby,productextras;
      Button donewiththeorder;
@@ -63,10 +65,10 @@ public class FinishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish);
 
-        post_status = (TextView) findViewById(R.id.post_status);
-        cust_email = (TextView) findViewById(R.id.cust_email);
-        signedby = (TextView) findViewById(R.id.signedby);
-        temp = (EditText) findViewById(R.id.temp);
+        post_status =  findViewById(R.id.post_status);
+        cust_email =  findViewById(R.id.cust_email);
+        signedby =  findViewById(R.id.signedby);
+        temp =  findViewById(R.id.temp);
         //    donewiththeorder = (Button) findViewById(R.id.donewiththeorder);
         Intent returndata = getIntent();
         InvoiceNo = returndata.getStringExtra("invoiceno");
@@ -75,8 +77,16 @@ public class FinishActivity extends AppCompatActivity {
         deldate = returndata.getStringExtra("deldate");
         ordertype = returndata.getStringExtra("ordertype");
         route = returndata.getStringExtra("routes");
-        ll = (LinearLayout) findViewById(R.id.mainlayout);
+        ll =  findViewById(R.id.mainlayout);
         productextras = new TextView(this);
+
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         ArrayList<SettingsModel> sett= dbH.getSettings();
 
         for (SettingsModel orderAttributes: sett){

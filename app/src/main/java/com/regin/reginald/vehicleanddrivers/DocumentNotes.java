@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,9 +28,11 @@ import java.io.OutputStreamWriter;
 
 public class DocumentNotes extends AppCompatActivity {
     private SignaturePad _docnotes;
-    String customerOrders, deldate,ordertype,route,InvoiceNo,cash;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
-    Button close_notes,save_note;
+    String customerOrders, deldate, ordertype, route, InvoiceNo, cash;
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
+    Button close_notes, save_note;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +41,11 @@ public class DocumentNotes extends AppCompatActivity {
         Intent returndata = getIntent();
 
         deldate = returndata.getStringExtra("deldate");
-        ordertype =returndata.getStringExtra("ordertype");
+        ordertype = returndata.getStringExtra("ordertype");
         route = returndata.getStringExtra("routes");
 
         InvoiceNo = returndata.getStringExtra("invoiceno");
-        cash =returndata.getStringExtra("cash");
+        cash = returndata.getStringExtra("cash");
         final String cashPaid = returndata.getStringExtra("cash");
 
         _docnotes = (SignaturePad) findViewById(R.id.docnotes);
@@ -54,7 +57,7 @@ public class DocumentNotes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bitmap signatureBitmap = _docnotes.getSignatureBitmap();
-                if (addJpgSignatureToGallery(signatureBitmap,InvoiceNo)) {
+                if (addJpgSignatureToGallery(signatureBitmap, InvoiceNo)) {
 
                     Toast.makeText(DocumentNotes.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
                 } else {
@@ -67,19 +70,20 @@ public class DocumentNotes extends AppCompatActivity {
         close_notes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent b = new Intent(DocumentNotes.this,InvoiceDetails.class);
+                Intent b = new Intent(DocumentNotes.this, InvoiceDetails.class);
 
-                b.putExtra("deldate",deldate);
-                b.putExtra("routes",route);
-                b.putExtra("ordertype",ordertype);
-                b.putExtra("invoiceno",InvoiceNo);
-                b.putExtra("cash",cash);
+                b.putExtra("deldate", deldate);
+                b.putExtra("routes", route);
+                b.putExtra("ordertype", ordertype);
+                b.putExtra("invoiceno", InvoiceNo);
+                b.putExtra("cash", cash);
 
                 startActivity(b);
             }
         });
         //docnotes
     }
+
     public File getAlbumStorageDir(String albumName) {
         // Get the directory for the user's public pictures directory.
         File file = new File(Environment.getExternalStoragePublicDirectory(
@@ -89,6 +93,7 @@ public class DocumentNotes extends AppCompatActivity {
         }
         return file;
     }
+
     public void saveBitmapToJPG(Bitmap bitmap, File photo, String InvoiceNo) throws IOException {
         Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
@@ -98,29 +103,30 @@ public class DocumentNotes extends AppCompatActivity {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         //newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] byteImage =outputStream.toByteArray();
-        String s = Base64.encodeToString(byteImage,Base64.DEFAULT);
+        byte[] byteImage = outputStream.toByteArray();
+        String s = Base64.encodeToString(byteImage, Base64.DEFAULT);
 
 
-        dbH.updateDeals("Update OrderHeaders set strNotesDrivers='"+s+"' where InvoiceNo ='"+InvoiceNo+"'");
-        Intent b = new Intent(DocumentNotes.this,InvoiceDetails.class);
+        dbH.updateDeals("Update OrderHeaders set strNotesDrivers='" + s + "' where InvoiceNo ='" + InvoiceNo + "'");
+        Intent b = new Intent(DocumentNotes.this, InvoiceDetails.class);
 
-        b.putExtra("deldate",deldate);
-        b.putExtra("routes",route);
-        b.putExtra("ordertype",ordertype);
-        b.putExtra("invoiceno",InvoiceNo);
-        b.putExtra("cash",cash);
+        b.putExtra("deldate", deldate);
+        b.putExtra("routes", route);
+        b.putExtra("ordertype", ordertype);
+        b.putExtra("invoiceno", InvoiceNo);
+        b.putExtra("cash", cash);
 
         startActivity(b);
         // Log.e("********","***************"+s);
         //Log.e("********","***************InvoiceNo----"+InvoiceNo);
         //stream.close();
     }
-    public boolean addJpgSignatureToGallery(Bitmap signature,String invoiceNo) {
+
+    public boolean addJpgSignatureToGallery(Bitmap signature, String invoiceNo) {
         boolean result = false;
         try {
             File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
-            saveBitmapToJPG(signature, photo,invoiceNo);
+            saveBitmapToJPG(signature, photo, invoiceNo);
             scanMediaFile(photo);
             result = true;
         } catch (IOException e) {
@@ -128,12 +134,14 @@ public class DocumentNotes extends AppCompatActivity {
         }
         return result;
     }
+
     private void scanMediaFile(File photo) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(photo);
         mediaScanIntent.setData(contentUri);
         DocumentNotes.this.sendBroadcast(mediaScanIntent);
     }
+
     public boolean addSvgSignatureToGallery(String signatureSvg) {
         boolean result = false;
         try {

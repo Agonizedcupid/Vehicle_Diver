@@ -31,6 +31,7 @@ import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.Orders;
 import com.regin.reginald.model.OtherAttributes;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -205,7 +206,8 @@ public class LineEdit extends AppCompatActivity {
     TextView product_name,pastelcode,priceline,commentline,deliverdate,ordertype,routename;
     Button get,start_trip,closelines,btndoneoffloading,donelineinfo,close_line_info;
     String deldate,ordertypestring,route,orderdetailid,invoiceno,originalqty,SERVERIP;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     Spinner reason;
 
     @Override
@@ -213,15 +215,22 @@ public class LineEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.line_details);
         AndroidNetworking.initialize(getApplicationContext());
-        qtyordered = (EditText) findViewById(R.id.qtyordered);
-        notecomment = (EditText) findViewById(R.id.notecomment);
-        product_name = (TextView) findViewById(R.id.product_name);
-        pastelcode = (TextView) findViewById(R.id.pastelcode);
-        priceline = (TextView) findViewById(R.id.priceline);
-        commentline = (TextView) findViewById(R.id.commentline);
-        donelineinfo = (Button) findViewById(R.id.donelineinfo);
-        close_line_info = (Button) findViewById(R.id.close_line_info);
-        reason = (Spinner) findViewById(R.id.reason);
+        qtyordered =  findViewById(R.id.qtyordered);
+        notecomment =  findViewById(R.id.notecomment);
+        product_name =  findViewById(R.id.product_name);
+        pastelcode =  findViewById(R.id.pastelcode);
+        priceline =  findViewById(R.id.priceline);
+        commentline =  findViewById(R.id.commentline);
+        donelineinfo =  findViewById(R.id.donelineinfo);
+        close_line_info =  findViewById(R.id.close_line_info);
+        reason =  findViewById(R.id.reason);
+
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         ArrayList<SettingsModel> settIP = dbH.getSettings();
         for (SettingsModel orderAttributes : settIP) {

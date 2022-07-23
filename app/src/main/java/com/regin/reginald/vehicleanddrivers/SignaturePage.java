@@ -43,6 +43,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -65,7 +66,8 @@ public class SignaturePage extends AppCompatActivity {
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
     private SignaturePad mSignaturePad;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +75,10 @@ public class SignaturePage extends AppCompatActivity {
 
         Long tsLong = System.currentTimeMillis()/1000;
         ts = tsLong.toString();
-        enterusername = (EditText) findViewById(R.id.enterusername) ;
-        email_cust = (EditText) findViewById(R.id.email_cust) ;
-        mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad);
-        finish_signature = (Button) findViewById(R.id.finish_signature);
+        enterusername =  findViewById(R.id.enterusername) ;
+        email_cust =  findViewById(R.id.email_cust) ;
+        mSignaturePad =  findViewById(R.id.signature_pad);
+        finish_signature =  findViewById(R.id.finish_signature);
         Intent returndata = getIntent();
         finish_signature.setVisibility(View.INVISIBLE);
 
@@ -87,6 +89,13 @@ public class SignaturePage extends AppCompatActivity {
         cash = returndata.getStringExtra("cash");
         emailaddress = returndata.getStringExtra("emailaddress");
         storename = returndata.getStringExtra("storename");
+
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
       /*  nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         //If no NfcAdapter, display that the device has no NFC

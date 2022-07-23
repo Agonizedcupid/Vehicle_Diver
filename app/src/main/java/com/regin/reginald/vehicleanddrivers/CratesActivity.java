@@ -77,12 +77,20 @@ public class CratesActivity extends AppCompatActivity {
 
 
         savecrates = findViewById(R.id.savecrates);
-        cratedelivered = (EditText) findViewById(R.id.cratedelivered);
-        cratespickedup = (EditText) findViewById(R.id.cratespickedup);
-        cratesclaimed = (EditText) findViewById(R.id.cratesclaimed);
-        referenceno = (EditText) findViewById(R.id.referenceno);
-        txtstorename = (TextView) findViewById(R.id.textView37);
-        txtcount = (TextView) findViewById(R.id.textView38);
+        cratedelivered =  findViewById(R.id.cratedelivered);
+        cratespickedup =  findViewById(R.id.cratespickedup);
+        cratesclaimed =  findViewById(R.id.cratesclaimed);
+        referenceno =  findViewById(R.id.referenceno);
+        txtstorename =  findViewById(R.id.textView37);
+        txtcount =  findViewById(R.id.textView38);
+
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         //int cratesToDeliver = dbH.returnOrderLinesCrateCount(invoiceno);
         int cratesToDeliver = databaseAdapter.returnOrderLinesCrateCount(invoiceno);
         txtstorename.setText(storename + "-" + invoiceno + " (" + cratesToDeliver + " )");
