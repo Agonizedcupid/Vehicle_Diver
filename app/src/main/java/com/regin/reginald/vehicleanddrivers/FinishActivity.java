@@ -45,31 +45,32 @@ import java.util.Date;
 import java.util.List;
 
 public class FinishActivity extends AppCompatActivity {
-     //final Handler handler;
-     //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
-     final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
-     String InvoiceNo,Status,deldate,ordertype,route;
-     TextView post_status,cust_email,signedby,productextras;
-     Button donewiththeorder;
-     LinearLayout ll;
-     EditText temp;
-     int i = 0;
+    //final Handler handler;
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
+    String InvoiceNo, Status, deldate, ordertype, route;
+    TextView post_status, cust_email, signedby, productextras;
+    Button donewiththeorder;
+    LinearLayout ll;
+    EditText temp;
+    int i = 0;
 
     List<String> list = new ArrayList<>();
-    String IP,DeviceID;
+    String IP, DeviceID;
 
     EditText[] textBoxes = new EditText[4];
     ProgressDialog progressDoalog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish);
 
-        post_status =  findViewById(R.id.post_status);
-        cust_email =  findViewById(R.id.cust_email);
-        signedby =  findViewById(R.id.signedby);
-        temp =  findViewById(R.id.temp);
-        //    donewiththeorder = (Button) findViewById(R.id.donewiththeorder);
+        post_status = findViewById(R.id.post_status);
+        cust_email = findViewById(R.id.cust_email);
+        signedby = findViewById(R.id.signedby);
+        temp = findViewById(R.id.temp);
+        donewiththeorder = (Button) findViewById(R.id.donewiththeorder);
         Intent returndata = getIntent();
         InvoiceNo = returndata.getStringExtra("invoiceno");
         signedby.setText(returndata.getStringExtra("signedby"));
@@ -77,7 +78,7 @@ public class FinishActivity extends AppCompatActivity {
         deldate = returndata.getStringExtra("deldate");
         ordertype = returndata.getStringExtra("ordertype");
         route = returndata.getStringExtra("routes");
-        ll =  findViewById(R.id.mainlayout);
+        ll = findViewById(R.id.mainlayout);
         productextras = new TextView(this);
 
         findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
@@ -87,9 +88,9 @@ public class FinishActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<SettingsModel> sett= dbH.getSettings();
+        ArrayList<SettingsModel> sett = dbH.getSettings();
 
-        for (SettingsModel orderAttributes: sett){
+        for (SettingsModel orderAttributes : sett) {
             IP = orderAttributes.getstrServerIp();
             DeviceID = orderAttributes.getDeviceID();
         }
@@ -111,45 +112,44 @@ public class FinishActivity extends AppCompatActivity {
             ll.addView(productextras);
         }*/
 
-        donewiththeorder = new Button(this);
-
-
-        donewiththeorder.setText("Submit");
-
-        donewiththeorder.setBackgroundColor(Color.GREEN);
-        donewiththeorder.setTextColor(Color.BLACK);
-        ll.addView(donewiththeorder);
+//        donewiththeorder = new Button(this);
+//
+//
+//        donewiththeorder.setText("Submit");
+//
+//        donewiththeorder.setBackgroundColor(Color.GREEN);
+//        donewiththeorder.setTextColor(Color.BLACK);
+//        ll.addView(donewiththeorder);
         final Handler handler = new Handler();
 
         Runnable runnable = new Runnable() {
             private long startTime = System.currentTimeMillis();
+
             public void run() {
-              //  Status = dbH.islineUploaded(InvoiceNo);
-                Log.e("*******","-------------------------------"+dbH.islineUploaded(InvoiceNo));
-                post_status.setText(""+dbH.islineUploaded(InvoiceNo) );
+                //  Status = dbH.islineUploaded(InvoiceNo);
+                Log.e("*******", "-------------------------------" + dbH.islineUploaded(InvoiceNo));
+                post_status.setText("" + dbH.islineUploaded(InvoiceNo));
                 while (dbH.islineUploaded(InvoiceNo) != "Order posted to the office") {
                     try {
                         Thread.sleep(1000);
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    handler.post(new Runnable(){
+                    handler.post(new Runnable() {
                         public void run() {
-                            post_status.setText(""+Status );
+                            post_status.setText("" + Status);
                         }
                     });
                 }
             }
         };
         new Thread(runnable).start();
-        post_status.setText(""+dbH.islineUploaded(InvoiceNo) );
+        post_status.setText("" + dbH.islineUploaded(InvoiceNo));
         donewiththeorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(temp.getText().toString().length() < 1)
-                {
+                if (temp.getText().toString().length() < 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(FinishActivity.this);
                     builder
                             .setTitle("Fridge Temperature")
@@ -159,15 +159,17 @@ public class FinishActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     temp.requestFocus();
                                     dialog.dismiss();
-                                }})
+                                }
+                            })
                             .show();
-                }else {
-                    if(isInternetAvailable()){
-                        Toast.makeText(FinishActivity.this, "You Are Connected "+ InvoiceNo, Toast.LENGTH_SHORT).show();
+                } else {
+                    if (isInternetAvailable()) {
+                        //Toast.makeText(FinishActivity.this, "You Are Connected " + InvoiceNo, Toast.LENGTH_SHORT).show();
                         startProgress("Posting The Transaction.");
                         new UploadNewOrderLinesDetails().execute();
 
-                    }else{
+                    } else {
+                        Toast.makeText(FinishActivity.this, "Turn On the internet!", Toast.LENGTH_SHORT).show();
 
                         for (int k = 0; k < i; k++) {
                             //  Log.e("Expenses","----------------------------------------"+  textBoxes[k].getText().toString());
@@ -200,9 +202,10 @@ public class FinishActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode== KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -231,8 +234,8 @@ public class FinishActivity extends AppCompatActivity {
                 // Add your data
 
                 JSONArray jsonArray = new JSONArray();
-                ArrayList<com.regin.reginald.model.OrderLines> dealLineToUpload= dbH.returnOrderLinesInfoUploadedByInvoice(InvoiceNo);
-                for (com.regin.reginald.model.OrderLines orderAttributes: dealLineToUpload){
+                ArrayList<com.regin.reginald.model.OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploadedByInvoice(InvoiceNo);
+                for (com.regin.reginald.model.OrderLines orderAttributes : dealLineToUpload) {
                     JSONObject json = new JSONObject();
                     //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded
 
@@ -240,16 +243,13 @@ public class FinishActivity extends AppCompatActivity {
                     String offcomment = "NULL";
                     String reasons = "NULL";
 
-                    if (orderAttributes.getreturnQty() != null && !orderAttributes.getreturnQty().isEmpty())
-                    {
+                    if (orderAttributes.getreturnQty() != null && !orderAttributes.getreturnQty().isEmpty()) {
                         returning = orderAttributes.getreturnQty();
                     }
-                    if (orderAttributes.getoffLoadComment() != null && !orderAttributes.getoffLoadComment().isEmpty())
-                    {
+                    if (orderAttributes.getoffLoadComment() != null && !orderAttributes.getoffLoadComment().isEmpty()) {
                         offcomment = orderAttributes.getoffLoadComment();
                     }
-                    if (orderAttributes.getstrCustomerReason() != null && !orderAttributes.getstrCustomerReason().isEmpty())
-                    {
+                    if (orderAttributes.getstrCustomerReason() != null && !orderAttributes.getstrCustomerReason().isEmpty()) {
                         reasons = orderAttributes.getstrCustomerReason();
                     }
 
@@ -259,8 +259,8 @@ public class FinishActivity extends AppCompatActivity {
                     json.put("offLoadComment", offcomment);
                     json.put("blnoffloaded", orderAttributes.getblnoffloaded());
                     json.put("reasons", reasons);
-                    Log.e("blnoffloaded","*************+"+"****"+orderAttributes.getblnoffloaded()+"******"+returning);
-                    Log.e("offcomment","*************+"+"****"+offcomment);
+                    Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
+                    Log.e("offcomment", "*************+" + "****" + offcomment);
                     jsonArray.put(json);
                     count++;
 
@@ -278,7 +278,7 @@ public class FinishActivity extends AppCompatActivity {
                 // Execute HTTP Post Request
                 org.apache.http.HttpResponse response = httpclient.execute(httppost);
                 String responseBody = EntityUtils.toString(response.getEntity());
-                responseBody =  responseBody.replaceAll("\"", "");
+                responseBody = responseBody.replaceAll("\"", "");
                 Log.e("JSON-*", "RESPONSE is lines**: " + responseBody);   //The response
                 Log.e("sql", "UPDATE  OrderLines SET Uploaded = 1 where OrderDetailId in( " + responseBody + ")");
                 //JSONArray BoardInfo = new JSONArray(responseBody);
@@ -312,11 +312,11 @@ public class FinishActivity extends AppCompatActivity {
             return false;
         }
     }
-    public void startProgress(String msg)
-    {
+
+    public void startProgress(String msg) {
         progressDoalog = new ProgressDialog(FinishActivity.this);
         progressDoalog.setMax(100);
-        progressDoalog.setMessage("Please Wait...."+msg);
+        progressDoalog.setMessage("Please Wait...." + msg);
         progressDoalog.setTitle("Busy Saving.");
         progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDoalog.setCanceledOnTouchOutside(false);

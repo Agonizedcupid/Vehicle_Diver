@@ -11,6 +11,7 @@ import androidx.work.WorkerParameters;
 import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.Orders;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -31,7 +32,8 @@ import java.util.regex.Pattern;
 public class MyWorker extends Worker {
 
     private static final String TAG = "MyWorker";
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     String IP,DeviceID;
 
     public MyWorker(@NonNull Context appContext, @NonNull WorkerParameters workerParams) {

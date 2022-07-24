@@ -33,6 +33,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.OtherAttributes;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,7 +51,8 @@ public class SignForCreditNotes extends AppCompatActivity {
     Button finish_signature;
 
     private SignaturePad mSignaturePad;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

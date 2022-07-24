@@ -159,6 +159,16 @@
             android:hint="Type in the fridge temp eg 38.5"
             android:inputType="numberSigned|number|numberDecimal" />
 
+        <Button
+            android:id="@+id/donewiththeorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DONE"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_ripple"
+            />
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
