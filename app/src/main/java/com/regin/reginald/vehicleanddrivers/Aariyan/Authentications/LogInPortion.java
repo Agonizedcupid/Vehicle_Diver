@@ -64,6 +64,7 @@ public class LogInPortion extends AppCompatActivity {
             enterPassword.requestFocus();
             return;
         }
+        //
         progressBar.setVisibility(View.VISIBLE);
 
         Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
