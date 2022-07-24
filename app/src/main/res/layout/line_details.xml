@@ -44,7 +44,7 @@
             app:layout_constraintBottom_creator="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toRightOf="@id/closelines"
+            app:layout_constraintLeft_toRightOf="@id/backBtn"
             app:layout_constraintTop_creator="1"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -208,6 +208,7 @@
                 android:layout_marginTop="50dp"
                 android:background="@drawable/edit_text_background"
                 android:ems="10"
+                android:paddingStart="5dp"
                 android:inputType="number|numberDecimal"
                 app:layout_constraintLeft_toRightOf="@id/textView4"
                 app:layout_constraintRight_creator="1"
@@ -266,6 +267,7 @@
                 android:layout_height="100dp"
                 android:background="@drawable/edit_text_background"
                 android:ems="10"
+                android:padding="5dp"
                 android:inputType="number|numberDecimal"
                 app:layout_constraintLeft_toRightOf="@id/textView7"
                 app:layout_constraintRight_creator="1"

@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Constant {
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 20;
     public static final String[] title = {"Home", "Credit Request", "Set Up"};
     //public static final String CHECK_URL = "http://102.37.0.48/driversapp/";
     public static final String CHECK_URL = "http://102.37.0.48/driversappdemo/";

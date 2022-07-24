@@ -53,6 +53,7 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 
 import com.bxl.config.util.BXLBluetoothLE;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.regin.reginald.data.DatabaseHelper;
 import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.Orders;
@@ -373,10 +374,11 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
     ListView _orderdlistlines, _orderdlistlinescheckd, listviewsummary, fullviewlist, listview1, listview2;
     TextView invoice_no, invoice_nosummary, setInvTotIncl, currentlocation, paymenttype;
     TextView dot, calculated, cost, zero, one, price_vs_quantity, trend_header, avg_quantity, two, three, four, five, six, seven, eight, nine, backspace;
-    Button btndoneoffloading, closelinessummary, acceptthesummary, checkunattitems, closecash, submitcash, cash, zoom, closefullview, cancel_order;
+    Button btndoneoffloading, acceptthesummary, checkunattitems, closecash, submitcash, cash, zoom, closefullview, cancel_order;
     private ImageView closelines;
     private TextView truckorder;
     EditText cashfielddialog;
+    private FloatingActionButton closelinessummary;
     int len = 0;
     //http://so-ca.ddns.net:8179/driver/
     // String customerOrders, SERVERIP = "http://linxsystems3.dedicated.co.za:8881/DriverGas/",deldate,ordertype,route,InvoiceNo,priceinput,emailaddress,ts,storename;= "http://192.168.0.18:8181/driver/"
@@ -390,9 +392,10 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
     private SignaturePad mNotes, cash_sig;
     CheckBox accept, checkBoxacceptcash;
     GPSTracker gps;
-    Button btndocnote, save_note, tickall, closeproductlists;
+    Button btndocnote, save_note, tickall;
     Spinner productcats_checked, productcats_nochecked, products_warehouseses, productcats_nocheckedMain, productcats_checkedMain;
 
+    private FloatingActionButton closeproductlists;
 
     double mass;
     double lat = -33.966145;
@@ -794,9 +797,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 listAdapterAddRemoveRightSide = new ItemsListAdapterTruck(InvoiceDetails.this, lineinforemove);
                 productcats_nochecked = (Spinner) dialogLists.findViewById(R.id.productcats_nochecked);
                 productcats_checked = (Spinner) dialogLists.findViewById(R.id.productcats_checked);
-                listview1 = (ListView) dialogLists.findViewById(R.id.listview1);
-                listview2 = (ListView) dialogLists.findViewById(R.id.listview2);
-                closeproductlists = (Button) dialogLists.findViewById(R.id.closeproductlists);
+                listview1 =  dialogLists.findViewById(R.id.listview1);
+                listview2 =  dialogLists.findViewById(R.id.listview2);
+                closeproductlists =  dialogLists.findViewById(R.id.closeproductlists);
 
                 listview1.setAdapter(listAdapterAddRemove);
                 listview2.setAdapter(listAdapterAddRemoveRightSide);
@@ -1253,9 +1256,12 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                     dialog.show();
                     accept.setChecked(false);
                     btndoneoffloading.setVisibility(View.GONE);
+                    Toast.makeText(InvoiceDetails.this, "Ekhane", Toast.LENGTH_SHORT).show();
                 } else {
                     //Log.e("isoffloaded","*******************"+dbH.isoffladedline());
                     btndoneoffloading.setVisibility(View.VISIBLE);
+                    Toast.makeText(InvoiceDetails.this, "Na Ekhane", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
