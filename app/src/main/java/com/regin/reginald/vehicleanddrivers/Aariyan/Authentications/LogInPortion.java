@@ -3,7 +3,9 @@ package com.regin.reginald.vehicleanddrivers.Aariyan.Authentications;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.regin.reginald.vehicleanddrivers.LandingPage;
 import com.regin.reginald.vehicleanddrivers.R;
 
 public class LogInPortion extends AppCompatActivity {
@@ -63,11 +66,13 @@ public class LogInPortion extends AppCompatActivity {
         }
         progressBar.setVisibility(View.VISIBLE);
 
-        logInBtn.setOnClickListener(new View.OnClickListener() {
+        Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
+            public void run() {
+                startActivity(new Intent(LogInPortion.this, LandingPage.class));
+                progressBar.setVisibility(View.GONE);
             }
-        });
+        }, 2000);
     }
 }
