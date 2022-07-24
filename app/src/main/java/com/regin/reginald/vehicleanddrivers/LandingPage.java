@@ -165,7 +165,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        //setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.landing_act);
         setContentView(R.layout.activity_landing_page);

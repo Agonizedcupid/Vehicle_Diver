@@ -38,6 +38,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
         <activity
+            android:name=".LandingPage"
+            android:exported="false" />
+        <activity
             android:name=".Aariyan.Activity.OrdersActivity"
             android:exported="false" />
         <activity
@@ -50,24 +53,34 @@
 
         <uses-library
             android:name="org.apache.http.legacy"
-            android:required="false" />
+            android:required="false" /> <!-- <activity -->
+        <!-- android:name=".Aariyan.Activity.LandingActivity" -->
+        <!-- android:configChanges="orientation|keyboardHidden" -->
+        <!-- android:exported="true" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/SplashTheme" -->
+        <!-- android:windowSoftInputMode="stateHidden"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+<!--        <activity-->
+<!--            android:name=".LandingPage"-->
+<!--            android:configChanges="orientation|keyboardHidden"-->
+<!--            android:exported="true"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:theme="@style/SplashTheme"-->
+<!--            android:windowSoftInputMode="stateHidden">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-        <!--        <activity-->
-        <!--            android:name=".Aariyan.Activity.LandingActivity"-->
-        <!--            android:configChanges="orientation|keyboardHidden"-->
-        <!--            android:exported="true"-->
-        <!--            android:screenOrientation="portrait"-->
-        <!--            android:theme="@style/SplashTheme"-->
-        <!--            android:windowSoftInputMode="stateHidden">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <activity
-            android:name=".LandingPage"
+            android:name=".Aariyan.Authentications.LogInPortion"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:screenOrientation="portrait"
