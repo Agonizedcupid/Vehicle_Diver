@@ -199,10 +199,9 @@ public class CratesActivity extends AppCompatActivity {
                             String result = response.toString();
                             result = result.replace("\"", "");
 //                            Log.d("zzzz","res "+result);
-                            //Toast.makeText(OrderConfirmationActivity.this, "over here" +response, Toast.LENGTH_SHORT).show();
                             progressDoalog.dismiss();
                             if (result.equals("SUCCESS")) {
-                                Toast.makeText(CratesActivity.this, "  " + result, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(CratesActivity.this, "  " + result, Toast.LENGTH_SHORT).show();
                                 savecrates.setVisibility(View.INVISIBLE);
                                 //Have to work on that:
                                 //dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + invoiceno + "'");
@@ -237,7 +236,7 @@ public class CratesActivity extends AppCompatActivity {
                                     }
                                 }.start();
                             } else {
-                                Toast.makeText(CratesActivity.this, "in " + result, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(CratesActivity.this, "in " + result, Toast.LENGTH_SHORT).show();
                                 Log.e("result", "*****************************" + result);
 
                             }

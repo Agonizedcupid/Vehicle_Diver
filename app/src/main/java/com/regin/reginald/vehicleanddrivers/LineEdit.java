@@ -155,8 +155,6 @@ public class LineEdit extends AppCompatActivity {
                     CheckBox cb = (CheckBox) v;
                     // States _state = (States) cb.getTag();
 
-                    Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
-                            Toast.LENGTH_LONG).show();
 
 
                     //_state.setSelected(cb.isChecked());

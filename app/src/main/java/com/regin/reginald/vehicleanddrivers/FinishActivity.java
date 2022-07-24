@@ -164,11 +164,12 @@ public class FinishActivity extends AppCompatActivity {
                             .show();
                 } else {
                     if (isInternetAvailable()) {
-                        Toast.makeText(FinishActivity.this, "You Are Connected " + InvoiceNo, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(FinishActivity.this, "You Are Connected " + InvoiceNo, Toast.LENGTH_SHORT).show();
                         startProgress("Posting The Transaction.");
                         new UploadNewOrderLinesDetails().execute();
 
                     } else {
+                        Toast.makeText(FinishActivity.this, "Turn On the internet!", Toast.LENGTH_SHORT).show();
 
                         for (int k = 0; k < i; k++) {
                             //  Log.e("Expenses","----------------------------------------"+  textBoxes[k].getText().toString());

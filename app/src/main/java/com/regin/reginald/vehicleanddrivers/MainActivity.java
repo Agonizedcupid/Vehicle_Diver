@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void normalClick(String invoiceNo, String cash, String threshold, String storeName) {
-        Toast.makeText(MainActivity.this, ""+threshold, Toast.LENGTH_SHORT).show();
         Intent b;
         if (threshold.equals("0")) {
             b = new Intent(MainActivity.this, InvoiceDetails.class);
@@ -285,8 +284,8 @@ public class MainActivity extends AppCompatActivity implements
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
                     // States _state = (States) cb.getTag();
-                    Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
+//                            Toast.LENGTH_LONG).show();
                     checkAndUncheck(list.get(position).ItemString6, cb.isChecked(), list.get(position).ItemString8);
                     //_state.setSelected(cb.isChecked());
                 }
@@ -450,8 +449,10 @@ public class MainActivity extends AppCompatActivity implements
         if (dbH.checkiflinesuploaded() > 0) {
             //
             if (isInternetAvailable()) {
-                Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
                 OrderHeaderPost();
+            } else {
+                Toast.makeText(MainActivity.this, "Please turn on the internet!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -512,7 +513,6 @@ public class MainActivity extends AppCompatActivity implements
 
         // TODO: it's not done yet.
         if (dbH.hasData()) {
-            Toast.makeText(MainActivity.this, "Has Data!", Toast.LENGTH_SHORT).show();
             List<Orders> oH = dbH.returnOrderHeaders();
             items1 = new ArrayList<Item>();
             listdata = new ArrayList<Data>();
@@ -714,7 +714,6 @@ public class MainActivity extends AppCompatActivity implements
         _orderdlist.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, "Called", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -836,7 +835,7 @@ public class MainActivity extends AppCompatActivity implements
         not_uploade.setText(dbH.OrdersNotPostedToTheOffice());
         handler.postDelayed(runnableUpload = new Runnable() {
             public void run() {
-                Toast.makeText(MainActivity.this, "You Are Connected ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "You Are Connected ", Toast.LENGTH_SHORT).show();
                 not_uploade.setText(dbH.OrdersNotPostedToTheOffice());
             }
         }, delayUpload);
@@ -1115,7 +1114,6 @@ public class MainActivity extends AppCompatActivity implements
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
@@ -1175,7 +1173,6 @@ public class MainActivity extends AppCompatActivity implements
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
@@ -1241,7 +1238,6 @@ public class MainActivity extends AppCompatActivity implements
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
@@ -1394,7 +1390,7 @@ public class MainActivity extends AppCompatActivity implements
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Order Lines Inserting", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Order Lines Inserting", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
@@ -1527,7 +1523,6 @@ public class MainActivity extends AppCompatActivity implements
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
 

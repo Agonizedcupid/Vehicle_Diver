@@ -1186,8 +1186,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
-                Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + cb.getText() + " is " + cb.isChecked(),
+//                        Toast.LENGTH_LONG).show();
                 Log.e("boolean*", "*******************************************" + dbH.isoffladedline(InvoiceNo));
                 if (!dbH.isoffladedline(InvoiceNo)) {
                     final Dialog dialog = new Dialog(InvoiceDetails.this, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
@@ -1256,12 +1256,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                     dialog.show();
                     accept.setChecked(false);
                     btndoneoffloading.setVisibility(View.GONE);
-                    Toast.makeText(InvoiceDetails.this, "Ekhane", Toast.LENGTH_SHORT).show();
                 } else {
                     //Log.e("isoffloaded","*******************"+dbH.isoffladedline());
                     btndoneoffloading.setVisibility(View.VISIBLE);
-                    Toast.makeText(InvoiceDetails.this, "Na Ekhane", Toast.LENGTH_SHORT).show();
-
                 }
 
             }
@@ -1443,9 +1440,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-            Toast.makeText(getApplicationContext(), "back press",
-                    Toast.LENGTH_LONG).show();
+//        if (keyCode == KeyEvent.KEYCODE_BACK)
+//            Toast.makeText(getApplicationContext(), "back press",
+//                    Toast.LENGTH_LONG).show();
 
         return false;
         // Disable back button..............

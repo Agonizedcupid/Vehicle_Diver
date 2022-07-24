@@ -239,7 +239,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
@@ -273,7 +273,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + len);
