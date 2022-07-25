@@ -76,6 +76,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -108,7 +110,8 @@ public class OrderService extends Service {
     String strBarCode, strLon, strLat, strQty, strComments, date_created, strDeviceId, strImageName, strSentToServer, returnedBarCode, returnedToken, returnedstrImageName, strStorename;
 
     final Context myContext = this;
-    final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     LandingPage h = new LandingPage();
 
     String IP;//="http://192.168.0.18:8181/driver/";
@@ -186,7 +189,7 @@ public class OrderService extends Service {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, i,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_IMMUTABLE);
         String channelId = getPackageName();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)

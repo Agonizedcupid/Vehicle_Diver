@@ -64,7 +64,7 @@ public class SignaturePage extends AppCompatActivity {
     TextView uid;
     final static String TAG = "nfc_test";
     NfcAdapter nfcAdapter;
-    PendingIntent pendingIntent;
+    //PendingIntent pendingIntent;
     private SignaturePad mSignaturePad;
     //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
     final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());

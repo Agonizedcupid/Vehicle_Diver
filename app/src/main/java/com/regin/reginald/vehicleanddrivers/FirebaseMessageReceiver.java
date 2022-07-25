@@ -55,19 +55,19 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         Log.e(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
-           // Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-           // new SendMessage("Testing the Data MEssages "+remoteMessage.getFrom(), "123","2021-05-16","1").execute();
+            // Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            // new SendMessage("Testing the Data MEssages "+remoteMessage.getFrom(), "123","2021-05-16","1").execute();
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                 scheduleJob();
             } else {
                 // Handle message within 10 seconds
-               // handleNow();
+                // handleNow();
             }
 
         }
 
-        Log.e("Just","Just checking this will work");
+        Log.e("Just", "Just checking this will work");
         //new SendMessage("Testing the FCM", "123","2021-05-16","1").execute();
         if (remoteMessage.getNotification() != null) {
             // Since the notification is received directly from
@@ -77,7 +77,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                     remoteMessage.getNotification().getTitle(),
                     remoteMessage.getNotification().getBody());
 
-            new SendMessage(remoteMessage.getNotification().getBody()+" : "+remoteMessage.getNotification().getTitle(), "123","2021-05-16","1").execute();
+            new SendMessage(remoteMessage.getNotification().getBody() + " : " + remoteMessage.getNotification().getTitle(), "123", "2021-05-16", "1").execute();
 
         }
     }
@@ -95,7 +95,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         }
 
-        public SendMessage(String mess, String docid, String dtetm,String ids) {
+        public SendMessage(String mess, String docid, String dtetm, String ids) {
             this.mess = mess;
             this.docid = docid;
             this.dtetm = dtetm;
@@ -176,7 +176,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         PendingIntent pendingIntent
                 = PendingIntent.getActivity(
                 this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_IMMUTABLE);
 
         // Create a Builder object using NotificationCompat
         // class. This will allow control over all the flags

@@ -99,7 +99,7 @@ public class NetworkChangedReceiver extends BroadcastReceiver {
         AppApplication.getContext().registerReceiver(alarmReciever, filter);
         Intent dialogIntent = new Intent("fire");
         alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-        pendingIntent = PendingIntent.getBroadcast(mContext, id, dialogIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(mContext, id, dialogIntent, PendingIntent.FLAG_IMMUTABLE);
         Calendar time = Calendar.getInstance();
         Calendar cal_now = Calendar.getInstance();
         Date date = new Date();
@@ -115,6 +115,7 @@ public class NetworkChangedReceiver extends BroadcastReceiver {
         }
     }
 
+    //dgfg
     String DEFAULT_IP = "http://102.37.0.48/driversappdemo/";
 
     private void getPackagesList() {
