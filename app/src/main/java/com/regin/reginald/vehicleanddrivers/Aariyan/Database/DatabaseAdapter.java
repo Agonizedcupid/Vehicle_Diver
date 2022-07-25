@@ -51,7 +51,7 @@ public class DatabaseAdapter {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.id, model.getId());
+        contentValues.put(DatabaseHelper.ids, model.getId());
         contentValues.put(DatabaseHelper.companyName, model.getCompanyName());
         contentValues.put(DatabaseHelper.tabletRegId, model.getTabletRegId());
         contentValues.put(DatabaseHelper.driverNames, model.getDriverName());
@@ -228,6 +228,37 @@ public class DatabaseAdapter {
                     cursor.getString(3),
                     cursor.getString(4),
                     cursor.getString(5)
+            );
+            list.add(model);
+        }
+        return list;
+    }
+
+    //get Personalized IP saved on local storage:
+    public List<LogInModel> getLogInInfo() {
+
+        List<LogInModel> list = new ArrayList<>();
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String[] columns = {DatabaseHelper.UID,
+                DatabaseHelper.ids, DatabaseHelper.companyName,
+                DatabaseHelper.tabletRegId,
+                DatabaseHelper.driverNames, DatabaseHelper.driverEmails,
+                DatabaseHelper.driverPasswords, DatabaseHelper.groupId,
+                DatabaseHelper.IP
+        };
+        // Cursor cursor = database.query(DatabaseHelper.PLAN_TABLE_NAME, columns, selection, args, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.LOG_IN_TABLE, columns, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            LogInModel model = new LogInModel(
+                    cursor.getInt(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getInt(7),
+                    cursor.getString(8)
             );
             list.add(model);
         }
@@ -802,6 +833,12 @@ public class DatabaseAdapter {
         SQLiteDatabase database = helper.getWritableDatabase();
         database.execSQL(DatabaseHelper.DROP_SERVER_IP_TABLE);
         database.execSQL(DatabaseHelper.CREATE_SERVER_IP_TABLE);
+    }
+
+    public void dropLogInTable() {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        database.execSQL(DatabaseHelper.DROP_LOGIN_TABLE);
+        database.execSQL(DatabaseHelper.CREATE_LOGIN_TABLE);
     }
 
     //Drop ROUTE Table:
@@ -2274,7 +2311,7 @@ public class DatabaseAdapter {
          */
 
         private static final String LOG_IN_TABLE = "log_in_table";
-        private static final String id = "id";
+        private static final String ids = "ids";
         private static final String tabletRegId = "tabletRegId";
         private static final String driverNames = "driverName";
         private static final String driverEmails = "driverEmail";
@@ -2285,7 +2322,7 @@ public class DatabaseAdapter {
         //Creating the table:
         private static final String CREATE_LOGIN_TABLE = "CREATE TABLE " + LOG_IN_TABLE
                 + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + id + " INTEGER,"
+                + ids + " INTEGER,"
                 + companyName + " VARCHAR(255),"
                 + tabletRegId + " VARCHAR(255),"
                 + driverNames + " VARCHAR(255),"

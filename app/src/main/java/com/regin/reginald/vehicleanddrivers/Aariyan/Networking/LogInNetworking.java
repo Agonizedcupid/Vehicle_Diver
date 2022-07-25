@@ -35,7 +35,7 @@ public class LogInNetworking {
     public void logIn(LogInInterface logInInterface, String userEmail, String userPassword, DatabaseAdapter databaseAdapter) {
         logInDisposable.add(api.getLogInData(userEmail, userPassword)
                 .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseBody>() {
                     @Override
                     public void accept(ResponseBody responseBody) throws Throwable {
@@ -69,6 +69,7 @@ public class LogInNetworking {
     }
 
     private void insertIntoLocal(List<LogInModel> list, DatabaseAdapter databaseAdapter) {
+        databaseAdapter.dropLogInTable();
         Observable observable = Observable.fromIterable(list).subscribeOn(Schedulers.io());
 
         Observer observer = new Observer() {

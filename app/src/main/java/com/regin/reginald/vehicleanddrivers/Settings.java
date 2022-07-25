@@ -62,13 +62,17 @@ public class Settings extends AppCompatActivity {
         // int nameIndex2 = c.getColumnIndex("strTruckSheet");
         final String subscriberId = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         deviceId.setText(subscriberId);
-        for (SettingsModel orderAttributes : oD) {
-
-            CompanyName.setText(orderAttributes.getCompany());
-            regKey.setText(orderAttributes.getregKey());
-            serverIps.setText(orderAttributes.getstrServerIp());
-            email.setText(orderAttributes.getEmail());
+        if (oD.size() > 0) {
+            for (SettingsModel orderAttributes : oD) {
+                CompanyName.setText(orderAttributes.getCompany());
+                regKey.setText(orderAttributes.getregKey());
+                serverIps.setText(orderAttributes.getstrServerIp(), TextView.BufferType.EDITABLE);
+                email.setText(orderAttributes.getEmail());
+            }
+        } else {
+            serverIps.setText(dbH.getLogInInfo().get(0).getIP(), TextView.BufferType.EDITABLE);
         }
+
         submitSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
