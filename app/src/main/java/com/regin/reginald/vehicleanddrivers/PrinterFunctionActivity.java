@@ -92,7 +92,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
     private CardView registerbtn, connectio_string, devicegroups;
     private ImageView delete_db;
     int len = 0;
-    String customerOrders, SERVERIP, LINX = "http://102.37.0.48/driversapp/";// = "http://192.168.0.18:8181/driver/";
+    String customerOrders, SERVERIP = "", LINX = "http://102.37.0.48/driversapp/";// = "http://192.168.0.18:8181/driver/";
     private ProgressBar mProgressLarge;
     //final MyRawQueryHelper dbH = new MyRawQueryHelper(AppApplication.getAppContext());
     final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
@@ -145,7 +145,14 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
             public void onClick(View v) {
                 startProgress("...");
                 try {
-                    new registerTheDevice().execute(SERVERIP + "RegisterDevice.php?key=" + subscriberId);
+                    if (SERVERIP.equals("")) {
+                        Toast.makeText(PrinterFunctionActivity.this, "No Ip Found!", Toast.LENGTH_SHORT).show();
+                        progressDoalog.dismiss();
+                        return;
+                    } else if (!subscriberId.equals("")) {
+                        new registerTheDevice().execute(SERVERIP + "RegisterDevice.php?key=" + subscriberId);
+                    }
+
                 } catch (Exception var3) {
 
                 }
@@ -293,7 +300,7 @@ public class PrinterFunctionActivity extends AppCompatActivity implements RadioG
 
                         if (results.equals("NOT REGISTERED")) {
                             //devicegroups.setText("Not Registered, please speak to your administrator");
-                            Snackbar.make(snackBarLayout,"Not Registered, please speak to your administrator",
+                            Snackbar.make(snackBarLayout, "Not Registered, please speak to your administrator",
                                     Snackbar.LENGTH_LONG).show();
                         } else {
 
