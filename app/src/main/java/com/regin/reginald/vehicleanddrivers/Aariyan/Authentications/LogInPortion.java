@@ -14,6 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.LogInInterface;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.LogInModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.LogInNetworking;
 import com.regin.reginald.vehicleanddrivers.LandingPage;
 import com.regin.reginald.vehicleanddrivers.R;
 
@@ -24,7 +28,7 @@ public class LogInPortion extends AppCompatActivity {
     private EditText enterName, enterPassword;
 
     private ConstraintLayout snackBarLayout;
-
+    DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
     private ProgressBar progressBar;
 
     @Override
@@ -67,13 +71,28 @@ public class LogInPortion extends AppCompatActivity {
         //
         progressBar.setVisibility(View.VISIBLE);
 
-        Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
+        new LogInNetworking().logIn(new LogInInterface() {
             @Override
-            public void run() {
+            public void loggedIn(LogInModel logInData) {
                 startActivity(new Intent(LogInPortion.this, LandingPage.class));
+                Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
-        }, 2000);
+
+            @Override
+            public void error(String errorMessage) {
+                Snackbar.make(snackBarLayout, "Invalid Credential!", Snackbar.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        }, enterName.getText().toString(), enterPassword.getText().toString(), databaseAdapter);
+
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                startActivity(new Intent(LogInPortion.this, LandingPage.class));
+//                progressBar.setVisibility(View.GONE);
+//            }
+//        }, 2000);
     }
 }

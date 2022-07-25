@@ -22,6 +22,7 @@ import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.model.WareHouses;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.LogInModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
@@ -43,6 +44,26 @@ public class DatabaseAdapter {
     /**
      * INSERT Database
      */
+    //Insert into Profile
+    //Insert Server:
+    public long insertLogIn(LogInModel model) {
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.id, model.getId());
+        contentValues.put(DatabaseHelper.companyName, model.getCompanyName());
+        contentValues.put(DatabaseHelper.tabletRegId, model.getTabletRegId());
+        contentValues.put(DatabaseHelper.driverNames, model.getDriverName());
+        contentValues.put(DatabaseHelper.driverEmails, model.getDriverEmail());
+        contentValues.put(DatabaseHelper.driverPasswords, model.getDriverPassword());
+        contentValues.put(DatabaseHelper.IP, model.getIP());
+
+        long id = database.insert(DatabaseHelper.LOG_IN_TABLE, null, contentValues);
+        return id;
+    }
+
+
     //Insert Server:
     public long insertServer(String serverIp, String emailAddress, String companyName, String deviceId, String regKey) {
 
@@ -2249,6 +2270,33 @@ public class DatabaseAdapter {
 
 
         /**
+         * Log-In Data update:
+         */
+
+        private static final String LOG_IN_TABLE = "log_in_table";
+        private static final String id = "id";
+        private static final String tabletRegId = "tabletRegId";
+        private static final String driverNames = "driverName";
+        private static final String driverEmails = "driverEmail";
+        private static final String driverPasswords = "driverPassword";
+        private static final String groupId = "groupId";
+        private static final String IP = "IP";
+
+        //Creating the table:
+        private static final String CREATE_LOGIN_TABLE = "CREATE TABLE " + LOG_IN_TABLE
+                + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + id + " INTEGER,"
+                + companyName + " VARCHAR(255),"
+                + tabletRegId + " VARCHAR(255),"
+                + driverNames + " VARCHAR(255),"
+                + driverEmails + " VARCHAR(255),"
+                + driverPasswords + " VARCHAR(255),"
+                + groupId + " INTEGER,"
+                + IP + " VARCHAR(255));";
+        private static final String DROP_LOGIN_TABLE = "DROP TABLE IF EXISTS " + LOG_IN_TABLE;
+
+
+        /**
          * Route Table
          */
 
@@ -2443,6 +2491,7 @@ public class DatabaseAdapter {
                 db.execSQL(CREATE_ORDERS_TABLE);
                 db.execSQL(CREATE_ORDERS_LINES_TABLE);
                 db.execSQL(CREATE_WAREHOUSE_TABLE);
+                db.execSQL(CREATE_LOGIN_TABLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2458,6 +2507,7 @@ public class DatabaseAdapter {
                 db.execSQL(DROP_ORDERS_TABLE);
                 db.execSQL(DROP_ORDERS_LINES_TABLE);
                 db.execSQL(DROP_WAREHOUSE_TABLE);
+                db.execSQL(DROP_LOGIN_TABLE);
                 onCreate(db);
             } catch (Exception e) {
                 e.printStackTrace();

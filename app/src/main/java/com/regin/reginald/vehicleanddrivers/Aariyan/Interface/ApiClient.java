@@ -23,4 +23,17 @@ public class ApiClient {
 
         return retrofit;
     }
+
+    public static Retrofit getLogInClient() {
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("https://loadingapp.co.za/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .build();
+        }
+
+        return retrofit;
+    }
 }

@@ -68,6 +68,25 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+<!--        <EditText-->
+<!--            android:id="@+id/serverIps"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:background="@drawable/edit_text_background"-->
+<!--            android:hint="@string/ipTitle"-->
+<!--            android:paddingLeft="15dp"-->
+<!--            android:text="http://102.37.0.48/driversappdemo"-->
+<!--            android:textColorHint="@android:color/darker_gray"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_creator="1"-->
+<!--            app:layout_constraintLeft_creator="1"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_creator="1"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_creator="1"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/ipTitle" />-->
+
         <EditText
             android:id="@+id/serverIps"
             android:layout_width="0dp"
@@ -76,7 +95,6 @@
             android:background="@drawable/edit_text_background"
             android:hint="@string/ipTitle"
             android:paddingLeft="15dp"
-            android:text="http://102.37.0.48/driversappdemo"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="16sp"
             app:layout_constraintBottom_creator="1"
@@ -86,7 +104,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_creator="1"
             app:layout_constraintTop_toBottomOf="@id/ipTitle" />
-
         <!--EMAIL Address-->
         <TextView
             android:id="@+id/emailTitle"
