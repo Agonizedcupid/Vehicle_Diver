@@ -113,8 +113,8 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
     private OrderService mSensorService;
 
     Context ctx;
-    private int selectedRoute;
-    private int selectedOrderTypes;
+    private int selectedRoute = -777;
+    private int selectedOrderTypes = -777;
 
     public Context getCtx() {
         return ctx;
@@ -451,14 +451,21 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
                     dbH.updateDeals("delete from OrderLines");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //Intent i = new Intent(LandingPage.this, MainActivity.class);
-                    Intent i = new Intent(LandingPage.this, MainActivity.class);
-                    //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
-                    i.putExtra("deldate", dateTextView.getText().toString());
-                    i.putExtra("routes", route.getSelectedItem().toString());
-                    i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
-                    i.putExtra("orderId", selectedOrderTypes);
-                    i.putExtra("routeId", selectedRoute);
-                    startActivity(i);
+                    if (selectedOrderTypes == -777 || selectedRoute == -777) {
+                        Toast.makeText(LandingPage.this, "No data found!", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        Intent i = new Intent(LandingPage.this, MainActivity.class);
+                        //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                        i.putExtra("deldate", dateTextView.getText().toString());
+                        i.putExtra("routes", route.getSelectedItem().toString());
+                        i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
+                        i.putExtra("orderId", selectedOrderTypes);
+                        i.putExtra("routeId", selectedRoute);
+                        startActivity(i);
+
+                    }
+
 
                     //Log.d("CHECKING_ID", "onClick: "+selectedOrderTypes + " - "+selectedRoute);
                 }
@@ -480,6 +487,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
             }
         });
         //Send data tothe cloud
+
 
         final Handler handler = new Handler();
         Runnable runnableNotify = new Runnable() {
@@ -702,7 +710,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-           // Toast.makeText(getBaseContext(), "firebase!", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getBaseContext(), "firebase!", Toast.LENGTH_LONG).show();
             len = result.length();
             customerOrders = result.toString();
             Log.e("len***t", "len**************" + customerOrders);
