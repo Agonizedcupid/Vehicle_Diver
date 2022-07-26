@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "786093288643",
+    "firebase_url": "https://dimsdriver-f4ac2.firebaseio.com",
+    "project_id": "dimsdriver-f4ac2",
+    "storage_bucket": "dimsdriver-f4ac2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786093288643:android:f92d295e543473f2",
+        "android_client_info": {
+          "package_name": "com.regin.reginald.vehicleanddrivers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786093288643-01a326ub23sgsn1u2dgm9l4qgem6vr4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.regin.reginald.vehicleanddrivers",
+            "certificate_hash": "d7122fe0eb3757079f2fb6e2dc9822411e94af5e"
+          }
+        },
+        {
+          "client_id": "786093288643-013450h3f4f01dq8li5agptm62balfnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpNcN3EWvGCYRG_jngu38gCUMPqu6F4Sw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786093288643-013450h3f4f01dq8li5agptm62balfnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

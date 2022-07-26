@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.provider.Settings;
 //import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -45,9 +46,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.regin.reginald.data.DatabaseHelper;
@@ -518,21 +522,43 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         };
         new Thread(runnableNotify).start();
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
-            String newToken = instanceIdResult.getToken();
-            Log.e("newToken", newToken);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(LandingPage.this, "Unable to read token", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String newToken = task.getResult();
+                Log.e("newToken", newToken);
            /* if(dbH.selectCountNotUploaded()>0)
             {*/
-            ArrayList<OtherAttributes> oD = dbH.returnFilters();
-            for (OtherAttributes orderAttributes : oD) {
-                dbRoute = orderAttributes.getroute();
-                dbLateOrder = orderAttributes.getordertype();
-                dbDateFrom = orderAttributes.getdeliverydate();
+                ArrayList<OtherAttributes> oD = dbH.returnFilters();
+                for (OtherAttributes orderAttributes : oD) {
+                    dbRoute = orderAttributes.getroute();
+                    dbLateOrder = orderAttributes.getordertype();
+                    dbDateFrom = orderAttributes.getdeliverydate();
+
+                }
+                new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + dbLateOrder + "&route=" + dbRoute + "&deldate=" + dbDateFrom + "&counts=" + dbH.selectCountNotUploaded());
 
             }
-            //}
-            new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + dbLateOrder + "&route=" + dbRoute + "&deldate=" + dbDateFrom + "&counts=" + dbH.selectCountNotUploaded());
         });
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+//            String newToken = instanceIdResult.getToken();
+//            Log.e("newToken", newToken);
+//           /* if(dbH.selectCountNotUploaded()>0)
+//            {*/
+//            ArrayList<OtherAttributes> oD = dbH.returnFilters();
+//            for (OtherAttributes orderAttributes : oD) {
+//                dbRoute = orderAttributes.getroute();
+//                dbLateOrder = orderAttributes.getordertype();
+//                dbDateFrom = orderAttributes.getdeliverydate();
+//
+//            }
+//            //}
+//            new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + dbLateOrder + "&route=" + dbRoute + "&deldate=" + dbDateFrom + "&counts=" + dbH.selectCountNotUploaded());
+//        });
     }
 
     private void openDatePicker() {

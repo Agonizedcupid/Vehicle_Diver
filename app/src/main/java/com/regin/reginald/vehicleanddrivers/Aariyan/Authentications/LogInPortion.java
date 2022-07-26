@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ public class LogInPortion extends AppCompatActivity {
     }
 
     private void initUI() {
+
         enterName = findViewById(R.id.enterName);
         enterPassword = findViewById(R.id.enterPassword);
         logInBtn = findViewById(R.id.logInBtn);

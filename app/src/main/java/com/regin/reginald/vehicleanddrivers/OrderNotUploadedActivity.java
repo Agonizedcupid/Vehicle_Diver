@@ -1,5 +1,6 @@
 package com.regin.reginald.vehicleanddrivers;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.OneTimeWorkRequest;
@@ -24,7 +25,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.regin.reginald.Service.MyFirebaseInstanceService;
 import com.regin.reginald.model.Orders;
 import com.regin.reginald.model.OtherAttributes;
 import com.regin.reginald.model.SettingsModel;
@@ -223,11 +229,26 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 
         try {
 
-            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + ordertype + "&route=" + routename + "&deldate=" + deliverdate + "&counts=" + dbH.selectCountNotUploaded());
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(OrderNotUploadedActivity.this, "Unable to read token", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String newToken = task.getResult();
+                    Log.e("newToken", newToken);
+                    new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + ordertype + "&route=" + routename + "&deldate=" + deliverdate + "&counts=" + dbH.selectCountNotUploaded());
+
+                }
             });
+
+//            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+//                String newToken = instanceIdResult.getToken();
+//                String newToken = instanceIdResult.getToken();
+//                Log.e("newToken", newToken);
+//                new checkfirebasetrip().execute(LINX + "registerfirebasetoken?token=" + newToken + "&ordertype=" + ordertype + "&route=" + routename + "&deldate=" + deliverdate + "&counts=" + dbH.selectCountNotUploaded());
+//            });
         } catch (Exception e) {
 
         }
