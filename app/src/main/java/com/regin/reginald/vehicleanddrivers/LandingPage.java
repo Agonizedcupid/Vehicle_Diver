@@ -345,7 +345,8 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String tomorrowDate = dateFormat.format(tomorrow);
         //dateTextView.setText(tomorrowDate);
-        dateTextView.setText("2020-6-23");
+        //dateTextView.setText("2020-6-23");
+        dateTextView.setText(tomorrowDate);
         //returnFilters()
        /* Log.e("rule log", "**************************************" + dbH.getThings("Login"));
         if(dbH.getThings("Login") !=0)

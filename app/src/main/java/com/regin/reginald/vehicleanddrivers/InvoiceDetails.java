@@ -1605,6 +1605,11 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private void setPairedDevices() {
         bondedDevices.clear();
 

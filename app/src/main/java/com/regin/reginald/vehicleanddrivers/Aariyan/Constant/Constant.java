@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Constant {
+    public static final String DEFAULT_SHARED_PREF_VALUE = "N/A";
+    public static final String LOGGED_IN = "loggedIn";
+    public static final String LOGGED_IN_KEYWORD = "log";
     public static final int DB_VERSION = 25;
     public static final String[] title = {"Home", "Credit Request", "Set Up"};
     //public static final String CHECK_URL = "http://102.37.0.48/driversapp/";

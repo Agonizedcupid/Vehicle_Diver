@@ -3,7 +3,9 @@ package com.regin.reginald.vehicleanddrivers.Aariyan.Authentications;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.LogInInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.LogInModel;
@@ -33,13 +36,31 @@ public class LogInPortion extends AppCompatActivity {
     DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
     private ProgressBar progressBar;
 
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_portion);
 
+        sharedPref = getSharedPreferences(
+                "LL", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         initUI();
+    }
+
+    @Override
+    protected void onResume() {
+        String status = sharedPref.getString(Constant.LOGGED_IN_KEYWORD,Constant.DEFAULT_SHARED_PREF_VALUE);
+        if (status.equals(Constant.LOGGED_IN)) {
+            startActivity(new Intent(LogInPortion.this, LandingPage.class));
+        } else {
+            Snackbar.make(snackBarLayout, "Please log in first!", Snackbar.LENGTH_SHORT).show();
+        }
+        super.onResume();
     }
 
     private void initUI() {
@@ -79,6 +100,8 @@ public class LogInPortion extends AppCompatActivity {
             public void loggedIn(LogInModel logInData) {
                 startActivity(new Intent(LogInPortion.this, LandingPage.class));
                 Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
+                editor.putString(Constant.LOGGED_IN_KEYWORD, Constant.LOGGED_IN);
+                editor.apply();
                 progressBar.setVisibility(View.GONE);
             }
 

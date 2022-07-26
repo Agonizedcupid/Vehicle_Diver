@@ -268,7 +268,6 @@
                 android:background="@drawable/edit_text_background"
                 android:ems="10"
                 android:padding="5dp"
-                android:inputType="number|numberDecimal"
                 app:layout_constraintLeft_toRightOf="@id/textView7"
                 app:layout_constraintRight_creator="1"
                 android:layout_marginTop="10dp"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Drivers APP</string>
+    <string name="app_name">ImoveIt</string>
     <string name="title_activity_maps">Map</string>
     <string name="trip_id">Trip Id</string>
     <string name="number_zero">0</string>
