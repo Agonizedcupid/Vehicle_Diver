@@ -629,6 +629,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             setInvTotIncl.setText(orderAttributes.getInvTotIncl());
             //paymenttype.setText(orderAttributes.getPaymentType());
             accept.setText(orderAttributes.getPaymentType());
+            //Toast.makeText(InvoiceDetails.this, "" + orderAttributes.getPaymentType(), Toast.LENGTH_SHORT).show();
             // total = orderAttributes.getInvTotIncl();
         }
 
@@ -653,15 +654,15 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
             if (orderAttributes.getblnoffloaded().equals("0")) {
 
-                Item item = new Item(orderAttributes.getPastelDescription(), ""+orderAttributes.getPrice(), ""+orderAttributes.getQty(),
-                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", ""+orderAttributes.getblnoffloaded(), ""+orderAttributes.getOrderDetailId());
+                Item item = new Item(orderAttributes.getPastelDescription(), "" + orderAttributes.getPrice(), "" + orderAttributes.getQty(),
+                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", "" + orderAttributes.getblnoffloaded(), "" + orderAttributes.getOrderDetailId());
                 items1.add(item);
                 Log.e("items1", "" + items1);
             }
             if (orderAttributes.getblnoffloaded().equals("1")) {
 
-                Item item = new Item(orderAttributes.getPastelDescription(), ""+orderAttributes.getPrice(), ""+orderAttributes.getQty(),
-                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", ""+orderAttributes.getblnoffloaded(), ""+orderAttributes.getOrderDetailId());
+                Item item = new Item(orderAttributes.getPastelDescription(), "" + orderAttributes.getPrice(), "" + orderAttributes.getQty(),
+                        "", "Return: " + orderAttributes.getreturnQty(), "Lines", "" + orderAttributes.getblnoffloaded(), "" + orderAttributes.getOrderDetailId());
                 itemsChecked.add(item);
                 Log.e("itemsChecked", "" + itemsChecked);
             }
@@ -797,9 +798,9 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                 listAdapterAddRemoveRightSide = new ItemsListAdapterTruck(InvoiceDetails.this, lineinforemove);
                 productcats_nochecked = (Spinner) dialogLists.findViewById(R.id.productcats_nochecked);
                 productcats_checked = (Spinner) dialogLists.findViewById(R.id.productcats_checked);
-                listview1 =  dialogLists.findViewById(R.id.listview1);
-                listview2 =  dialogLists.findViewById(R.id.listview2);
-                closeproductlists =  dialogLists.findViewById(R.id.closeproductlists);
+                listview1 = dialogLists.findViewById(R.id.listview1);
+                listview2 = dialogLists.findViewById(R.id.listview2);
+                closeproductlists = dialogLists.findViewById(R.id.closeproductlists);
 
                 listview1.setAdapter(listAdapterAddRemove);
                 listview2.setAdapter(listAdapterAddRemoveRightSide);
@@ -1137,28 +1138,7 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(InvoiceDetails.this);
-                builder
-                        .setTitle("Are you? ")
-                        .setMessage("This will not save any changes made")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent main = new Intent(InvoiceDetails.this, MainActivity.class);
-                                main.putExtra("deldate", deldate);
-                                main.putExtra("routes", route);
-                                main.putExtra("ordertype", ordertype);
-                                //main.putExtra("orderdetailid",ordertype);
-                                //
-                                startActivity(main);
-                            }
-                        })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+                backToMain(deldate, route, ordertype);
 
             }
         });
@@ -1206,10 +1186,10 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
                         items2.add(item);
                     }
                     myItemsListAdapter2 = new ItemsListAdapter(InvoiceDetails.this, items2);
-                    listviewsummary =  dialog.findViewById(R.id._orderdlistlines);
-                    invoice_nosummary =  dialog.findViewById(R.id.invoice_no);
-                    closelinessummary =  dialog.findViewById(R.id.closelines);
-                    acceptthesummary =  dialog.findViewById(R.id.acceptthesummary);
+                    listviewsummary = dialog.findViewById(R.id._orderdlistlines);
+                    invoice_nosummary = dialog.findViewById(R.id.invoice_no);
+                    closelinessummary = dialog.findViewById(R.id.closelines);
+                    acceptthesummary = dialog.findViewById(R.id.acceptthesummary);
                     listviewsummary.setAdapter(myItemsListAdapter2);
                     closelinessummary.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1438,15 +1418,32 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK)
-//            Toast.makeText(getApplicationContext(), "back press",
-//                    Toast.LENGTH_LONG).show();
+    private void backToMain(String deldate, String route, String ordertype) {
 
-        return false;
-        // Disable back button..............
+        AlertDialog.Builder builder = new AlertDialog.Builder(InvoiceDetails.this);
+        builder
+                .setTitle("Are you? ")
+                .setMessage("This will not save any changes made")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent main = new Intent(InvoiceDetails.this, MainActivity.class);
+                        main.putExtra("deldate", deldate);
+                        main.putExtra("routes", route);
+                        main.putExtra("ordertype", ordertype);
+                        //main.putExtra("orderdetailid",ordertype);
+                        //
+                        startActivity(main);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
+
 
     public static boolean containsIgnoreCase(String str, char c) {
         str = str.toLowerCase();
@@ -1607,7 +1604,8 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        backToMain(deldate, route, ordertype);
+        //super.onBackPressed();
     }
 
     private void setPairedDevices() {
