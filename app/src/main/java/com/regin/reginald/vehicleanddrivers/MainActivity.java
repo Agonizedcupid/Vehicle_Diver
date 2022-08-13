@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements
         CustomClickListener, CustomLongClickListener {
 
 
-
     @Override
     public void longClick(int position, String lat, String lng, String sequence, String customerName) {
         Intent i = new Intent(MainActivity.this, MyMapActivity.class);
@@ -384,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private RecyclerView recyclerView;
 
-    private String freezeTemp = "N/A";
+    private String freezeTemp = "3.0";
 
     private int orderId, routeId;
 
@@ -423,6 +422,22 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    protected void onResume() {
+        if (dbH.checkiflinesuploaded() > 0) {
+            //
+            if (isInternetAvailable()) {
+                //Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
+                OrderHeaderPost();
+            } else {
+                Toast.makeText(MainActivity.this, "Please turn on the internet!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            //Toast.makeText(MainActivity.this, "Nothing to post!", Toast.LENGTH_SHORT).show();
+        }
+        super.onResume();
+    }
+
     private void initUI() {
         start_trip = findViewById(R.id.tripInfoBtn);
         sort_order = findViewById(R.id.backBtn);
@@ -436,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements
         //passwd = (TextView) findViewById(R.id.passwd);
         not_uploade = findViewById(R.id.uploadedCount);
         // dte_from = (EditText) findViewById(R.id.datetime);
-        _orderdlist =  findViewById(R.id._orderdlistlines);
+        _orderdlist = findViewById(R.id._orderdlistlines);
         acknowledge_stock = findViewById(R.id.acknowledgeBtn);
 
         /**
@@ -448,15 +463,15 @@ public class MainActivity extends AppCompatActivity implements
          *
          */
 
-        if (dbH.checkiflinesuploaded() > 0) {
-            //
-            if (isInternetAvailable()) {
-                //Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
-                OrderHeaderPost();
-            } else {
-                Toast.makeText(MainActivity.this, "Please turn on the internet!", Toast.LENGTH_SHORT).show();
-            }
-        }
+//        if (dbH.checkiflinesuploaded() > 0) {
+//            //
+//            if (isInternetAvailable()) {
+//                //Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
+//                OrderHeaderPost();
+//            } else {
+//                Toast.makeText(MainActivity.this, "Please turn on the internet!", Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         calcr_plan.setVisibility(View.INVISIBLE);
         Intent returndata = getIntent();
@@ -581,12 +596,12 @@ public class MainActivity extends AppCompatActivity implements
             //myItemsListAdapter = new ItemsListAdapter(MainActivity.this, items1);
             // _orderdlist.setAdapter(myItemsListAdapter);
 
-            Adapter adapter = new Adapter(this, listdata,oH, new Adapter.Listener() {
+            Adapter adapter = new Adapter(this, listdata, oH, new Adapter.Listener() {
                 @Override
                 public void onGrab(int position, TableLayout row) {
 //                    _orderdlist.onGrab(position, row);
                 }
-            }, this,this);
+            }, this, this);
             _orderdlist.setAdapter(adapter);
             _orderdlist.setListener(new CustomListView.Listener() {
                 @Override
@@ -613,13 +628,11 @@ public class MainActivity extends AppCompatActivity implements
 //                    + orderId + "&Route="
 //                    + routeId + "&DeliveryDate=" + deliverdate.getText().toString());
 
-            Log.e("try", "******" + SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
+            Log.e("HEADERS_POST_TEST", "" + SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
             //new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType=" + ordertypeidreturned + "&Route=" + routeidreturned + "&DeliveryDate=" + deliverdate.getText().toString());
             new getOrderHeaders().execute(SERVERIP + "OrderHeaders.php?OrderType="
                     + orderId
                     + "&Route=" + routeId + "&DeliveryDate=" + deliverdate.getText().toString());
-
-
 
 
         }
@@ -810,8 +823,8 @@ public class MainActivity extends AppCompatActivity implements
                 dialog.setTitle("Please Type in the Cash");
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 btn_submit_ackn = dialog.findViewById(R.id.btn_submit_ackn);
-                ack_sign =  dialog.findViewById(R.id.ack_sign);
-                ImageView undoSignature =  dialog.findViewById(R.id.undoSignature);
+                ack_sign = dialog.findViewById(R.id.ack_sign);
+                ImageView undoSignature = dialog.findViewById(R.id.undoSignature);
                 undoSignature.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -1347,7 +1360,7 @@ public class MainActivity extends AppCompatActivity implements
                                         }
                                         //orderAttributes.getPrice()
                                     }
-                                    Adapter adapter = new Adapter(MainActivity.this, listdata,oH, new Adapter.Listener() {
+                                    Adapter adapter = new Adapter(MainActivity.this, listdata, oH, new Adapter.Listener() {
                                         @Override
                                         public void onGrab(int position, TableLayout row) {
                                             _orderdlist.onGrab(position, row);
@@ -2185,6 +2198,7 @@ public class MainActivity extends AppCompatActivity implements
                 json.put("Loyalty", Loyalty);
                 json.put("fridgetemp", freezeTemp);
 
+                Log.d("TEST_HEADER_RESPONSE", "TEMP: "+freezeTemp);
 
                 Log.e("Loyalty", "++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);
                 Log.d("JSON", json.toString());
@@ -2198,6 +2212,7 @@ public class MainActivity extends AppCompatActivity implements
                 String responseBody = EntityUtils.toString(response.getEntity());
                 Log.e("JSON-*", "RESPONSE is HEADERS**: " + responseBody);
                 JSONArray BoardInfo = new JSONArray(responseBody);
+                Log.d("TEST_HEADER_RESPONSE", "doInBackground: "+BoardInfo);
 
                 for (int j = 0; j < BoardInfo.length(); ++j) {
 
@@ -2209,12 +2224,8 @@ public class MainActivity extends AppCompatActivity implements
                     dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + ID + "'");
                 }
 
-            } catch (ClientProtocolException e) {
-                Log.e("JSON", e.getMessage());
-            } catch (IOException e) {
-                Log.e("JSON", e.getMessage());
             } catch (Exception e) {
-                Log.e("JSON", e.getMessage());
+                Log.e("JSON_TESTING", e.getMessage());
             }
             // db.close();
             return null;

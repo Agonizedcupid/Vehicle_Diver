@@ -5,7 +5,7 @@
     android:id="@+id/snackBarLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Aariyan.Fragment.ConnectionStringFragment">
+    >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -262,7 +262,7 @@
             app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
-            android:id="@+id/submit_settings"
+            android:id="@+id/submit_setting"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"

@@ -55,7 +55,7 @@ public class Settings extends AppCompatActivity {
         regKey = findViewById(R.id.reg_key);
         serverIps = findViewById(R.id.serverIps);
         email = findViewById(R.id.email);
-        submitSettings = findViewById(R.id.submit_settings);
+        submitSettings = findViewById(R.id.submit_setting);
         progressBar = findViewById(R.id.progressbar);
 
         ArrayList<SettingsModel> oD = dbH.getSettings();
@@ -120,8 +120,4 @@ public class Settings extends AppCompatActivity {
         }
     }
 
-    public void createSettings(String serverIp) {
-        String dateCreated = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        db.execSQL("INSERT INTO tblSettings (strServerIp,strDateCreated,UserName,Company,UserId)VALUES('" + serverIp + "','" + dateCreated + "','reg','DIMS','0')");
-    }
 }
