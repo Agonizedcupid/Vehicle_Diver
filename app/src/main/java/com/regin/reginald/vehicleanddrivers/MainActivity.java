@@ -384,6 +384,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private RecyclerView recyclerView;
 
+    private String freezeTemp = "N/A";
+
     private int orderId, routeId;
 
     @Override
@@ -468,6 +470,9 @@ public class MainActivity extends AppCompatActivity implements
         routename.setText(returndata.getStringExtra("routes"));
         orderId = returndata.getIntExtra("orderId", 0);
         routeId = returndata.getIntExtra("routeId", 0);
+        if (getIntent().hasExtra("temp")) {
+            freezeTemp = getIntent().getStringExtra("temp");
+        }
 
         ordertypeidreturned = orderId;
         routeidreturned = routeId;
@@ -2162,7 +2167,6 @@ public class MainActivity extends AppCompatActivity implements
             HttpPost httppost = new HttpPost(SERVERIP + "PostHeaders");
             try {
                 // Add your data
-
                 JSONObject json = new JSONObject();
                 json.put("invoice", invoice);
                 json.put("lat", lat);
@@ -2179,6 +2183,7 @@ public class MainActivity extends AppCompatActivity implements
                 json.put("strCoord", strCoord);
                 json.put("signedBy", signedBy);
                 json.put("Loyalty", Loyalty);
+                json.put("fridgetemp", freezeTemp);
 
 
                 Log.e("Loyalty", "++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);

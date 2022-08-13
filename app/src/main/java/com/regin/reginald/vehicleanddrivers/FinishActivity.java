@@ -183,6 +183,8 @@ public class FinishActivity extends AppCompatActivity {
                         main.putExtra("deldate", deldate);
                         main.putExtra("routes", route);
                         main.putExtra("ordertype", ordertype);
+                        //freeze temperature.
+                        main.putExtra("temp", temp.getText().toString());
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.DAY_OF_YEAR, 0);
                         Date tomorrow = calendar.getTime();
