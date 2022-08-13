@@ -138,7 +138,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
     final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
     ProgressDialog progressDoalog;
     //private DatabaseHelper mDatabaseHelper;
-    private SQLiteDatabase db;
+    //private SQLiteDatabase db;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static BixolonPrinter bxlPrinter = null;
     double lat = -33.966145;
@@ -239,7 +239,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 
         //mDatabaseHelper = DatabaseHelper.getHelper(this);
         final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/";
-        db = this.openOrCreateDatabase("LinxDriversOrders.db", Context.MODE_PRIVATE, null);
+        //db = this.openOrCreateDatabase("LinxDriversOrders.db", Context.MODE_PRIVATE, null);
 
         final String subscriberId = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         dbH.updateDeals("CREATE TABLE IF NOT EXISTS PrinterInfo (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,ProtoType TEXT, LogicalName TEXT ,Address TEXT)");

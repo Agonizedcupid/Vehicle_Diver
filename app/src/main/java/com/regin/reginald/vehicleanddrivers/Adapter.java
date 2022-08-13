@@ -3,6 +3,7 @@ package com.regin.reginald.vehicleanddrivers;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -75,17 +76,21 @@ public class Adapter extends ArrayAdapter<Data> {
 
 
         TextView del = view.findViewById(R.id.del);
-        del.setText(data.ItemString4);
+        try {
+            del.setText(""+data.ItemString4);
 
-        CheckBox offload =  view.findViewById(R.id.offload);
-        //del.setText(data.ItemString4);
-        if(data.ItemString4.equals("1"))
-        {
-            ((CheckBox) view.findViewById(R.id.offload)).setChecked(true);
-        }
-        else
-        {
-            ((CheckBox) view.findViewById(R.id.offload)).setChecked(false);
+            CheckBox offload =  view.findViewById(R.id.offload);
+            //del.setText(data.ItemString4);
+            if(data.ItemString4.equals("1"))
+            {
+                ((CheckBox) view.findViewById(R.id.offload)).setChecked(true);
+            }
+            else
+            {
+                ((CheckBox) view.findViewById(R.id.offload)).setChecked(false);
+            }
+        }catch (Exception e) {
+            Log.d("NULL_POINTER", "getView: "+e.getMessage());
         }
 
         ConstraintLayout layoutClick = view.findViewById(R.id.cardClickListener);
