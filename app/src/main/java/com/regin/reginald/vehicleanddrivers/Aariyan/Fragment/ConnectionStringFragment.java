@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ConnectionStringFragment extends Fragment implements View.OnClickListener {
+public class ConnectionStringFragment extends Fragment {
 
     //UI element
     private View root;
@@ -104,96 +104,96 @@ public class ConnectionStringFragment extends Fragment implements View.OnClickLi
 //        loadIp();
         super.onResume();
     }
-
-    private void loadIp() {
-        List<IpModel> list = databaseAdapter.getServerIpModel();
-        if (list.size() > 0) {
-            IpModel model = list.get(0);
-            ipEditText.setText(model.getServerIp(), TextView.BufferType.EDITABLE);
-            emailAddress.setText(model.getEmailAddress(), TextView.BufferType.EDITABLE);
-            companyName.setText(model.getCompanyName(), TextView.BufferType.EDITABLE);
-            deviceId.setText(model.getDeviceId());
-            regKey.setText(model.getRegKey());
-        }
-
-        progressBar.setVisibility(View.GONE);
-    }
-
-    private void initAction() {
-        deviceUniqueId = Settings.Secure.getString(requireContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        deviceId.setText(deviceUniqueId);
-    }
-
-    //Reset the database
-    private void resetDatabase() {
-        Toast.makeText(requireContext(), "Database Reset", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-//        switch (id) {
-//            case R.id.submitRegBtn:
-//                progressBar.setVisibility(View.VISIBLE);
-//                submitInformation();
-//                break;
+//
+//    private void loadIp() {
+//        List<IpModel> list = databaseAdapter.getServerIpModel();
+//        if (list.size() > 0) {
+//            IpModel model = list.get(0);
+//            ipEditText.setText(model.getServerIp(), TextView.BufferType.EDITABLE);
+//            emailAddress.setText(model.getEmailAddress(), TextView.BufferType.EDITABLE);
+//            companyName.setText(model.getCompanyName(), TextView.BufferType.EDITABLE);
+//            deviceId.setText(model.getDeviceId());
+//            regKey.setText(model.getRegKey());
 //        }
-    }
-
-    private void submitInformation() {
-        //First do the validation:
-        String ip = ipEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(ip)) {
-            ipEditText.setError(getResources().getString(R.string.ipInputError));
-            ipEditText.requestFocus();
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-
-        if (!ip.endsWith("/")) {
-            Toast.makeText(requireContext(), "Ip should end with a / (Forward slash)", Toast.LENGTH_SHORT).show();
-            ipEditText.setError(getResources().getString(R.string.ipInputError));
-            ipEditText.requestFocus();
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-
-        if (!isValid(emailAddress.getText().toString().trim())) {
-            emailAddress.setError(getResources().getString(R.string.invalidEmail));
-            emailAddress.requestFocus();
-            return;
-        }
-
-        long id = databaseAdapter.insertServer(ip, emailAddress.getText().toString(), companyName.getText().toString(),
-                deviceUniqueId, "" + regKey.getText().toString());
-
-        if (id > 0) {
-            Constant.isSetUpCompleted = true;
-            Snackbar.make(snackBarLayout, getResources().getString(R.string.ipSaved), Snackbar.LENGTH_SHORT).show();
-            restratTheAPp();
-        } else {
-            Constant.isSetUpCompleted = false;
-            Snackbar.make(snackBarLayout, getResources().getString(R.string.unableToSave), Snackbar.LENGTH_SHORT).show();
-        }
-        progressBar.setVisibility(View.GONE);
-
-    }
-
-    private void restratTheAPp() {
-//        requireActivity().finish();
-//        startActivity(requireActivity().getIntent());
-    }
-
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    public static boolean isValid(String emailAddress) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailAddress);
-        return matcher.find();
-    }
+//
+//        progressBar.setVisibility(View.GONE);
+//    }
+//
+//    private void initAction() {
+//        deviceUniqueId = Settings.Secure.getString(requireContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+//        deviceId.setText(deviceUniqueId);
+//    }
+//
+//    //Reset the database
+//    private void resetDatabase() {
+//        Toast.makeText(requireContext(), "Database Reset", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    /**
+//     * Called when a view has been clicked.
+//     *
+//     * @param v The view that was clicked.
+//     */
+//    @Override
+//    public void onClick(View v) {
+//        int id = v.getId();
+////        switch (id) {
+////            case R.id.submitRegBtn:
+////                progressBar.setVisibility(View.VISIBLE);
+////                submitInformation();
+////                break;
+////        }
+//    }
+//
+//    private void submitInformation() {
+//        //First do the validation:
+//        String ip = ipEditText.getText().toString().trim();
+//        if (TextUtils.isEmpty(ip)) {
+//            ipEditText.setError(getResources().getString(R.string.ipInputError));
+//            ipEditText.requestFocus();
+//            progressBar.setVisibility(View.GONE);
+//            return;
+//        }
+//
+//        if (!ip.endsWith("/")) {
+//            Toast.makeText(requireContext(), "Ip should end with a / (Forward slash)", Toast.LENGTH_SHORT).show();
+//            ipEditText.setError(getResources().getString(R.string.ipInputError));
+//            ipEditText.requestFocus();
+//            progressBar.setVisibility(View.GONE);
+//            return;
+//        }
+//
+//        if (!isValid(emailAddress.getText().toString().trim())) {
+//            emailAddress.setError(getResources().getString(R.string.invalidEmail));
+//            emailAddress.requestFocus();
+//            return;
+//        }
+//
+//        long id = databaseAdapter.insertServer(ip, emailAddress.getText().toString(), companyName.getText().toString(),
+//                deviceUniqueId, "" + regKey.getText().toString());
+//
+//        if (id > 0) {
+//            Constant.isSetUpCompleted = true;
+//            Snackbar.make(snackBarLayout, getResources().getString(R.string.ipSaved), Snackbar.LENGTH_SHORT).show();
+//            restratTheAPp();
+//        } else {
+//            Constant.isSetUpCompleted = false;
+//            Snackbar.make(snackBarLayout, getResources().getString(R.string.unableToSave), Snackbar.LENGTH_SHORT).show();
+//        }
+//        progressBar.setVisibility(View.GONE);
+//
+//    }
+//
+//    private void restratTheAPp() {
+////        requireActivity().finish();
+////        startActivity(requireActivity().getIntent());
+//    }
+//
+//    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+//            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+//
+//    public static boolean isValid(String emailAddress) {
+//        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailAddress);
+//        return matcher.find();
+//    }
 }

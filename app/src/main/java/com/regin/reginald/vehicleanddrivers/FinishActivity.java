@@ -183,6 +183,8 @@ public class FinishActivity extends AppCompatActivity {
                         main.putExtra("deldate", deldate);
                         main.putExtra("routes", route);
                         main.putExtra("ordertype", ordertype);
+                        //freeze temperature.
+                        main.putExtra("temp", temp.getText().toString());
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.DAY_OF_YEAR, 0);
                         Date tomorrow = calendar.getTime();
@@ -228,6 +230,7 @@ public class FinishActivity extends AppCompatActivity {
 
             //dbCreation();
             //}
+            Log.d("TESTING_THINGS", "doInBackground: " + IP + "PostLinesNew.php");
             int count = 0;
             HttpPost httppost = new HttpPost(IP + "PostLinesNew.php");
             try {
@@ -284,18 +287,16 @@ public class FinishActivity extends AppCompatActivity {
                 //JSONArray BoardInfo = new JSONArray(responseBody);
                 dbH.updateDeals("UPDATE  OrderLines SET Uploaded = 1 where OrderDetailId in( " + responseBody + ")");
 
+
                 Intent main = new Intent(FinishActivity.this, MainActivity.class);
                 main.putExtra("deldate", deldate);
                 main.putExtra("routes", route);
                 main.putExtra("ordertype", ordertype);
+                main.putExtra("temp", temp.getText().toString());
                 startActivity(main);
 
-            } catch (ClientProtocolException e) {
-                Log.e("JSON", e.getMessage());
-            } catch (IOException e) {
-                Log.e("JSON", e.getMessage());
             } catch (Exception e) {
-                Log.e("JSON", e.getMessage());
+                Log.e("JSON_ERROR", e.getMessage());
             }
             // db.close();
             return null;
