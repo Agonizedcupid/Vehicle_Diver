@@ -480,6 +480,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //        });
 
         //Changed to this Get
+        // Worked on that
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
