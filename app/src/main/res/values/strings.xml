@@ -56,4 +56,5 @@
     <string name="ipSaved">IP Saved!</string>
     <string name="unableToSave">Unable to save. Please try again leter!</string>
     <string name="invalidEmail">Enter valid email!</string>
+    <string name="title_activity_route_plan">RoutePlanActivity</string>
 </resources>

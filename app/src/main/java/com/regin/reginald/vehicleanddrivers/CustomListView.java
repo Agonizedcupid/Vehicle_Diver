@@ -387,7 +387,7 @@ public class CustomListView extends ListView {
             View switchView = isBelow ? belowView : aboveView;
 
             if(null != switchView) {
-                selectedView = (TableLayout) switchView.findViewById(
+                selectedView =  switchView.findViewById(
                         R.id.lytPattern);
             }
 

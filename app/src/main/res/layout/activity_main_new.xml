@@ -106,32 +106,32 @@
         app:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progressbar"
-        tools:listitem="@layout/single_order_rows"
-        />
+        tools:listitem="@layout/single_order_rows" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/orderRecyclerView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:layout_marginBottom="15dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/bottomLayout"-->
-<!--        app:layout_constraintLeft_creator="1"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_creator="1"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/progressbar"-->
-<!--        tools:listitem="@layout/single_order_rows" />-->
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/orderRecyclerView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginTop="5dp"-->
+    <!--        android:layout_marginBottom="15dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/bottomLayout"-->
+    <!--        app:layout_constraintLeft_creator="1"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_creator="1"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/progressbar"-->
+    <!--        tools:listitem="@layout/single_order_rows" />-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/routePlan"
         app:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/_orderdlistlines"
         app:layout_constraintRight_toRightOf="parent">
 
         <TextView
@@ -157,12 +157,12 @@
             android:id="@+id/calcr_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/acknowledgeBtn"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/backBtn"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
-            android:text="Please Wait busy calculating your route plan..." />
+            android:text="Please Wait busy calculating your route plan..."
+            app:layout_constraintBottom_toTopOf="@id/backBtn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/acknowledgeBtn" />
 
 
         <TextView
@@ -170,14 +170,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            app:layout_constraintTop_toBottomOf="@id/acknowledgeBtn"
-            app:layout_constraintLeft_toRightOf="@id/calcr_plan"
-            app:layout_constraintBottom_toTopOf="@id/backBtn"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
+            android:text="TextView"
             android:visibility="gone"
-            android:text="TextView" />
+            app:layout_constraintBottom_toTopOf="@id/backBtn"
+            app:layout_constraintLeft_toRightOf="@id/calcr_plan"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/acknowledgeBtn" />
 
         <ImageView
             android:id="@+id/backBtn"
@@ -235,6 +235,26 @@
             app:layout_constraintTop_toBottomOf="@id/acknowledgeBtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/routePlan"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button_ripple"
+        android:gravity="center"
+        android:text="Route Plan"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/bottomLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

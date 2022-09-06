@@ -86,6 +86,7 @@ import com.regin.reginald.model.WareHouses;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomClickListener;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomLongClickListener;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Maps.RoutePlanActivity;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
@@ -385,6 +386,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private String freezeTemp = "3.0";
 
+    private TextView routePlan;
+
     private int orderId, routeId;
 
     @Override
@@ -453,6 +456,14 @@ public class MainActivity extends AppCompatActivity implements
         // dte_from = (EditText) findViewById(R.id.datetime);
         _orderdlist = findViewById(R.id._orderdlistlines);
         acknowledge_stock = findViewById(R.id.acknowledgeBtn);
+
+        routePlan = findViewById(R.id.routePlan);
+        routePlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, RoutePlanActivity.class));
+            }
+        });
 
         /**
          *
