@@ -20,9 +20,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
     private Context context;
     //private List<Orders> list;
-    private List<DummyLocations> list;
+    private List<Orders> list;
 
-    public RouteAdapter(Context context, List<DummyLocations> list) {
+    public RouteAdapter(Context context, List<Orders> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,9 +36,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int pos = holder.getAdapterPosition();
-        DummyLocations model = list.get(pos);
+        Orders model = list.get(pos);
         try {
-            holder.pastelCode.setText(model.getTitle());
+            holder.pastelCode.setText(model.getStoreName());
         }catch (Exception e) {
 
         }

@@ -87,6 +87,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomClickListener;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.CustomLongClickListener;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Maps.RoutePlanActivity;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Maps.TestMaps;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
@@ -462,6 +463,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, RoutePlanActivity.class));
+                //startActivity(new Intent(MainActivity.this, TestMaps.class));
             }
         });
 
