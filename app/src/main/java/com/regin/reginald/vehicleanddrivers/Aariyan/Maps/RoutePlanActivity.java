@@ -1,8 +1,11 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Maps;
 
+import static android.graphics.Bitmap.Config.ARGB_8888;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,7 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -114,9 +124,13 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
                 = BitmapDescriptorFactory.defaultMarker(
                 BitmapDescriptorFactory.HUE_AZURE);
 
+        int count = 0;
         for (Orders orders : listOfHeaderLocations) {
+            count ++;
+            Bitmap bitmap = makeBitmap(this,""+count);
             mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(orders.getLatitude()),
-                    Double.parseDouble(orders.getLongitude()))).title(orders.getCustomerPastelCode()).icon(bitmapDescriptor));
+                    Double.parseDouble(orders.getLongitude()))).title(orders.getCustomerPastelCode())
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
         }
 
         String url = getMapsApiDirectionsUrl(listOfHeaderLocations);
@@ -134,11 +148,15 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
 
     private void addMarkerOnLocation(List<Orders> listOfHeaderLocations, GoogleMap mMap) {
 
+        int count = 0;
         if (mMap != null)
             //Toast.makeText(this, "Size: "+listOfHeaderLocations.size(), Toast.LENGTH_SHORT).show();
             for (Orders orders : listOfHeaderLocations) {
+                count++;
+                Bitmap bitmap = makeBitmap(this,""+count);
                 mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(orders.getLatitude()),
-                        Double.parseDouble(orders.getLongitude()))).title(orders.getCustomerPastelCode()));
+                        Double.parseDouble(orders.getLongitude()))).title(orders.getCustomerPastelCode())
+                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
             }
     }
 
@@ -167,6 +185,28 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
                 + originNDest + "" + builder.toString() +
                 "&key=AIzaSyC5vAgb-nawregIa5gRRG34wnabasN3blk";
         return url;
+    }
+
+    public Bitmap makeBitmap(Context context, String text)
+    {
+        Resources resources = context.getResources();
+        float scale = resources.getDisplayMetrics().density;
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.marker);
+        bitmap = bitmap.copy(ARGB_8888, true);
+
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.RED); // Text color
+        paint.setTextSize(24 * scale); // Text size
+        paint.setShadowLayer(5f, 0f, 1f, Color.WHITE); // Text shadow
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+
+        int x = bitmap.getWidth() - bounds.width(); // 10 for padding from right
+        int y = bounds.height();
+        canvas.drawText(text, x, y, paint);
+
+        return  bitmap;
     }
 
     private class ReadTask extends AsyncTask<String, Void, String> {
