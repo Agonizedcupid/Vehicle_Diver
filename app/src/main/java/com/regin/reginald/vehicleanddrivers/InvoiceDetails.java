@@ -977,54 +977,54 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
         textView.setText();*/
                 dialog.setTitle("Please Type in the Cash");
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                cashfielddialog = (EditText) dialog.findViewById(R.id.password_field);
-                cashfielddialog.setText(cash.getText().toString());
+                cashfielddialog = dialog.findViewById(R.id.password_field);
+                cashfielddialog.setText(cash.getText().toString(), TextView.BufferType.EDITABLE);
                 // mPasswordField.setText("1");
-                zero = (TextView) dialog.findViewById(R.id.t9_key_0);
-                one = (TextView) dialog.findViewById(R.id.t9_key_1);
-                two = (TextView) dialog.findViewById(R.id.t9_key_2);
-                three = (TextView) dialog.findViewById(R.id.t9_key_3);
-                four = (TextView) dialog.findViewById(R.id.t9_key_4);
-                five = (TextView) dialog.findViewById(R.id.t9_key_5);
-                six = (TextView) dialog.findViewById(R.id.t9_key_6);
-                seven = (TextView) dialog.findViewById(R.id.t9_key_7);
-                eight = (TextView) dialog.findViewById(R.id.t9_key_8);
-                nine = (TextView) dialog.findViewById(R.id.t9_key_9);
-                dot = (TextView) dialog.findViewById(R.id.t9_key_dot);
+//                zero = (TextView) dialog.findViewById(R.id.t9_key_0);
+//                one = (TextView) dialog.findViewById(R.id.t9_key_1);
+//                two = (TextView) dialog.findViewById(R.id.t9_key_2);
+//                three = (TextView) dialog.findViewById(R.id.t9_key_3);
+//                four = (TextView) dialog.findViewById(R.id.t9_key_4);
+//                five = (TextView) dialog.findViewById(R.id.t9_key_5);
+//                six = (TextView) dialog.findViewById(R.id.t9_key_6);
+//                seven = (TextView) dialog.findViewById(R.id.t9_key_7);
+//                eight = (TextView) dialog.findViewById(R.id.t9_key_8);
+//                nine = (TextView) dialog.findViewById(R.id.t9_key_9);
+//                dot = (TextView) dialog.findViewById(R.id.t9_key_dot);
                 submitcash = (Button) dialog.findViewById(R.id.accept);
                 closecash = (Button) dialog.findViewById(R.id.close);
                 backspace = (TextView) dialog.findViewById(R.id.t9_key_backspace);
                 cash_sig = (SignaturePad) dialog.findViewById(R.id.cash_sig);
                 checkBoxacceptcash = (CheckBox) dialog.findViewById(R.id.checkBoxacceptcash);
-
-                zero.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cashfielddialog.append(((TextView) v).getText());
-                    }
-                });
-                one.setOnClickListener(InvoiceDetails.this);
-                two.setOnClickListener(InvoiceDetails.this);
-                three.setOnClickListener(InvoiceDetails.this);
-                four.setOnClickListener(InvoiceDetails.this);
-                five.setOnClickListener(InvoiceDetails.this);
-                six.setOnClickListener(InvoiceDetails.this);
-                seven.setOnClickListener(InvoiceDetails.this);
-                eight.setOnClickListener(InvoiceDetails.this);
-                nine.setOnClickListener(InvoiceDetails.this);
-                backspace.setOnClickListener(InvoiceDetails.this);
-
-                dot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (cashfielddialog.getText().toString().contains(".")) {
-                            Toast.makeText(getBaseContext(), "You cannot type in a DOT(.) multiple times", Toast.LENGTH_SHORT).show();
-                        } else {
-                            cashfielddialog.setText(cashfielddialog.getText() + ".");
-                        }
-
-                    }
-                });
+//
+//                zero.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        cashfielddialog.append(((TextView) v).getText());
+//                    }
+//                });
+//                one.setOnClickListener(InvoiceDetails.this);
+//                two.setOnClickListener(InvoiceDetails.this);
+//                three.setOnClickListener(InvoiceDetails.this);
+//                four.setOnClickListener(InvoiceDetails.this);
+//                five.setOnClickListener(InvoiceDetails.this);
+//                six.setOnClickListener(InvoiceDetails.this);
+//                seven.setOnClickListener(InvoiceDetails.this);
+//                eight.setOnClickListener(InvoiceDetails.this);
+//                nine.setOnClickListener(InvoiceDetails.this);
+//                backspace.setOnClickListener(InvoiceDetails.this);
+//
+//                dot.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (cashfielddialog.getText().toString().contains(".")) {
+//                            Toast.makeText(getBaseContext(), "You cannot type in a DOT(.) multiple times", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            cashfielddialog.setText(cashfielddialog.getText() + ".");
+//                        }
+//
+//                    }
+//                });
                 closecash.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1580,25 +1580,25 @@ public class InvoiceDetails extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         // handle number button click
         Log.e("clicked", "Button clicked*****************************");
-        if (v.getTag() != null && "number_button".equals(v.getTag())) {
-            cashfielddialog.append(((TextView) v).getText());
-            return;
-        }
+//        if (v.getTag() != null && "number_button".equals(v.getTag())) {
+//            cashfielddialog.append(((TextView) v).getText());
+//            return;
+//        }
         switch (v.getId()) {
            /* case R.id.t9_key_clear: { // handle clear button
                 mPasswordField.setText(null);
             }
             break;*/
-            case R.id.t9_key_backspace: { // handle backspace button
-                // delete one character
-                Editable editable = cashfielddialog.getText();
-                int charCount = editable.length();
-                if (charCount > 0) {
-                    editable.delete(charCount - 1, charCount);
-                }
-            }
+//            case R.id.t9_key_backspace: { // handle backspace button
+//                // delete one character
+//                Editable editable = cashfielddialog.getText();
+//                int charCount = editable.length();
+//                if (charCount > 0) {
+//                    editable.delete(charCount - 1, charCount);
+//                }
+//            }
 
-            break;
+            //break;
         }
     }
 

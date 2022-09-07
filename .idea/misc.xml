@@ -85,12 +85,25 @@
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/activity_route_plan.xml" value="0.33" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/activity_test_map.xml" value="0.16757246376811594" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/cancel_order_dialog.xml" value="0.16757246376811594" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/createacreditrequest.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/createdeliverynote.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/creditrequestlandingpage.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/deliverynoterow.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/deliverynoteslandingpage.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/doc_notes.xml" value="0.225" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/dummy_layout.xml" value="0.2" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/fragment_connection_string.xml" value="0.225" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/fragment_credit_request.xml" value="0.24739583333333334" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/fragment_home.xml" value="0.27291666666666664" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/fragment_setup.xml" value="0.23333333333333334" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/landing_act.xml" value="0.27291666666666664" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/line_details.xml" value="0.225" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/lines.xml" value="0.33" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/loyaltycard.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/multipurpose_deliverynotes_credits_row.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/notification.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/notuploadedstop_row.xml" value="0.225" />
+        <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/number_pick_with_delete.xml" value="0.225" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/orderlinesfullscreen.xml" value="0.16354166666666667" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/orders_rows.xml" value="0.2477355072463768" />
         <entry key="..\:/Projects/Android/South Africa/VehicleAndDrivers/app/src/main/res/layout/orders_rows_det.xml" value="0.16354166666666667" />

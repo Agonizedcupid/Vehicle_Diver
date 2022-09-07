@@ -11,19 +11,21 @@
     <EditText
         android:id="@+id/password_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:layout_toLeftOf="@id/close"
         android:background="@drawable/edit_text_background"
         android:singleLine="true"
-        android:layout_toLeftOf="@id/close"
-        android:layout_marginEnd="10dp"
+        android:inputType="numberDecimal"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#060606"
         android:textSize="40dp"
         android:textStyle="bold" />
 
     <TableLayout
+        android:visibility="gone"
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -172,7 +174,7 @@
     <com.github.gcacace.signaturepad.views.SignaturePad
         android:id="@+id/cash_sig"
         android:layout_width="fill_parent"
-        android:layout_height="141dp"
+        android:layout_height="500dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -195,10 +197,10 @@
 
     <CheckBox
         android:id="@+id/checkBoxacceptcash"
-        android:layout_width="355dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/keyboard"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/password_field"
+        android:layout_marginTop="25dp"
         android:text="I accept that I have collected money "
         android:textColor="@android:color/background_dark"
         android:textSize="10sp" />
