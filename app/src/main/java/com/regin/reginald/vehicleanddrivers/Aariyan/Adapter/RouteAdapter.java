@@ -30,7 +30,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_pastel_code,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_pastel_code, parent, false));
     }
 
     @Override
@@ -38,8 +38,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         int pos = holder.getAdapterPosition();
         Orders model = list.get(pos);
         try {
-            holder.pastelCode.setText(model.getStoreName());
-        }catch (Exception e) {
+            holder.pastelCode.setText((pos + 1) + " --> "+model.getStoreName());
+        } catch (Exception e) {
 
         }
     }
@@ -51,6 +51,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView pastelCode;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             pastelCode = itemView.findViewById(R.id.pastelCodeForLocation);

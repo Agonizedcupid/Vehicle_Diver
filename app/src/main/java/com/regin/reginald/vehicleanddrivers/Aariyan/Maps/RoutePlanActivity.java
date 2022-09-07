@@ -126,10 +126,10 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
 
         int count = 0;
         for (Orders orders : listOfHeaderLocations) {
-            count ++;
-            Bitmap bitmap = makeBitmap(this,""+count);
+            count++;
+            Bitmap bitmap = makeBitmap(this, "" + count);
             mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(orders.getLatitude()),
-                    Double.parseDouble(orders.getLongitude()))).title(orders.getCustomerPastelCode())
+                            Double.parseDouble(orders.getLongitude()))).title(orders.getStoreName())
                     .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
         }
 
@@ -153,9 +153,9 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
             //Toast.makeText(this, "Size: "+listOfHeaderLocations.size(), Toast.LENGTH_SHORT).show();
             for (Orders orders : listOfHeaderLocations) {
                 count++;
-                Bitmap bitmap = makeBitmap(this,""+count);
+                Bitmap bitmap = makeBitmap(this, "" + count);
                 mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(orders.getLatitude()),
-                        Double.parseDouble(orders.getLongitude()))).title(orders.getCustomerPastelCode())
+                                Double.parseDouble(orders.getLongitude()))).title(orders.getStoreName())
                         .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
             }
     }
@@ -187,8 +187,7 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
         return url;
     }
 
-    public Bitmap makeBitmap(Context context, String text)
-    {
+    public Bitmap makeBitmap(Context context, String text) {
         Resources resources = context.getResources();
         float scale = resources.getDisplayMetrics().density;
         Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.marker);
@@ -206,7 +205,7 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
         int y = bounds.height();
         canvas.drawText(text, x, y, paint);
 
-        return  bitmap;
+        return bitmap;
     }
 
     private class ReadTask extends AsyncTask<String, Void, String> {
@@ -362,6 +361,7 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
 //        d.add(l4);
 //        d.add(l5);
 
+        List<String> storeNameList = new ArrayList<>();
         listOfHeaders = new DatabaseAdapter(RoutePlanActivity.this).returnOrderHeaders();
         if (listOfHeaders.size() > 0) {
             int count = 0;
@@ -370,9 +370,13 @@ public class RoutePlanActivity extends FragmentActivity implements OnMapReadyCal
                         (!data.getLongitude().isEmpty() && !data.getLongitude().equals(""))) {
                     //Means it has the locations:
                     if (count < 25) {
-                        headersWithLocation.add(data);
+                        if (!storeNameList.contains(data.getStoreName())) {
+                            storeNameList.add(data.getStoreName());
+                            headersWithLocation.add(data);
+                        }
+                        count++;
                     }
-                    count++;
+
                 } else {
                     headersWithoutLocation.add(data);
                 }
