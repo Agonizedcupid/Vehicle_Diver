@@ -53,10 +53,14 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".RoutePlanActivity"
+            android:name=".Aariyan.Maps.TestMaps"
+            android:exported="false"
+             />
+        <activity
+            android:name=".Aariyan.Maps.RoutePlanActivity"
             android:exported="false"
             android:label="@string/title_activity_route_plan" />
         <activity

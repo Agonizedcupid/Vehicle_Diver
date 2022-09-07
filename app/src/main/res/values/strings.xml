@@ -57,4 +57,7 @@
     <string name="unableToSave">Unable to save. Please try again leter!</string>
     <string name="invalidEmail">Enter valid email!</string>
     <string name="title_activity_route_plan">RoutePlanActivity</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyC5vAgb-nawregIa5gRRG34wnabasN3blk</string>
+
 </resources>
