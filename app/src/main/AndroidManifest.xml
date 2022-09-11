@@ -39,6 +39,11 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
         <activity
+            android:name=".CheckListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ClockScreenActivity"
             android:exported="false" />
         <!--
@@ -138,15 +143,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <!--
-            <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        -->
-        <activity
-            android:name=".CheckListActivity"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".DeliveryNotesLandingPage"
             android:label="@string/title_activity_maps"

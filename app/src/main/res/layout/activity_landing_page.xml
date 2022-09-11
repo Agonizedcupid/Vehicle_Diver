@@ -50,6 +50,21 @@
                 app:layout_constraintTop_creator="1"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/refresh_icon"
+                android:id="@+id/refresh"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="15dp"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -422,25 +437,43 @@
             android:drawableLeft="@drawable/home_icon"
             android:text="Home"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             android:padding="15dp"
             android:drawablePadding="5dp"
             />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:src="@drawable/refresh_icon"
-            android:id="@+id/refresh"
-            android:layout_marginEnd="25dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:layout_marginStart="30dp"
+        <TextView
+            android:id="@+id/listBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/notes"
+            android:text="List"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:drawablePadding="5dp"
             />
+
+        <TextView
+            android:id="@+id/clockBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/clock_icon"
+            android:text="Clock"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:drawablePadding="5dp"
+            />
+
 
         <TextView
             android:id="@+id/printers"
@@ -450,11 +483,10 @@
             android:drawableLeft="@drawable/setup_icon"
             android:text="SetUp"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:padding="5dp"
             android:layout_gravity="end"
             android:background="@drawable/button_ripple"
-            android:layout_marginEnd="10dp"
             android:clickable="true"
             android:gravity="center_vertical"
             android:drawablePadding="5dp"

@@ -55,10 +55,13 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.regin.reginald.data.DatabaseHelper;
+import com.regin.reginald.model.CheckList;
 import com.regin.reginald.model.OrderTypes;
 import com.regin.reginald.model.OtherAttributes;
 import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Activity.CheckListActivity;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Activity.ClockScreenActivity;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
@@ -166,6 +169,8 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
     private DatePickerDialog datePickerDialog;
     private Calendar calendar;
     String date = "";
+
+    private TextView clockBtn, listBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,6 +341,21 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         saveddata.setVisibility(View.GONE);
         endtrip.setVisibility(View.GONE);
         // endtrip.setVisibility(View.INVISIBLE);
+
+        clockBtn = findViewById(R.id.clockBtn);
+        listBtn = findViewById(R.id.listBtn);
+        clockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LandingPage.this, ClockScreenActivity.class));
+            }
+        });
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LandingPage.this, CheckListActivity.class));
+            }
+        });
 
 
         Calendar calendar = Calendar.getInstance();
