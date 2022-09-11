@@ -44,7 +44,10 @@
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ClockScreenActivity"
+            android:name=".Aariyan.Activity.ClockScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Aariyan.Activity.CheckListActivity"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.

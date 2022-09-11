@@ -451,6 +451,7 @@
             android:layout_height="match_parent"
             android:drawableLeft="@drawable/notes"
             android:text="List"
+            android:background="@drawable/button_ripple"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:layout_gravity="center"
@@ -470,6 +471,7 @@
             android:textSize="14sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
+            android:background="@drawable/button_ripple"
             android:padding="15dp"
             android:drawablePadding="5dp"
             />
