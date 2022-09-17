@@ -101,6 +101,7 @@ public class LogInPortion extends AppCompatActivity {
                 startActivity(new Intent(LogInPortion.this, LandingPage.class));
                 Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
                 editor.putString(Constant.LOGGED_IN_KEYWORD, Constant.LOGGED_IN);
+                editor.putString("id", ""+logInData.getId());
                 editor.apply();
                 progressBar.setVisibility(View.GONE);
             }
