@@ -28,4 +28,10 @@ public interface RestApi {
     @POST("Login.php")
     Observable<ResponseBody> getLogInData(@Field("UserName") String userName, @Field("Password") String password);
 
+    @GET("Drivers")
+    Observable<ResponseBody> getDrivers();
+
+    @GET("Vehicles")
+    Observable<ResponseBody> getVehicles();
+
 }
