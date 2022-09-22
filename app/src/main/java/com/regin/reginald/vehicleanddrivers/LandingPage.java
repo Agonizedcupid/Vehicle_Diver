@@ -504,7 +504,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbH.updateDeals("delete from OrderLines");
+                //dbH.updateDeals("delete from OrderLines");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //Intent i = new Intent(LandingPage.this, MainActivity.class);
                 if (selectedOrderTypes == -777 || selectedRoute == -777) {
