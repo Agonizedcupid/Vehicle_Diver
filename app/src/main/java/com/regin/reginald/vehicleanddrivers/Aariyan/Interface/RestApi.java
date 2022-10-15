@@ -1,7 +1,14 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Interface;
 
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLines;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLinesDetails;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.PostNetworking;
+
+import java.util.List;
+
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -9,6 +16,14 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface RestApi {
+
+    @FormUrlEncoded
+    @POST("PostLinesNew.php")
+    Observable<ResponseBody> postNewLines(@Body List<TempModelOfOrderLinesDetails> listOfOrders);
+
+    @FormUrlEncoded
+    @POST("PostHeadersLoyalty")
+    Observable<ResponseBody> postRoyalty(@Body List<TempModelOfOrderLines> listOfRoyalty);
 
     @GET("Routes.php")
     Observable<ResponseBody> getRoutes();

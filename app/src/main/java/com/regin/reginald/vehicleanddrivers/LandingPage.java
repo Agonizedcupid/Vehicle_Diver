@@ -66,6 +66,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Service.UploadOrderService;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -614,6 +615,17 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //        });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!UploadOrderService.isServiceRunning) {
+            Intent serviceIntent = new Intent(LandingPage.this, UploadOrderService.class);
+            ContextCompat.startForegroundService(LandingPage.this, serviceIntent);
+            //startService(serviceIntent);
+        }
+    }
+
+
     private void openDatePicker() {
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -994,8 +1006,16 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
     protected void onDestroy() {
         // stopService(mServiceIntent);
         Log.i("MAINACT", "onDestroy!");
+        stopMainService();
         super.onDestroy();
 
+    }
+
+    private void stopMainService() {
+        //Checking whether the service is already running or not:
+        if (UploadOrderService.isServiceRunning) {
+            stopService(new Intent(LandingPage.this, UploadOrderService.class));
+        }
     }
 
     public static String GET(String urlp) {

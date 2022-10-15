@@ -27,17 +27,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
     }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-    }
-    buildToolsVersion = '29.0.3'
     compileOptions {
         targetCompatibility = 1.8
         sourceCompatibility = 1.8
@@ -45,6 +40,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+    namespace 'com.regin.reginald.vehicleanddrivers'
 }
 
 dependencies {

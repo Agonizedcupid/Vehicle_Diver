@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.regin.reginald.vehicleanddrivers">
+    xmlns:tools="http://schemas.android.com/tools">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -38,6 +38,24 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
+        <service
+            android:name=".Aariyan.Service.AlarmTriggerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <receiver
+            android:name=".Aariyan.Receiver.AlarmBootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".Aariyan.Service.UploadOrderService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".CheckListActivity"
             android:exported="false"

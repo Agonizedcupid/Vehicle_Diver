@@ -132,6 +132,8 @@ public class MyWorker extends Worker {
 
                 }
 
+
+                //TODO:
                 JSONObject finalInfo = new JSONObject();
                 finalInfo.put("jsonobject", jsonArray);
 
