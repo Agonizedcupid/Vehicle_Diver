@@ -1,12 +1,12 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Model;
 
-public class TempModelOfOrderLinesDetails {
+public class PostLinesModel {
     private String orderDID, returnQty, offLoadComment, blnoffloaded, reasons;
 
-    public TempModelOfOrderLinesDetails() {
+    public PostLinesModel() {
     }
 
-    public TempModelOfOrderLinesDetails(String orderDID, String returnQty, String offLoadComment, String blnoffloaded, String reasons) {
+    public PostLinesModel(String orderDID, String returnQty, String offLoadComment, String blnoffloaded, String reasons) {
         this.orderDID = orderDID;
         this.returnQty = returnQty;
         this.offLoadComment = offLoadComment;

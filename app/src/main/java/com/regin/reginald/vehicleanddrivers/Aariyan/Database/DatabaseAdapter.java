@@ -21,6 +21,7 @@ import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.model.WareHouses;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.FridgeTempModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.LogInModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderLinesModel;
@@ -90,6 +91,20 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.ROUTE_NAME, routeName);
 
         long id = database.insert(DatabaseHelper.ROUTE_TABLE_NAME, null, contentValues);
+        return id;
+    }
+
+
+    //Insert ORDER_TYPE:
+    public long insertFridgeTemperature(String invoiceNo, String fridgeTemp) {
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelper.INVOICE_NUMBER_FRIDGE, invoiceNo);
+        contentValues.put(DatabaseHelper.FRIDGE_TEMPERATURE, fridgeTemp);
+
+        long id = database.insert(DatabaseHelper.FRIDGE_TEMP_TABLE_NAME, null, contentValues);
         return id;
     }
 
@@ -389,6 +404,33 @@ public class DatabaseAdapter {
                     cursor.getString(25),
                     cursor.getString(26),
                     cursor.getString(27)
+            );
+            list.add(model);
+        }
+        return list;
+    }
+
+
+    //Get FridgeTemp by Invoice:
+    public List<FridgeTempModel> getFridgeTempByInvoice(String invoice) {
+
+        List<FridgeTempModel> list = new ArrayList<>();
+
+        SQLiteDatabase database = helper.getWritableDatabase();
+        String[] columns = {DatabaseHelper.UID,
+                DatabaseHelper.INVOICE_NUMBER_FRIDGE,
+                DatabaseHelper.FRIDGE_TEMPERATURE
+        };
+
+        String selection = DatabaseHelper.INVOICE_NUMBER_FRIDGE + "=?";
+
+        String[] args = {"" + invoice};
+        // Cursor cursor = database.query(DatabaseHelper.PLAN_TABLE_NAME, columns, selection, args, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.FRIDGE_TEMP_TABLE_NAME, columns, selection, args, null, null, null);
+        while (cursor.moveToNext()) {
+            FridgeTempModel model = new FridgeTempModel(
+                    cursor.getString(1),
+                    cursor.getString(2)
             );
             list.add(model);
         }
@@ -2364,6 +2406,22 @@ public class DatabaseAdapter {
         private static final String DROP_ORDER_TYPE_TABLE = "DROP TABLE IF EXISTS " + ORDER_TYPE_TABLE_NAME;
 
         /**
+         * Fridge Temperature:
+         */
+
+        private static final String FRIDGE_TEMP_TABLE_NAME = "FridgeTemp";
+        private static final String INVOICE_NUMBER_FRIDGE = "InvoiceNo";
+        private static final String FRIDGE_TEMPERATURE = "temperature";
+
+        //Creating the table:
+        private static final String CREATE_FRIDGE_TEMP_TABLE = "CREATE TABLE " + FRIDGE_TEMP_TABLE_NAME
+                + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + INVOICE_NUMBER_FRIDGE + " VARCHAR(255),"
+                + FRIDGE_TEMPERATURE + " VARCHAR(255));";
+        private static final String DROP_FRIDGE_TEMP_TABLE = "DROP TABLE IF EXISTS " + FRIDGE_TEMP_TABLE_NAME;
+
+
+        /**
          * Order Table (Order Headers)
          */
 
@@ -2529,6 +2587,7 @@ public class DatabaseAdapter {
                 db.execSQL(CREATE_ORDERS_LINES_TABLE);
                 db.execSQL(CREATE_WAREHOUSE_TABLE);
                 db.execSQL(CREATE_LOGIN_TABLE);
+                db.execSQL(CREATE_FRIDGE_TEMP_TABLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2545,6 +2604,7 @@ public class DatabaseAdapter {
                 db.execSQL(DROP_ORDERS_LINES_TABLE);
                 db.execSQL(DROP_WAREHOUSE_TABLE);
                 db.execSQL(DROP_LOGIN_TABLE);
+                db.execSQL(DROP_FRIDGE_TEMP_TABLE);
                 onCreate(db);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -6,7 +6,7 @@ import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.SuccessInterface;
-import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLinesDetails;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostLinesModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.PostNetworking;
 import com.regin.reginald.vehicleanddrivers.AppApplication;
 
@@ -56,7 +56,7 @@ public class Monitoring implements Runnable {
     }
 
     private void preparingForPosting(ArrayList<OrderLines> dealLineToUpload) {
-        List<TempModelOfOrderLinesDetails> listToBeUploadedOrderLines = new ArrayList<>();
+        List<PostLinesModel> listToBeUploadedOrderLines = new ArrayList<>();
         for (OrderLines orderAttributes : dealLineToUpload) {
             JSONObject json = new JSONObject();
             //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded
@@ -98,10 +98,10 @@ public class Monitoring implements Runnable {
 //            json.put("reasons", reasons);
 
             //Making the model of that code:
-            TempModelOfOrderLinesDetails tempModelOfOrderLinesDetails = new TempModelOfOrderLinesDetails(
+            PostLinesModel postLinesModel = new PostLinesModel(
                     orderAttributes.getOrderDetailId(), returning, offcomment, orderAttributes.getblnoffloaded(), reasons
             );
-            listToBeUploadedOrderLines.add(tempModelOfOrderLinesDetails);
+            listToBeUploadedOrderLines.add(postLinesModel);
             new PostNetworking(IP).uploadNewOrderLinesDetails(listToBeUploadedOrderLines, new SuccessInterface() {
                 @Override
                 public void onSuccess(String successMessage) {

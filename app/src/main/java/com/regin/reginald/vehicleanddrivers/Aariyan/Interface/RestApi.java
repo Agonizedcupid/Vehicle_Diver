@@ -1,8 +1,7 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Interface;
 
-import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLines;
-import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLinesDetails;
-import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.PostNetworking;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostHeadersModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostLinesModel;
 
 import java.util.List;
 
@@ -17,13 +16,21 @@ import retrofit2.http.Query;
 
 public interface RestApi {
 
-    @FormUrlEncoded
-    @POST("PostLinesNew.php")
-    Observable<ResponseBody> postNewLines(@Body List<TempModelOfOrderLinesDetails> listOfOrders);
+//    @FormUrlEncoded
+//    @POST("PostLinesNew.php")
+//    Observable<ResponseBody> postNewLines(@Body List<TempModelOfOrderLinesDetails> listOfOrders);
 
     @FormUrlEncoded
-    @POST("PostHeadersLoyalty")
-    Observable<ResponseBody> postRoyalty(@Body List<TempModelOfOrderLines> listOfRoyalty);
+    @POST("PostLinesV2")
+    Observable<ResponseBody> postNewLines(@Body List<PostLinesModel> listOfOrders);
+
+//    @FormUrlEncoded
+//    @POST("PostHeadersLoyalty")
+//    Observable<ResponseBody> postRoyalty(@Body List<TempModelOfOrderLines> listOfRoyalty);
+
+    @FormUrlEncoded
+    @POST("PostHeadersV2.php")
+    Observable<ResponseBody> postHeaders(@Body List<PostHeadersModel> listOfPostHeaders);
 
     @GET("Routes.php")
     Observable<ResponseBody> getRoutes();

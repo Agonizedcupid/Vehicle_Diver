@@ -7,9 +7,9 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.ApiClient;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.RestApi;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.SuccessInterface;
-import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLines;
-import com.regin.reginald.vehicleanddrivers.Aariyan.Model.TempModelOfOrderLinesDetails;
-import com.regin.reginald.vehicleanddrivers.MyWorker;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.FridgeTempModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostHeadersModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostLinesModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ public class PostNetworking {
         restApi = ApiClient.getClient(baseURl).create(RestApi.class);
     }
 
-    public void uploadNewOrderLinesDetails(List<TempModelOfOrderLinesDetails> list, SuccessInterface successInterface, DatabaseAdapter databaseAdapter) {
+    public void uploadNewOrderLinesDetails(List<PostLinesModel> list, SuccessInterface successInterface, DatabaseAdapter databaseAdapter) {
         newOrderLinesDetailsDisposable.add(restApi.postNewLines(list)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -45,8 +45,10 @@ public class PostNetworking {
                         Log.d(TAG, "SUCCESS: " + responseBody.string());
                         JSONArray root = new JSONArray(responseBody.string());
                         Log.d(TAG, "SUCCESS: " + root);
+                        JSONObject single = root.getJSONObject(0);
+                        String OrderDetailId = single.getString("OrderDetailId");
                         //After a successful posting just update the Local database:
-                        //updateOrderLinesLocalDatabase(responseBody.string(), databaseAdapter);
+                        updateOrderLinesLocalDatabase(OrderDetailId, databaseAdapter);
 
                         //TODO : After success, need to work on that:
                         orderHeaderPost(databaseAdapter);
@@ -94,8 +96,12 @@ public class PostNetworking {
             if (orderAttributes.getstrCustomerSignedBy() != null && !orderAttributes.getstrCustomerSignedBy().isEmpty()) {
                 signedBy = orderAttributes.getstrCustomerSignedBy();
             }
-
-            TempModelOfOrderLines tempModelOfOrderLines = new TempModelOfOrderLines(
+            String fridgeTemp = "0.0";
+            List<FridgeTempModel> oneTempNeeded = dbH.getFridgeTempByInvoice(orderAttributes.getInvoiceNo());
+            if (oneTempNeeded.size() > 0) {
+                fridgeTemp = oneTempNeeded.get(0).getFridgeTemp();
+            }
+            PostHeadersModel postHeadersModel = new PostHeadersModel(
                     orderAttributes.getInvoiceNo(),
                     orderAttributes.getLatitude(),
                     orderAttributes.getLongitude(),
@@ -110,36 +116,18 @@ public class PostNetworking {
                     orderAttributes.getDeliverySequence(),
                     orderAttributes.getstrCoordinateStart(),
                     signedBy,
-                    orderAttributes.getLoyalty()
+                    ""+fridgeTemp
             );
 
-            uploadNewOrderLines(tempModelOfOrderLines, dbH);
-//            Log.e("*****", "********************************note " + strEmailAddress);
-//            new MyWorker.UploadNewOrderLines(
-//                    orderAttributes.getInvoiceNo(),
-//                    orderAttributes.getLatitude(),
-//                    orderAttributes.getLongitude(),
-//                    strTheImage,
-//                    orderAttributes.getCashPaid(),
-//                    strNotesDrivers,
-//                    orderAttributes.getoffloaded(),
-//                    strEmailAddress,
-//                    strCashSig,
-//                    strStartTime,
-//                    strEndTime,
-//                    orderAttributes.getDeliverySequence(),
-//                    orderAttributes.getstrCoordinateStart(),
-//                    signedBy,
-//                    orderAttributes.getLoyalty()).execute();
-//        }
+            uploadHeaders(postHeadersModel, dbH);
         }
     }
 
-    private void uploadNewOrderLines(TempModelOfOrderLines tempModelOfOrderLines, DatabaseAdapter databaseAdapter) {
-        List<TempModelOfOrderLines> list = new ArrayList<>();
-        list.add(tempModelOfOrderLines);
+    private void uploadHeaders(PostHeadersModel postHeadersModel, DatabaseAdapter databaseAdapter) {
+        List<PostHeadersModel> list = new ArrayList<>();
+        list.add(postHeadersModel);
 
-        royaltyDisposable.add(restApi.postRoyalty(list)
+        royaltyDisposable.add(restApi.postHeaders(list)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseBody>() {
@@ -154,7 +142,7 @@ public class PostNetworking {
                             ID = BoardDetails.getString("InvoiceNo");
 
                             Log.d(TAG, "SUCCESS: (LINE 156:) : "+root);
-                            //updateOrderHeadersInLocalDatabase(databaseAdapter, ID);
+                            updateOrderHeadersInLocalDatabase(databaseAdapter, ID);
                         }
                     }
                 }, new Consumer<Throwable>() {
