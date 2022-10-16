@@ -24,6 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.SuccessInterface;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostLinesModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.PostNetworking;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -43,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FinishActivity extends AppCompatActivity {
     //final Handler handler;
@@ -61,6 +66,9 @@ public class FinishActivity extends AppCompatActivity {
     EditText[] textBoxes = new EditText[4];
     ProgressDialog progressDoalog;
 
+    private int howManyPosted = 0;
+    private static final String TAG = "FinishActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +81,7 @@ public class FinishActivity extends AppCompatActivity {
         donewiththeorder = (Button) findViewById(R.id.donewiththeorder);
         Intent returndata = getIntent();
         InvoiceNo = returndata.getStringExtra("invoiceno");
+
         signedby.setText(returndata.getStringExtra("signedby"));
         cust_email.setText(returndata.getStringExtra("email"));
         deldate = returndata.getStringExtra("deldate");
@@ -166,9 +175,15 @@ public class FinishActivity extends AppCompatActivity {
                     if (isInternetAvailable()) {
                         //Toast.makeText(FinishActivity.this, "You Are Connected " + InvoiceNo, Toast.LENGTH_SHORT).show();
                         startProgress("Posting The Transaction.");
-                        new UploadNewOrderLinesDetails().execute();
+                        //new UploadNewOrderLinesDetails().execute(); //Replaced
+                        //TODO:
+                        uploadSingleItems(InvoiceNo);
+
+                        progressDoalog.dismiss();
 
                     } else {
+
+                        dbH.insertFridgeTemperature(InvoiceNo, String.valueOf("" + temp.getText().toString()));
                         Toast.makeText(FinishActivity.this, "Turn On the internet!", Toast.LENGTH_SHORT).show();
 
                         for (int k = 0; k < i; k++) {
@@ -204,7 +219,82 @@ public class FinishActivity extends AppCompatActivity {
         });
 
     }
+    private void uploadSingleItems(String invoiceNo) {
+        ArrayList<OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploadedByInvoice(invoiceNo);
+        preparingForPosting(dealLineToUpload);
+    }
 
+    private void preparingForPosting(ArrayList<OrderLines> dealLineToUpload) {
+        List<PostLinesModel> listToBeUploadedOrderLines = new ArrayList<>();
+        for (OrderLines orderAttributes : dealLineToUpload) {
+            JSONObject json = new JSONObject();
+            //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded
+
+            String returning = "NULL";
+            String offcomment = "NULL";
+            String reasons = "NULL";
+
+            if (orderAttributes.getreturnQty() != null && !orderAttributes.getreturnQty().isEmpty()) {
+                returning = orderAttributes.getreturnQty();
+            }
+            if (orderAttributes.getoffLoadComment() != null && !orderAttributes.getoffLoadComment().isEmpty()) {
+                offcomment = orderAttributes.getoffLoadComment();
+            }
+            if (orderAttributes.getstrCustomerReason() != null && !orderAttributes.getstrCustomerReason().isEmpty()) {
+                reasons = orderAttributes.getstrCustomerReason();
+            }
+
+            String c = offcomment;
+            Pattern pt = Pattern.compile("[^a-zA-Z0-9/?:().,'+/-]");
+            Matcher match = pt.matcher(c);
+            if (!match.matches()) {
+                c = c.replaceAll(pt.pattern(), " ");
+            }
+            offcomment = c;
+
+            String r = reasons;
+            Pattern ptr = Pattern.compile("[^a-zA-Z0-9/?:().,'+/-]");
+            Matcher matchr = ptr.matcher(r);
+            if (!matchr.matches()) {
+                r = r.replaceAll(ptr.pattern(), " ");
+            }
+            reasons = r;
+
+//            json.put("orderDID", orderAttributes.getOrderDetailId());
+//            json.put("returnQty", returning);
+//            json.put("offLoadComment", offcomment);
+//            json.put("blnoffloaded", orderAttributes.getblnoffloaded());
+//            json.put("reasons", reasons);
+
+            //Making the model of that code:
+            PostLinesModel postLinesModel = new PostLinesModel(
+                    orderAttributes.getOrderDetailId(), returning, offcomment, orderAttributes.getblnoffloaded(), reasons
+            );
+            listToBeUploadedOrderLines.add(postLinesModel);
+            new PostNetworking(IP).uploadNewOrderLinesDetails(listToBeUploadedOrderLines, new SuccessInterface() {
+                @Override
+                public void onSuccess(String successMessage) {
+                    Toast.makeText(FinishActivity.this, ""+successMessage, Toast.LENGTH_SHORT).show();
+                    howManyPosted++;
+                    if (howManyPosted == dealLineToUpload.size()) {
+                        Log.d(TAG, "onSuccess: Post Completed");
+                    } else {
+                        Log.d(TAG, "onSuccess: Left : " + (Math.abs(dealLineToUpload.size() - howManyPosted)));
+                    }
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Log.d(TAG, "onError:(Line: 113) : " + errorMessage);
+                }
+            }, dbH);
+            Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
+            Log.e("offcomment", "*************+" + "****" + offcomment);
+//            jsonArray.put(json);
+//            count++;
+
+        }
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -213,6 +303,7 @@ public class FinishActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    //TODO : POST LINES
     private class UploadNewOrderLinesDetails extends AsyncTask<Void, Void, Void> {
 
         @Override

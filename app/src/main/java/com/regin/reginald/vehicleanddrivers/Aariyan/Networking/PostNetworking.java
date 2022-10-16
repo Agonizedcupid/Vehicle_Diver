@@ -35,6 +35,7 @@ public class PostNetworking {
         restApi = ApiClient.getClient(baseURl).create(RestApi.class);
     }
 
+    //TODO: POSTING ORDER LINES
     public void uploadNewOrderLinesDetails(List<PostLinesModel> list, SuccessInterface successInterface, DatabaseAdapter databaseAdapter) {
         newOrderLinesDetailsDisposable.add(restApi.postNewLines(list)
                 .subscribeOn(Schedulers.io())
@@ -62,7 +63,7 @@ public class PostNetworking {
                 }));
     }
 
-    private void orderHeaderPost(DatabaseAdapter dbH) {
+    public void orderHeaderPost(DatabaseAdapter dbH) {
 
         ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
         for (Orders orderAttributes : dealLineToUpload) {
@@ -123,6 +124,7 @@ public class PostNetworking {
         }
     }
 
+    //TODO: POSTING ORDER HEADERS
     private void uploadHeaders(PostHeadersModel postHeadersModel, DatabaseAdapter databaseAdapter) {
         List<PostHeadersModel> list = new ArrayList<>();
         list.add(postHeadersModel);

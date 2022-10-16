@@ -91,6 +91,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Maps.TestMaps;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.IpModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.NetworkingFeedback;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.PostNetworking;
 import com.regin.reginald.vehicleanddrivers.PrinterControl.BixolonPrinter;
 
 import org.apache.http.HttpResponse;
@@ -432,7 +433,8 @@ public class MainActivity extends AppCompatActivity implements
             //
             if (isInternetAvailable()) {
                 //Toast.makeText(this, "You Are Connected ", Toast.LENGTH_SHORT).show();
-                OrderHeaderPost();
+                //OrderHeaderPost(); //TODO : REPLACED:
+                new PostNetworking(SERVERIP).orderHeaderPost(dbH);
             } else {
                 Toast.makeText(MainActivity.this, "Please turn on the internet!", Toast.LENGTH_SHORT).show();
             }
@@ -2093,155 +2095,155 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public void OrderHeaderPost() {
-
-        ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
-        for (Orders orderAttributes : dealLineToUpload) {
-
-            String strNotesDrivers = "NULL";
-            String strEmailAddress = "NULL";
-            String strCashSig = "NULL";
-            String strStartTime = "NULL";
-            String strEndTime = "NULL";
-            String strTheImage = "NoImage";
-            String signedBy = "NULL";
-            if (orderAttributes.getstrNotesDrivers() != null && !orderAttributes.getstrNotesDrivers().isEmpty()) {
-                strNotesDrivers = orderAttributes.getstrNotesDrivers();
-            }
-            if (orderAttributes.getstrEmailCustomer() != null && !orderAttributes.getstrEmailCustomer().isEmpty()) {
-                strEmailAddress = orderAttributes.getstrEmailCustomer();
-            }
-            if (orderAttributes.getstrCashsignature() != null && !orderAttributes.getstrCashsignature().isEmpty()) {
-                strCashSig = orderAttributes.getstrCashsignature();
-            }
-
-            if (orderAttributes.getStartTripTime() != null && !orderAttributes.getStartTripTime().isEmpty()) {
-                strStartTime = orderAttributes.getStartTripTime();
-            }
-            if (orderAttributes.getEndTripTime() != null && !orderAttributes.getEndTripTime().isEmpty()) {
-                strEndTime = orderAttributes.getEndTripTime();
-            }
-            if (orderAttributes.getimagestring() != null && !orderAttributes.getimagestring().isEmpty()) {
-                strTheImage = orderAttributes.getimagestring();
-            }
-            if (orderAttributes.getstrCustomerSignedBy() != null && !orderAttributes.getstrCustomerSignedBy().isEmpty()) {
-                signedBy = orderAttributes.getstrCustomerSignedBy();
-            }
-            Log.e("*****", "********************************note " + strEmailAddress);
-            new UploadNewOrderLines(orderAttributes.getInvoiceNo(), orderAttributes.getLatitude(), orderAttributes.getLongitude(),
-                    strTheImage, orderAttributes.getCashPaid(), strNotesDrivers, orderAttributes.getoffloaded(), strEmailAddress, strCashSig, strStartTime, strEndTime, orderAttributes.getDeliverySequence(), orderAttributes.getstrCoordinateStart(), signedBy, orderAttributes.getLoyalty()).execute();
-        }
-
-    }
-
-    public class UploadNewOrderLines extends AsyncTask<Void, Void, Void> {
-
-        String invoice;
-        String lat;
-        String lon;
-        String image;
-        String cash;
-        String note;
-        String offload;
-        String strEmailAddress;
-        String strCashSig;
-        String strStartTime;
-        String strEndTime;
-        String delseq;
-        String strCoord;
-        String signedBy;
-        String Loyalty;
-
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-
-        public UploadNewOrderLines(String invoice, String lat, String lon, String image, String cash, String note, String offload, String email, String strCashSig, String strStartTime,
-                                   String strEndTime, String delseq, String strCoord, String signedBy, String Loyalty) {
-            this.invoice = invoice;
-            this.lat = lat;
-            this.lon = lon;
-            this.image = image;
-            this.cash = cash;
-            this.note = note;
-            this.offload = offload;
-            this.strEmailAddress = email;
-            this.strCashSig = strCashSig;
-            this.strStartTime = strStartTime;
-            this.strEndTime = strEndTime;
-            this.delseq = delseq;
-            this.strCoord = strCoord;
-            this.signedBy = signedBy;
-            this.Loyalty = Loyalty;
-
-
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            HttpClient httpclient = new DefaultHttpClient();
-
-            //dbCreation();
-            //}
-            Log.e("postIP", "++++++++++++++++++++++++++++++++" + SERVERIP + "PostHeaders");
-            Log.e("postIP", "++++++++++++++++++++++++++++++++ signedBy" + signedBy);
-            Log.e("Loyalty", "++++++++++++++++++++++++++++++++ Loyalty" + Loyalty);
-            HttpPost httppost = new HttpPost(SERVERIP + "PostHeaders");
-            try {
-                // Add your data
-                JSONObject json = new JSONObject();
-                json.put("invoice", invoice);
-                json.put("lat", lat);
-                json.put("lon", lon);
-                json.put("image", image);
-                json.put("cash", cash);
-                json.put("note", note);
-                json.put("offload", offload);
-                json.put("strEmailAddress", strEmailAddress);
-                json.put("strCashSig", strCashSig);
-                json.put("strEndTime", strEndTime);
-                json.put("strStartTime", strStartTime);
-                json.put("delseq", delseq);
-                json.put("strCoord", strCoord);
-                json.put("signedBy", signedBy);
-                json.put("Loyalty", Loyalty);
-                json.put("fridgetemp", freezeTemp);
-
-                Log.d("TEST_HEADER_RESPONSE", "TEMP: "+freezeTemp);
-
-                Log.e("Loyalty", "++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);
-                Log.d("JSON", json.toString());
-                List nameValuePairs = new ArrayList(1);
-                nameValuePairs.add(new BasicNameValuePair("json", json.toString()));
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                // Execute HTTP Post Request
-                org.apache.http.HttpResponse response = httpclient.execute(httppost);
-                String responseBody = EntityUtils.toString(response.getEntity());
-                Log.e("JSON-*", "RESPONSE is HEADERS**: " + responseBody);
-                JSONArray BoardInfo = new JSONArray(responseBody);
-                Log.d("TEST_HEADER_RESPONSE", "doInBackground: "+BoardInfo);
-
-                for (int j = 0; j < BoardInfo.length(); ++j) {
-
-                    JSONObject BoardDetails = BoardInfo.getJSONObject(j);
-                    String ID, strPartNumber;
-                    ID = BoardDetails.getString("InvoiceNo");
-
-                    Log.e("JSON-*", "RESPONSE IS HEADERS**: " + ID);
-                    dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + ID + "'");
-                }
-
-            } catch (Exception e) {
-                Log.e("JSON_TESTING", e.getMessage());
-            }
-            // db.close();
-            return null;
-        }
-    }
+//    public void OrderHeaderPost() {
+//
+//        ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
+//        for (Orders orderAttributes : dealLineToUpload) {
+//
+//            String strNotesDrivers = "NULL";
+//            String strEmailAddress = "NULL";
+//            String strCashSig = "NULL";
+//            String strStartTime = "NULL";
+//            String strEndTime = "NULL";
+//            String strTheImage = "NoImage";
+//            String signedBy = "NULL";
+//            if (orderAttributes.getstrNotesDrivers() != null && !orderAttributes.getstrNotesDrivers().isEmpty()) {
+//                strNotesDrivers = orderAttributes.getstrNotesDrivers();
+//            }
+//            if (orderAttributes.getstrEmailCustomer() != null && !orderAttributes.getstrEmailCustomer().isEmpty()) {
+//                strEmailAddress = orderAttributes.getstrEmailCustomer();
+//            }
+//            if (orderAttributes.getstrCashsignature() != null && !orderAttributes.getstrCashsignature().isEmpty()) {
+//                strCashSig = orderAttributes.getstrCashsignature();
+//            }
+//
+//            if (orderAttributes.getStartTripTime() != null && !orderAttributes.getStartTripTime().isEmpty()) {
+//                strStartTime = orderAttributes.getStartTripTime();
+//            }
+//            if (orderAttributes.getEndTripTime() != null && !orderAttributes.getEndTripTime().isEmpty()) {
+//                strEndTime = orderAttributes.getEndTripTime();
+//            }
+//            if (orderAttributes.getimagestring() != null && !orderAttributes.getimagestring().isEmpty()) {
+//                strTheImage = orderAttributes.getimagestring();
+//            }
+//            if (orderAttributes.getstrCustomerSignedBy() != null && !orderAttributes.getstrCustomerSignedBy().isEmpty()) {
+//                signedBy = orderAttributes.getstrCustomerSignedBy();
+//            }
+//            Log.e("*****", "********************************note " + strEmailAddress);
+//            new UploadNewOrderLines(orderAttributes.getInvoiceNo(), orderAttributes.getLatitude(), orderAttributes.getLongitude(),
+//                    strTheImage, orderAttributes.getCashPaid(), strNotesDrivers, orderAttributes.getoffloaded(), strEmailAddress, strCashSig, strStartTime, strEndTime, orderAttributes.getDeliverySequence(), orderAttributes.getstrCoordinateStart(), signedBy, orderAttributes.getLoyalty()).execute();
+//        }
+//
+//    }
+//
+//    public class UploadNewOrderLines extends AsyncTask<Void, Void, Void> {
+//
+//        String invoice;
+//        String lat;
+//        String lon;
+//        String image;
+//        String cash;
+//        String note;
+//        String offload;
+//        String strEmailAddress;
+//        String strCashSig;
+//        String strStartTime;
+//        String strEndTime;
+//        String delseq;
+//        String strCoord;
+//        String signedBy;
+//        String Loyalty;
+//
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//
+//        }
+//
+//        public UploadNewOrderLines(String invoice, String lat, String lon, String image, String cash, String note, String offload, String email, String strCashSig, String strStartTime,
+//                                   String strEndTime, String delseq, String strCoord, String signedBy, String Loyalty) {
+//            this.invoice = invoice;
+//            this.lat = lat;
+//            this.lon = lon;
+//            this.image = image;
+//            this.cash = cash;
+//            this.note = note;
+//            this.offload = offload;
+//            this.strEmailAddress = email;
+//            this.strCashSig = strCashSig;
+//            this.strStartTime = strStartTime;
+//            this.strEndTime = strEndTime;
+//            this.delseq = delseq;
+//            this.strCoord = strCoord;
+//            this.signedBy = signedBy;
+//            this.Loyalty = Loyalty;
+//
+//
+//        }
+//
+//
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            HttpClient httpclient = new DefaultHttpClient();
+//
+//            //dbCreation();
+//            //}
+//            Log.e("postIP", "++++++++++++++++++++++++++++++++" + SERVERIP + "PostHeaders");
+//            Log.e("postIP", "++++++++++++++++++++++++++++++++ signedBy" + signedBy);
+//            Log.e("Loyalty", "++++++++++++++++++++++++++++++++ Loyalty" + Loyalty);
+//            HttpPost httppost = new HttpPost(SERVERIP + "PostHeaders");
+//            try {
+//                // Add your data
+//                JSONObject json = new JSONObject();
+//                json.put("invoice", invoice);
+//                json.put("lat", lat);
+//                json.put("lon", lon);
+//                json.put("image", image);
+//                json.put("cash", cash);
+//                json.put("note", note);
+//                json.put("offload", offload);
+//                json.put("strEmailAddress", strEmailAddress);
+//                json.put("strCashSig", strCashSig);
+//                json.put("strEndTime", strEndTime);
+//                json.put("strStartTime", strStartTime);
+//                json.put("delseq", delseq);
+//                json.put("strCoord", strCoord);
+//                json.put("signedBy", signedBy);
+//                json.put("Loyalty", Loyalty);
+//                json.put("fridgetemp", freezeTemp);
+//
+//                Log.d("TEST_HEADER_RESPONSE", "TEMP: "+freezeTemp);
+//
+//                Log.e("Loyalty", "++++++++++++++++++++++++++++++++JSON Loyalty " + Loyalty);
+//                Log.d("JSON", json.toString());
+//                List nameValuePairs = new ArrayList(1);
+//                nameValuePairs.add(new BasicNameValuePair("json", json.toString()));
+//
+//                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//
+//                // Execute HTTP Post Request
+//                org.apache.http.HttpResponse response = httpclient.execute(httppost);
+//                String responseBody = EntityUtils.toString(response.getEntity());
+//                Log.e("JSON-*", "RESPONSE is HEADERS**: " + responseBody);
+//                JSONArray BoardInfo = new JSONArray(responseBody);
+//                Log.d("TEST_HEADER_RESPONSE", "doInBackground: "+BoardInfo);
+//
+//                for (int j = 0; j < BoardInfo.length(); ++j) {
+//
+//                    JSONObject BoardDetails = BoardInfo.getJSONObject(j);
+//                    String ID, strPartNumber;
+//                    ID = BoardDetails.getString("InvoiceNo");
+//
+//                    Log.e("JSON-*", "RESPONSE IS HEADERS**: " + ID);
+//                    dbH.updateDeals("UPDATE  OrderHeaders SET Uploaded = 1,offloaded =1  where InvoiceNo = '" + ID + "'");
+//                }
+//
+//            } catch (Exception e) {
+//                Log.e("JSON_TESTING", e.getMessage());
+//            }
+//            // db.close();
+//            return null;
+//        }
+//    }
 }

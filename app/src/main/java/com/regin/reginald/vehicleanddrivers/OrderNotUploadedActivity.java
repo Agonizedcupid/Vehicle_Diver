@@ -60,6 +60,9 @@ import java.util.regex.Pattern;
 
 import com.regin.reginald.model.OrderLines;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.SuccessInterface;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Model.PostLinesModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.PostNetworking;
 
 public class OrderNotUploadedActivity extends AppCompatActivity {
 
@@ -161,6 +164,9 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
     String deliverdate, ordertype, routename, LINX = "http://102.37.0.48/driversapp/", customerOrders, answer;
     private OneTimeWorkRequest mWorkRequest;
 
+    private int howManyPosted = 0;
+    private static final String TAG = "OrderNotUploadedActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,7 +197,11 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
             DeviceID = orderAttributes.getDeviceID();
         }
 
-        new UploadNewOrderLinesDetails().execute();
+        //TODO: This would be LINES POST (API: PostLinesV2)
+        //new UploadNewOrderLinesDetails().execute(); //Replace :
+        // Upload Lines In Post Networking Activity:
+        //TODO: SHIFTED TO ON RESUME()
+
         new pullthetrigger().execute("http://102.37.0.48/firebaseidchecker/send.php");
 
 
@@ -201,10 +211,13 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
         }
 
 
-        if (dbH.checkiflinesuploaded() > 0) {
-            //
-            OrderHeaderPost();
-        }
+        //TODO: This would be HEADER POST (API: PostHeadersV2)
+        //TODO: onResume()
+//        if (dbH.checkiflinesuploaded() > 0) {
+//            //OrderHeaderPost();
+//            new PostNetworking(IP).orderHeaderPost(dbH);
+//
+//        }
 
 
         items1 = new ArrayList<Item>();
@@ -260,12 +273,106 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
                 Item selectedItem = (Item) (parent.getItemAtPosition(position));
 
                 startProgress("Retrying To Post");
-                new IndividualPostLines(selectedItem.ItemString.toString()).execute();
 
-                return false;
+                //TODO: Posting when click on list items:
+                //new IndividualPostLines(selectedItem.ItemString.toString()).execute(); // Replace this:
+                String invoiceNo = selectedItem.ItemString.toString();
+                uploadSingleItems(invoiceNo);
+                progressDoalog.dismiss();
+                return true;
             }
         });
 
+    }
+
+    private void uploadSingleItems(String invoiceNo) {
+        ArrayList<OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploadedByInvoice(invoiceNo);
+        preparingForPosting(dealLineToUpload);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ArrayList<OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploaded();
+        preparingForPosting(dealLineToUpload);
+
+        //TODO: This would be HEADER POST (API: PostHeadersV2)
+        if (dbH.checkiflinesuploaded() > 0) {
+            //OrderHeaderPost();
+            new PostNetworking(IP).orderHeaderPost(dbH);
+
+        }
+    }
+
+    private void preparingForPosting(ArrayList<OrderLines> dealLineToUpload) {
+        List<PostLinesModel> listToBeUploadedOrderLines = new ArrayList<>();
+        for (OrderLines orderAttributes : dealLineToUpload) {
+            JSONObject json = new JSONObject();
+            //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded
+
+            String returning = "NULL";
+            String offcomment = "NULL";
+            String reasons = "NULL";
+
+            if (orderAttributes.getreturnQty() != null && !orderAttributes.getreturnQty().isEmpty()) {
+                returning = orderAttributes.getreturnQty();
+            }
+            if (orderAttributes.getoffLoadComment() != null && !orderAttributes.getoffLoadComment().isEmpty()) {
+                offcomment = orderAttributes.getoffLoadComment();
+            }
+            if (orderAttributes.getstrCustomerReason() != null && !orderAttributes.getstrCustomerReason().isEmpty()) {
+                reasons = orderAttributes.getstrCustomerReason();
+            }
+
+            String c = offcomment;
+            Pattern pt = Pattern.compile("[^a-zA-Z0-9/?:().,'+/-]");
+            Matcher match = pt.matcher(c);
+            if (!match.matches()) {
+                c = c.replaceAll(pt.pattern(), " ");
+            }
+            offcomment = c;
+
+            String r = reasons;
+            Pattern ptr = Pattern.compile("[^a-zA-Z0-9/?:().,'+/-]");
+            Matcher matchr = ptr.matcher(r);
+            if (!matchr.matches()) {
+                r = r.replaceAll(ptr.pattern(), " ");
+            }
+            reasons = r;
+
+//            json.put("orderDID", orderAttributes.getOrderDetailId());
+//            json.put("returnQty", returning);
+//            json.put("offLoadComment", offcomment);
+//            json.put("blnoffloaded", orderAttributes.getblnoffloaded());
+//            json.put("reasons", reasons);
+
+            //Making the model of that code:
+            PostLinesModel postLinesModel = new PostLinesModel(
+                    orderAttributes.getOrderDetailId(), returning, offcomment, orderAttributes.getblnoffloaded(), reasons
+            );
+            listToBeUploadedOrderLines.add(postLinesModel);
+            new PostNetworking(IP).uploadNewOrderLinesDetails(listToBeUploadedOrderLines, new SuccessInterface() {
+                @Override
+                public void onSuccess(String successMessage) {
+                    howManyPosted++;
+                    if (howManyPosted == dealLineToUpload.size()) {
+                        Log.d(TAG, "onSuccess: Post Completed");
+                    } else {
+                        Log.d(TAG, "onSuccess: Left : " + (Math.abs(dealLineToUpload.size() - howManyPosted)));
+                    }
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Log.d(TAG, "onError:(Line: 113) : " + errorMessage);
+                }
+            }, dbH);
+            Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
+            Log.e("offcomment", "*************+" + "****" + offcomment);
+//            jsonArray.put(json);
+//            count++;
+
+        }
     }
 
     @Override
@@ -377,6 +484,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 
     }
 
+    //TODO : This would be changed - 1 - Lines Post:
     private class UploadNewOrderLinesDetails extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -463,7 +571,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
         }
     }
 
-
+    //TODO : This would be changed: (POST HEADERS)
     public class UploadNewOrderLines extends AsyncTask<Void, Void, Void> {
 
         String invoice;
@@ -585,6 +693,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
         }
     }
 
+    //TODO : This would be changed:
     private class IndividualPostLines extends AsyncTask<Void, Void, Void> {
         String InvoiceNo;
 
