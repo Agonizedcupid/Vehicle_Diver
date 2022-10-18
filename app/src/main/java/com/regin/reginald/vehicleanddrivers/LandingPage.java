@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -62,6 +63,8 @@ import com.regin.reginald.model.Routes;
 import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Activity.CheckListActivity;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Activity.ClockScreenActivity;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Authentications.LogInPortion;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.OrderTypeModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.RouteModel;
@@ -173,6 +176,9 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 
     private TextView clockBtn, listBtn;
 
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppTheme);
@@ -185,6 +191,20 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         if (bxlPrinter == null) {
             bxlPrinter = new BixolonPrinter(this);
         }
+
+        sharedPref = getSharedPreferences(
+                "LL", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        findViewById(R.id.logOutBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putString(Constant.LOGGED_IN_KEYWORD, Constant.LOGGED_OUT);
+                editor.commit();
+                startActivity(new Intent(LandingPage.this, LogInPortion.class));
+                finish();
+            }
+        });
 
 
         calendar = Calendar.getInstance();
