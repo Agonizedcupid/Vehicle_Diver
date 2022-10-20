@@ -800,8 +800,6 @@ public class MainActivity extends AppCompatActivity implements
                         b.putExtra("ordertype", ordertype.getText().toString());
                         startActivity(b);
                     }
-
-
                 }
             });
             _orderdlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

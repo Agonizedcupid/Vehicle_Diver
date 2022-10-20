@@ -34,7 +34,7 @@ public class PostNetworking {
     public PostNetworking(String baseURl) {
         restApi = ApiClient.getClient(baseURl).create(RestApi.class);
     }
-
+    String OrderDetailId;
     //TODO: POSTING ORDER LINES
     public void uploadNewOrderLinesDetails(List<PostLinesModel> list, SuccessInterface successInterface, DatabaseAdapter databaseAdapter) {
         newOrderLinesDetailsDisposable.add(restApi.postNewLines(list)
@@ -42,17 +42,27 @@ public class PostNetworking {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseBody>() {
                     @Override
-                    public void accept(ResponseBody responseBody) throws Throwable {
-                        Log.d(TAG, "SUCCESS: " + responseBody.string());
-                        JSONArray root = new JSONArray(responseBody.string());
-                        Log.d(TAG, "SUCCESS: " + root);
-                        JSONObject single = root.getJSONObject(0);
-                        String OrderDetailId = single.getString("OrderDetailId");
-                        //After a successful posting just update the Local database:
-                        updateOrderLinesLocalDatabase(OrderDetailId, databaseAdapter);
+                    public void accept(ResponseBody responseBody) {
+                        try {
+                            //Log.d(TAG, "SUCCESS: " + responseBody.string());
+                            JSONArray root = new JSONArray(responseBody.string());
+                            Log.d(TAG, "SUCCESS: " + root);
+                            for (int i=0; i<root.length(); i++) {
+                                JSONObject single = root.getJSONObject(i);
+                                int OrderDetailId = single.getInt("OrderDetailId");
+                                databaseAdapter.updateDeals("UPDATE  OrderLines SET Uploaded = 1 where OrderDetailId in( " + responseBody + ")");
+                                successInterface.onSuccess("Posted Successfully");
+                                //After a successful posting just update the Local database:
+                                updateOrderLinesLocalDatabase(String.valueOf(OrderDetailId), databaseAdapter);
+                                Log.d(TAG, "accept: "+OrderDetailId);
+                                //TODO : After success, need to work on that:
+                                orderHeaderPost(databaseAdapter);
+                            }
 
-                        //TODO : After success, need to work on that:
-                        orderHeaderPost(databaseAdapter);
+                        }catch (Exception e) {
+                            Log.d(TAG, "Exception: "+e.getMessage());
+                        }
+
                     }
                 }, new Consumer<Throwable>() {
                     @Override

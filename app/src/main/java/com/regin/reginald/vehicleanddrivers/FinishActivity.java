@@ -178,6 +178,8 @@ public class FinishActivity extends AppCompatActivity {
                         //new UploadNewOrderLinesDetails().execute(); //Replaced
                         //TODO:
                         uploadSingleItems(InvoiceNo);
+                        startActivity(new Intent(FinishActivity.this, MainActivity.class));
+                        finish();
 
                         progressDoalog.dismiss();
 

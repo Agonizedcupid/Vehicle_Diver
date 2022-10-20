@@ -378,6 +378,13 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
             }
         });
 
+        findViewById(R.id.checkOrderNotUploaded).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LandingPage.this, OrderNotUploadedActivity.class));
+            }
+        });
+
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 0);
@@ -419,6 +426,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //        });
         Log.e("subID", "**************************************************" + LINX + subscriberId);
         new getOrderTypes().execute(SERVERIP + "OrderTypesTest.php?key=" + subscriberId);
+        Log.d("SUBSCRIBER_ID", "onCreate: "+subscriberId);
         new checkIfRegistered().execute(LINX + "Registration.php?key=" + subscriberId);
 
         //new getRoutes().execute(SERVERIP + "Routes.php?key=" + subscriberId);
@@ -476,78 +484,78 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         }
 
 
-//        get.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if (dbH.isUploaded()) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
-//                    builder
-//                            .setTitle("Transactions")
-//                            .setMessage("You have some outstanding Instruction, please make sure you have better connectivity for the data to upload ")
-//                            .setIcon(android.R.drawable.ic_dialog_alert)
-//                            .setPositiveButton("Please End Trip before you GET again", new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    //OKAY
-//                                    /*Intent intent = new Intent(LandingPage.this, OrderService.class);
-//                                    stopService(intent);*/
-//                                    dialog.dismiss();
-//                                }
-//                            })
-//                            .show();
-//                } else {
-//                    dbH.updateDeals("delete from OrderLines");
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                    //Intent i = new Intent(LandingPage.this, MainActivity.class);
-//                    if (selectedOrderTypes == -777 || selectedRoute == -777) {
-//                        Toast.makeText(LandingPage.this, "No data found!", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    } else {
-//                        Intent i = new Intent(LandingPage.this, MainActivity.class);
-//                        //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
-//                        i.putExtra("deldate", dateTextView.getText().toString());
-//                        i.putExtra("routes", route.getSelectedItem().toString());
-//                        i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
-//                        i.putExtra("orderId", selectedOrderTypes);
-//                        i.putExtra("routeId", selectedRoute);
-//                        startActivity(i);
-//
-//                    }
-//
-//
-//                    //Log.d("CHECKING_ID", "onClick: "+selectedOrderTypes + " - "+selectedRoute);
-//                }
-//            }
-//        });
-
-        //Changed to this Get
-        // Worked on that
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbH.updateDeals("delete from OrderLines");
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                //Intent i = new Intent(LandingPage.this, MainActivity.class);
-                if (selectedOrderTypes == -777 || selectedRoute == -777) {
-                    Toast.makeText(LandingPage.this, "No data found!", Toast.LENGTH_SHORT).show();
-                    return;
+
+                if (dbH.isUploaded()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
+                    builder
+                            .setTitle("Transactions")
+                            .setMessage("You have data to upload. Upload first Otherwise you can lost the old data")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton("Please End Trip before you GET again", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //OKAY
+                                    /*Intent intent = new Intent(LandingPage.this, OrderService.class);
+                                    stopService(intent);*/
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
                 } else {
-                    Intent i = new Intent(LandingPage.this, MainActivity.class);
-                    //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
-                    i.putExtra("deldate", dateTextView.getText().toString());
-                    i.putExtra("routes", route.getSelectedItem().toString());
-                    i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
-                    i.putExtra("orderId", selectedOrderTypes);
-                    i.putExtra("routeId", selectedRoute);
-                    startActivity(i);
+                    dbH.updateDeals("delete from OrderLines");
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //Intent i = new Intent(LandingPage.this, MainActivity.class);
+                    if (selectedOrderTypes == -777 || selectedRoute == -777) {
+                        Toast.makeText(LandingPage.this, "No data found!", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        Intent i = new Intent(LandingPage.this, MainActivity.class);
+                        //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                        i.putExtra("deldate", dateTextView.getText().toString());
+                        i.putExtra("routes", route.getSelectedItem().toString());
+                        i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
+                        i.putExtra("orderId", selectedOrderTypes);
+                        i.putExtra("routeId", selectedRoute);
+                        startActivity(i);
 
+                    }
+
+
+                    //Log.d("CHECKING_ID", "onClick: "+selectedOrderTypes + " - "+selectedRoute);
                 }
-
-
-                //Log.d("CHECKING_ID", "onClick: "+selectedOrderTypes + " - "+selectedRoute);
-
             }
         });
+
+        //Changed to this Get
+        // Worked on that
+//        get.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dbH.updateDeals("delete from OrderLines");
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                //Intent i = new Intent(LandingPage.this, MainActivity.class);
+//                if (selectedOrderTypes == -777 || selectedRoute == -777) {
+//                    Toast.makeText(LandingPage.this, "No data found!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                } else {
+//                    Intent i = new Intent(LandingPage.this, MainActivity.class);
+//                    //Toast.makeText(LandingPage.this, ""+dateTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    i.putExtra("deldate", dateTextView.getText().toString());
+//                    i.putExtra("routes", route.getSelectedItem().toString());
+//                    i.putExtra("ordertype", ordertypes.getSelectedItem().toString());
+//                    i.putExtra("orderId", selectedOrderTypes);
+//                    i.putExtra("routeId", selectedRoute);
+//                    startActivity(i);
+//
+//                }
+//
+//
+//                //Log.d("CHECKING_ID", "onClick: "+selectedOrderTypes + " - "+selectedRoute);
+//
+//            }
+//        });
 
 
         btndeliverynotes.setOnClickListener(new View.OnClickListener() {

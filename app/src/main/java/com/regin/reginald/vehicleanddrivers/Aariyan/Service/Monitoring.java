@@ -127,8 +127,8 @@ public class Monitoring implements Runnable {
                     Log.d(TAG, "onError:(Line: 113) : " + errorMessage);
                 }
             },dbH);
-            Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
-            Log.e("offcomment", "*************+" + "****" + offcomment);
+//            Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
+//            Log.e("offcomment", "*************+" + "****" + offcomment);
 //            jsonArray.put(json);
 //            count++;
 

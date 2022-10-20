@@ -208,6 +208,8 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
         mWorkRequest = new OneTimeWorkRequest.Builder(MyWorker.class).build();
         if (dbH.selectCountNotUploaded() > 0) {
             no_of_stops_mess.setText("" + dbH.selectCountNotUploaded() + "Invoice(s) Not Posted, Retry Posting");
+        } else {
+            Toast.makeText(this, "All are up to date!", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -219,15 +221,16 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 //
 //        }
 
-
-        items1 = new ArrayList<Item>();
-        ArrayList<Orders> oH = dbH.returnOrderHeadersNotUploaded();
-        for (Orders orderAttributes : oH) {
-            Item item = new Item((orderAttributes.getInvoiceNo()).trim(), orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(), "");
-            items1.add(item);
-        }
-        myItemsListAdapter1 = new ItemsListAdapter(OrderNotUploadedActivity.this, items1);
-        lvordersnotuploaded.setAdapter(myItemsListAdapter1);
+        //TODO: Older-> Shifted to a function:
+        checkProductForList();
+//        items1 = new ArrayList<Item>();
+//        ArrayList<Orders> oH = dbH.returnOrderHeadersNotUploaded();
+//        for (Orders orderAttributes : oH) {
+//            Item item = new Item((orderAttributes.getInvoiceNo()).trim(), orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(), "");
+//            items1.add(item);
+//        }
+//        myItemsListAdapter1 = new ItemsListAdapter(OrderNotUploadedActivity.this, items1);
+//        lvordersnotuploaded.setAdapter(myItemsListAdapter1);
 
         cont_savedfilters.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,6 +272,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
         lvordersnotuploaded.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(OrderNotUploadedActivity.this, "Called", Toast.LENGTH_SHORT).show();
 
                 Item selectedItem = (Item) (parent.getItemAtPosition(position));
 
@@ -278,6 +282,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
                 //new IndividualPostLines(selectedItem.ItemString.toString()).execute(); // Replace this:
                 String invoiceNo = selectedItem.ItemString.toString();
                 uploadSingleItems(invoiceNo);
+                checkProductForList();
                 progressDoalog.dismiss();
                 return true;
             }
@@ -285,9 +290,21 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 
     }
 
+    private void checkProductForList() {
+        items1 = new ArrayList<Item>();
+        ArrayList<Orders> oH = dbH.returnOrderHeadersNotUploaded();
+        for (Orders orderAttributes : oH) {
+            Item item = new Item((orderAttributes.getInvoiceNo()).trim(), orderAttributes.getStoreName(), orderAttributes.getDeliveryAddress(), "");
+            items1.add(item);
+        }
+        myItemsListAdapter1 = new ItemsListAdapter(OrderNotUploadedActivity.this, items1);
+        lvordersnotuploaded.setAdapter(myItemsListAdapter1);
+    }
+
     private void uploadSingleItems(String invoiceNo) {
         ArrayList<OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploadedByInvoice(invoiceNo);
         preparingForPosting(dealLineToUpload);
+        Log.d("CHECK_CLICK", "1");
     }
 
     @Override
@@ -306,6 +323,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 
     private void preparingForPosting(ArrayList<OrderLines> dealLineToUpload) {
         List<PostLinesModel> listToBeUploadedOrderLines = new ArrayList<>();
+        Log.d("CHECK_CLICK", "SIZE: "+listToBeUploadedOrderLines.size());
         for (OrderLines orderAttributes : dealLineToUpload) {
             JSONObject json = new JSONObject();
             //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded
@@ -347,6 +365,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 //            json.put("reasons", reasons);
 
             //Making the model of that code:
+            Log.d("CHECK_CLICK", "2");
             PostLinesModel postLinesModel = new PostLinesModel(
                     orderAttributes.getOrderDetailId(), returning, offcomment, orderAttributes.getblnoffloaded(), reasons
             );
@@ -354,21 +373,26 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
             new PostNetworking(IP).uploadNewOrderLinesDetails(listToBeUploadedOrderLines, new SuccessInterface() {
                 @Override
                 public void onSuccess(String successMessage) {
+                    Log.d("CHECK_CLICK", "3");
+                    Toast.makeText(OrderNotUploadedActivity.this, "Posted Successfully", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onSuccess: Post Completed");
                     howManyPosted++;
                     if (howManyPosted == dealLineToUpload.size()) {
                         Log.d(TAG, "onSuccess: Post Completed");
                     } else {
                         Log.d(TAG, "onSuccess: Left : " + (Math.abs(dealLineToUpload.size() - howManyPosted)));
                     }
+                    checkProductForList();
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     Log.d(TAG, "onError:(Line: 113) : " + errorMessage);
+                    Log.d("CHECK_CLICK", "4 : "+errorMessage);
                 }
             }, dbH);
-            Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
-            Log.e("offcomment", "*************+" + "****" + offcomment);
+//            Log.e("blnoffloaded", "*************+" + "****" + orderAttributes.getblnoffloaded() + "******" + returning);
+//            Log.e("offcomment", "*************+" + "****" + offcomment);
 //            jsonArray.put(json);
 //            count++;
 

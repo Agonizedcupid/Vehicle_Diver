@@ -20,7 +20,6 @@ public interface RestApi {
 //    @POST("PostLinesNew.php")
 //    Observable<ResponseBody> postNewLines(@Body List<TempModelOfOrderLinesDetails> listOfOrders);
 
-    @FormUrlEncoded
     @POST("PostLinesV2")
     Observable<ResponseBody> postNewLines(@Body List<PostLinesModel> listOfOrders);
 
@@ -28,7 +27,6 @@ public interface RestApi {
 //    @POST("PostHeadersLoyalty")
 //    Observable<ResponseBody> postRoyalty(@Body List<TempModelOfOrderLines> listOfRoyalty);
 
-    @FormUrlEncoded
     @POST("PostHeadersV2.php")
     Observable<ResponseBody> postHeaders(@Body List<PostHeadersModel> listOfPostHeaders);
 
