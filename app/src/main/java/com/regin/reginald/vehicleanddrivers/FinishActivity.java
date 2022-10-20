@@ -222,6 +222,7 @@ public class FinishActivity extends AppCompatActivity {
 
     }
     private void uploadSingleItems(String invoiceNo) {
+        Log.d("INVOICE_TRACK", "uploadSingleItems: "+invoiceNo);
         ArrayList<OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploadedByInvoice(invoiceNo);
         preparingForPosting(dealLineToUpload);
     }
@@ -270,7 +271,9 @@ public class FinishActivity extends AppCompatActivity {
 
             //Making the model of that code:
             PostLinesModel postLinesModel = new PostLinesModel(
-                    orderAttributes.getOrderDetailId(), returning, offcomment, orderAttributes.getblnoffloaded(), reasons
+                    ""+orderAttributes.getOrderDetailId(), ""+returning,
+                    ""+offcomment, ""+orderAttributes.getblnoffloaded(),
+                    ""+reasons
             );
             listToBeUploadedOrderLines.add(postLinesModel);
             new PostNetworking(IP).uploadNewOrderLinesDetails(listToBeUploadedOrderLines, new SuccessInterface() {

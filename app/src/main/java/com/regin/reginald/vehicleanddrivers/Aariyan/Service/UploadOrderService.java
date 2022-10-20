@@ -132,10 +132,10 @@ public class UploadOrderService extends Service {
         mExecutorService = Executors.newSingleThreadExecutor();
         //Creating an object of StartMonitoring class for submitting on the background continuous running:
         //monitoring = new StartMonitoring();
-        //Monitoring monitoring = new Monitoring();
+        Monitoring monitoring = new Monitoring();
         //monitoring = new Monitoring(this);
         // Finally, submit the monitoring object to the background concurrency:
-        //mExecutorService.submit(monitoring);
+        mExecutorService.submit(monitoring);
         Log.e(TAG, "onCreateService: Started, service is running");
     }
 

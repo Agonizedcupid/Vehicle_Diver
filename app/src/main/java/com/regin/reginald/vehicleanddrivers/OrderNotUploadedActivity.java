@@ -272,8 +272,6 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
         lvordersnotuploaded.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(OrderNotUploadedActivity.this, "Called", Toast.LENGTH_SHORT).show();
-
                 Item selectedItem = (Item) (parent.getItemAtPosition(position));
 
                 startProgress("Retrying To Post");
@@ -302,9 +300,10 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
     }
 
     private void uploadSingleItems(String invoiceNo) {
-        ArrayList<OrderLines> dealLineToUpload = dbH.returnOrderLinesInfoUploadedByInvoice(invoiceNo);
+        ArrayList<OrderLines> dealLineToUpload =
+                dbH.returnOrderLinesInfoUploadedByInvoice(invoiceNo);
         preparingForPosting(dealLineToUpload);
-        Log.d("CHECK_CLICK", "1");
+        Log.d("CHECK_CLICK", "1 "+invoiceNo + " Size: "+dealLineToUpload.size());
     }
 
     @Override
@@ -323,7 +322,7 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
 
     private void preparingForPosting(ArrayList<OrderLines> dealLineToUpload) {
         List<PostLinesModel> listToBeUploadedOrderLines = new ArrayList<>();
-        Log.d("CHECK_CLICK", "SIZE: "+listToBeUploadedOrderLines.size());
+        //Log.d("CHECK_CLICK", "SIZE: "+listToBeUploadedOrderLines.size());
         for (OrderLines orderAttributes : dealLineToUpload) {
             JSONObject json = new JSONObject();
             //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded
@@ -367,9 +366,14 @@ public class OrderNotUploadedActivity extends AppCompatActivity {
             //Making the model of that code:
             Log.d("CHECK_CLICK", "2");
             PostLinesModel postLinesModel = new PostLinesModel(
-                    orderAttributes.getOrderDetailId(), returning, offcomment, orderAttributes.getblnoffloaded(), reasons
+                    ""+ orderAttributes.getOrderDetailId(),
+                    ""+returning,
+                    ""+offcomment,
+                    ""+orderAttributes.getblnoffloaded(),
+                    ""+reasons
             );
             listToBeUploadedOrderLines.add(postLinesModel);
+            Log.d("CHECK_CLICK", "IP: "+IP);
             new PostNetworking(IP).uploadNewOrderLinesDetails(listToBeUploadedOrderLines, new SuccessInterface() {
                 @Override
                 public void onSuccess(String successMessage) {

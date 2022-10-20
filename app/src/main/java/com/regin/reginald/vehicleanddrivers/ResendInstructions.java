@@ -126,8 +126,9 @@ public class ResendInstructions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resendinstructions);
-        Intent intent = new Intent(ResendInstructions.this, OrderService.class);
-        startService(intent);
+        //TODO: Service is commented out for now
+//        Intent intent = new Intent(ResendInstructions.this, OrderService.class);
+//        startService(intent);
         btn_resend =(Button) findViewById(R.id.btn_resend);
 
         Intent returndata = getIntent();

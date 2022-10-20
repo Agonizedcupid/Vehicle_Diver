@@ -115,11 +115,12 @@ public class Monitoring implements Runnable {
                 @Override
                 public void onSuccess(String successMessage) {
                     howManyPosted++;
-                    if (howManyPosted == dealLineToUpload.size()) {
-                        Log.d(TAG, "onSuccess: Post Completed");
-                    } else {
-                        Log.d(TAG, "onSuccess: Left : " + (Math.abs(dealLineToUpload.size() - howManyPosted)));
-                    }
+                    Log.d(TAG, "onSuccess: Post Completed");
+//                    if (howManyPosted == dealLineToUpload.size()) {
+//                        Log.d(TAG, "onSuccess: Post Completed");
+//                    } else {
+//                        Log.d(TAG, "onSuccess: Left : " + (Math.abs(dealLineToUpload.size() - howManyPosted)));
+//                    }
                 }
 
                 @Override

@@ -847,7 +847,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
             }
         }
     }
-
+//TODO: Service is commented out for now:
     private void DriverPermission() {
         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
         Permissions.check(this/*context*/, permissions, null/*rationale*/, null/*options*/,

@@ -32,9 +32,9 @@ public class PostNetworking {
     RestApi restApi;
 
     public PostNetworking(String baseURl) {
+        Log.d(TAG, "IP: "+baseURl);
         restApi = ApiClient.getClient(baseURl).create(RestApi.class);
     }
-    String OrderDetailId;
     //TODO: POSTING ORDER LINES
     public void uploadNewOrderLinesDetails(List<PostLinesModel> list, SuccessInterface successInterface, DatabaseAdapter databaseAdapter) {
         newOrderLinesDetailsDisposable.add(restApi.postNewLines(list)
@@ -46,11 +46,12 @@ public class PostNetworking {
                         try {
                             //Log.d(TAG, "SUCCESS: " + responseBody.string());
                             JSONArray root = new JSONArray(responseBody.string());
+                            Log.d(TAG, "response: "+responseBody.string() + " Root: "+root.length());
                             Log.d(TAG, "SUCCESS: " + root);
                             for (int i=0; i<root.length(); i++) {
                                 JSONObject single = root.getJSONObject(i);
                                 int OrderDetailId = single.getInt("OrderDetailId");
-                                databaseAdapter.updateDeals("UPDATE  OrderLines SET Uploaded = 1 where OrderDetailId in( " + responseBody + ")");
+                                databaseAdapter.updateDeals("UPDATE  OrderLines SET Uploaded = 1 where OrderDetailId in( " + OrderDetailId + ")");
                                 successInterface.onSuccess("Posted Successfully");
                                 //After a successful posting just update the Local database:
                                 updateOrderLinesLocalDatabase(String.valueOf(OrderDetailId), databaseAdapter);
@@ -68,14 +69,15 @@ public class PostNetworking {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
                         Log.d(TAG, "ERROR: " + throwable.getMessage());
+                        orderHeaderPost(databaseAdapter);
                         successInterface.onError("ERROR(PostNetworking)" + throwable.getMessage());
                     }
                 }));
     }
 
     public void orderHeaderPost(DatabaseAdapter dbH) {
-
         ArrayList<Orders> dealLineToUpload = dbH.getOrderHeadersNotUploaded();
+        Log.d(TAG, "orderHeaderPost: "+dealLineToUpload.size());
         for (Orders orderAttributes : dealLineToUpload) {
 
             String strNotesDrivers = "NULL";
