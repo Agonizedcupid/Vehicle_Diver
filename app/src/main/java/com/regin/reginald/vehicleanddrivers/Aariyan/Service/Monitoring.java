@@ -41,11 +41,11 @@ public class Monitoring implements Runnable {
     public Monitoring() {
 
         //Setting part:
-        settings = dbH.getSettings();
-        for (SettingsModel model : settings) {
-            IP = model.getstrServerIp();
-            deviceId = model.getDeviceID();
-        }
+//        settings = dbH.getSettings();
+//        for (SettingsModel model : settings) {
+//            IP = model.getstrServerIp();
+//            deviceId = model.getDeviceID();
+//        }
     }
 
     @Override
@@ -57,6 +57,15 @@ public class Monitoring implements Runnable {
 
     private void preparingForPosting(ArrayList<OrderLines> dealLineToUpload) {
         List<PostLinesModel> listToBeUploadedOrderLines = new ArrayList<>();
+        if (dealLineToUpload.size() > 0) {
+            settings = dbH.getSettings();
+            for (SettingsModel model : settings) {
+                IP = model.getstrServerIp();
+                deviceId = model.getDeviceID();
+            }
+        } else {
+            return;
+        }
         for (OrderLines orderAttributes : dealLineToUpload) {
             JSONObject json = new JSONObject();
             //String orderDID, int offloaded, float returnQty,String offLoadComment,int blnoffloaded

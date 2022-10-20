@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.regin.reginald.data.DatabaseHelper;
 import com.regin.reginald.model.SettingsModel;
+import com.regin.reginald.vehicleanddrivers.Aariyan.Authentications.LogInPortion;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 
 import java.util.ArrayList;
@@ -80,8 +81,9 @@ public class Settings extends AppCompatActivity {
                 dbH.updateDeals("Delete from tblSettings");
                 // strServerIp VARCHAR,regKey TEXT,Company VARCHAR,DeviceID TEXT,Email TEXT
                 dbH.updateDeals("Insert into tblSettings (strServerIp,regKey,Company,DeviceID,Email) values('" + serverIps.getText().toString() + "','" + regKey.getText().toString() + "','" + CompanyName.getText().toString() + "','" + subscriberId + "','" + email.getText().toString() + "')");
-                Intent o = new Intent(Settings.this, LandingPage.class);
-                startActivity(o);
+                //Intent o = new Intent(Settings.this, LandingPage.class);
+                startActivity(new Intent(Settings.this, LogInPortion.class));
+                finish();
                 progressBar.setVisibility(View.GONE);
             }
         });

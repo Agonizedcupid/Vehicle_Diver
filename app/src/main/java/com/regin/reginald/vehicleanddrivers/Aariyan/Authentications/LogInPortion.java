@@ -1,9 +1,11 @@
 package com.regin.reginald.vehicleanddrivers.Aariyan.Authentications;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,13 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.regin.reginald.model.SettingsModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Constant.Constant;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Database.DatabaseAdapter;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.LogInInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.LogInModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.LogInNetworking;
+import com.regin.reginald.vehicleanddrivers.AppApplication;
 import com.regin.reginald.vehicleanddrivers.LandingPage;
 import com.regin.reginald.vehicleanddrivers.R;
+import com.regin.reginald.vehicleanddrivers.Settings;
+
+import java.util.ArrayList;
 
 public class LogInPortion extends AppCompatActivity {
 
@@ -39,11 +46,16 @@ public class LogInPortion extends AppCompatActivity {
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
+    ArrayList<SettingsModel> settIP;
+    final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_portion);
+        dbH.updateDeals("CREATE TABLE IF NOT EXISTS tblSettings(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, strServerIp VARCHAR,regKey TEXT,Company VARCHAR,DeviceID TEXT,Email TEXT);");
 
         sharedPref = getSharedPreferences(
                 "LL", Context.MODE_PRIVATE);
@@ -60,6 +72,8 @@ public class LogInPortion extends AppCompatActivity {
         } else {
             Snackbar.make(snackBarLayout, "Please log in first!", Snackbar.LENGTH_SHORT).show();
         }
+        settIP = dbH.getSettings();
+
         super.onResume();
     }
 
@@ -98,12 +112,18 @@ public class LogInPortion extends AppCompatActivity {
         new LogInNetworking().logIn(new LogInInterface() {
             @Override
             public void loggedIn(LogInModel logInData) {
-                startActivity(new Intent(LogInPortion.this, LandingPage.class));
-                Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
-                editor.putString(Constant.LOGGED_IN_KEYWORD, Constant.LOGGED_IN);
-                editor.putString("id", ""+logInData.getId());
-                editor.apply();
-                progressBar.setVisibility(View.GONE);
+                if (settIP.size() > 0) {
+                    startActivity(new Intent(LogInPortion.this, LandingPage.class));
+                    Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
+                    editor.putString(Constant.LOGGED_IN_KEYWORD, Constant.LOGGED_IN);
+                    editor.putString("id", ""+logInData.getId());
+                    editor.apply();
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    Snackbar.make(snackBarLayout, "Log-In Success", Snackbar.LENGTH_SHORT).show();
+                    showDialogAndValidateUp("Checking IP", "We Didn't find IP & Redirecting to SETTING page");
+                }
+
             }
 
             @Override
@@ -121,5 +141,28 @@ public class LogInPortion extends AppCompatActivity {
 //                progressBar.setVisibility(View.GONE);
 //            }
 //        }, 2000);
+    }
+
+    private void showDialogAndValidateUp(String title, String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(LogInPortion.this);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(LogInPortion.this, Settings.class));
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
     }
 }
