@@ -385,9 +385,9 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String tomorrowDate = dateFormat.format(tomorrow);
-        //dateTextView.setText(tomorrowDate);
-        //dateTextView.setText("2020-6-23");
         dateTextView.setText(tomorrowDate);
+        dateTextView.setText("2020-6-23");
+        //dateTextView.setText(tomorrowDate);
         //returnFilters()
        /* Log.e("rule log", "**************************************" + dbH.getThings("Login"));
         if(dbH.getThings("Login") !=0)
@@ -525,7 +525,7 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dbH.updateDeals("delete from OrderLines");
+                dbH.updateDeals("delete from OrderLines");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //Intent i = new Intent(LandingPage.this, MainActivity.class);
                 if (selectedOrderTypes == -777 || selectedRoute == -777) {
