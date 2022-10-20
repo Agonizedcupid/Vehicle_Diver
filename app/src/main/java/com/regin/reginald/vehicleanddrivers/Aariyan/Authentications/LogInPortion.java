@@ -27,6 +27,7 @@ import com.regin.reginald.vehicleanddrivers.Aariyan.Interface.LogInInterface;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Model.LogInModel;
 import com.regin.reginald.vehicleanddrivers.Aariyan.Networking.LogInNetworking;
 import com.regin.reginald.vehicleanddrivers.AppApplication;
+import com.regin.reginald.vehicleanddrivers.BuildConfig;
 import com.regin.reginald.vehicleanddrivers.LandingPage;
 import com.regin.reginald.vehicleanddrivers.R;
 import com.regin.reginald.vehicleanddrivers.Settings;
@@ -45,6 +46,8 @@ public class LogInPortion extends AppCompatActivity {
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
+
+    private TextView versionCode;
 
     ArrayList<SettingsModel> settIP;
     final DatabaseAdapter dbH = new DatabaseAdapter(AppApplication.getAppContext());
@@ -73,11 +76,13 @@ public class LogInPortion extends AppCompatActivity {
             Snackbar.make(snackBarLayout, "Please log in first!", Snackbar.LENGTH_SHORT).show();
         }
         settIP = dbH.getSettings();
-
         super.onResume();
     }
 
     private void initUI() {
+
+        versionCode = findViewById(R.id.versionCode);
+        versionCode.setText(String.valueOf("Version: "+BuildConfig.VERSION_CODE));
 
         enterName = findViewById(R.id.enterName);
         enterPassword = findViewById(R.id.enterPassword);
