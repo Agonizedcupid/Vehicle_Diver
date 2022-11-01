@@ -52,6 +52,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 //import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
@@ -105,6 +107,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 //import nl.elastique.poetry.json.JsonPersister;
 
@@ -643,6 +646,10 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
 //        });
     }
 
+    private DatabaseReference headerRef = FirebaseDatabase.getInstance().getReference()
+            .child("Headers");
+    private DatabaseReference linesRef = FirebaseDatabase.getInstance().getReference()
+            .child("Lines");
     @Override
     protected void onResume() {
         super.onResume();
@@ -651,8 +658,20 @@ public class LandingPage extends AppCompatActivity implements GoogleApiClient.Co
             ContextCompat.startForegroundService(LandingPage.this, serviceIntent);
             //startService(serviceIntent);
         }
+
+        //Uploading data to Firebase:
+        uploadDataToFirebase();
     }
 
+    private void uploadDataToFirebase() {
+        //Class:
+        //Model: Orders, OrderLines:
+    }
+
+
+    public String generateUID() {
+        return UUID.randomUUID().toString() + "_Headers_" + System.currentTimeMillis();
+    }
 
     private void openDatePicker() {
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
